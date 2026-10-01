@@ -37,7 +37,56 @@ plt.rcParams.update({
 })
 
 
+HEADLINES = {
+    # Book 1
+    "fig01_levels_map": ("\u201cAGI\u201d is a grid, not a finishing line", "performance against breadth, with 2023 systems placed by the framework's authors"),
+    "fig02_saturation": ("A benchmark stops informing before it reaches 100%", "scores spread out early, then crowd into the instrument's own noise"),
+    "fig03_four_channels": ("Automation works through four channels, and only one shows on day one", "the other three take years, and historically they decide the outcome"),
+    "fig04_entry_ladder": ("The tools are strongest exactly where careers begin", "the routine work that trains juniors is the work the tools do best"),
+    "fig05_proof_and_practice": ("Practice and proof have come apart", "the essay still teaches; it no longer proves anything"),
+    "fig06_bottleneck": ("Speed up the start of the pipeline and the bottleneck moves", "to the stages that need hands, instruments and judgement"),
+    "fig07_five_questions": ("Four jurisdictions, five questions, one shared answer", "everyone requires labelling; almost nothing else is agreed"),
+    "fig08_lethal_trifecta": ("Any two are safe. All three is a leak.", "the three properties that let an AI system exfiltrate what it knows"),
+    "fig09_reliability": ("99% per step is 37% per hundred steps", "chance of finishing an n-step task when each step succeeds with probability p"),
+    "fig10_three_layers": ("What compounds with the tools sits underneath them", "judgement, systems understanding and domain knowledge are what the tools can't supply"),
+    "fig11_dpi_stack": ("Build on shared rails and inherit the plumbing", "identity, payments and consented data, already connected"),
+    "fig12_diffusion": ("Twenty to forty years from available to transformative", "three earlier general-purpose technologies, and the open question"),
+    "fig13_operators": ("The first job vanished. The first-timers found another. The incumbents paid.", "the automation of telephone switching, 1920\u20131940"),
+    "fig14_horses_and_cars": ("Twenty-six million horses, then three", "horses and mules against motor vehicles in the United States, 1900\u20131960"),
+    "fig15_engels_pause": ("Sixty years of growth the average worker never saw", "Britain, output per worker and the real wage, index 1780 = 100"),
+    "fig16_electrification": ("Forty years from the power station to the productivity statistics", "share of US factory mechanical drive supplied by electric motors"),
+    "fig17_books": ("Forty-six years of printing out-produced a century of scribes", "books produced in Western Europe, log scale"),
+    "fig18_containers": ("A 97% cost cut, and a deal about who kept it", "loading cost per ton, and the 1960 West Coast agreement"),
+    "fig19_wheat": ("The seed arrived in 1966. The harvest moved in 1968.", "India's wheat production, million tonnes"),
+    "fig20_upi": ("From three million to 140 billion in eight years", "UPI transactions per calendar year, log scale"),
+    "fig21_forecasts": ("Human-level machines have been twenty years away for seventy years", "predicted arrival against the year of the prediction"),
+    # Book 2
+    "fig01_tail_at_scale": ("Fan out to 100 servers and most requests wait for someone's slowest 1%", "share of requests that touch at least one server's tail"),
+    "fig02_concurrency_models": ("What a server does while it waits", "three concurrency models on the same three requests"),
+    "fig03_hit_rate": ("A cache fixes the average long before it fixes the tail", "average and p99 latency against hit rate, h = 1 ms, m = 50 ms"),
+    "fig04_memory_hierarchy": ("Every level down is a cliff", "approximate access times, 2020s hardware, log scale"),
+    "fig05_consistency_spectrum": ("Stronger promises, more coordination, less availability", "the consistency models in common use, from strongest to weakest"),
+    "fig06_idempotency": ("The retry is harmless because the key makes it the same request", "an idempotent payment, with the response lost once"),
+    "fig07_availability": ("Ten dependencies at 99.9% make a 99% service", "best-case availability against the number of dependencies every request needs"),
+    "fig08_queue_depth": ("Arrivals above capacity grow a queue without limit", "messages waiting under three arrival patterns"),
+    "fig09_error_budget": ("At burn rate 14.4, a month's budget lasts two days", "error budget remaining for a 99.9% SLO over 30 days"),
+    "fig10_knee": ("Past about 80% busy, waiting explodes", "time in system as a multiple of service time, single queue"),
+    "fig11_cost_crossover": ("Count the people and the crossover moves", "managed against self-hosted cost as volume grows"),
+    "fig12_decision_loop": ("Decide, record, measure, repeat", "the design loop that turns opinions into evidence"),
+}
+
+
+def headline(fig, name: str):
+    if name not in HEADLINES:
+        return
+    title, sub = HEADLINES[name]
+    fig.text(0.0, 1.075, title, fontsize=10.6, fontweight=600, color=INK, ha="left", va="bottom", transform=fig.transFigure, wrap=False)
+    if sub:
+        fig.text(0.0, 1.02, sub, fontsize=8.4, color=MID, ha="left", va="bottom", transform=fig.transFigure)
+
+
 def save(fig, book: str, name: str):
+    headline(fig, name)
     for t in fig.findobj(matplotlib.text.Text):
         t.set_fontsize(t.get_fontsize() * FS)
     out = HERE / ("agi-transition" if book == "agi" else "systems-that-scale") / "figures"
@@ -567,12 +616,214 @@ def sys_decision_loop():
     save(fig, "systems", "fig12_decision_loop")
 
 
+
+# ================================================================================================ Book 1: history
+def agi_operators():
+    """Feigenbaum & Gross (2020): after a city's cutover to dial, operators among women 16-25 fell 50-80%; the next
+    cohort's employment rate was unchanged; incumbents were less likely to be working a decade later."""
+    A, T = ACCENT["agi"], TINT["agi"]
+    fig, ax = blank(3.3)
+    panels = [(4, "The job", "women 16\u201325 working\nas operators"), (37, "The next cohort", "employment rate of young\nwomen who came after"),
+              (70, "The incumbents", "operators, ten years\nafter the cutover")]
+    for x, t, sub in panels:
+        label(ax, x, 42.5, t, 9.4, INK, 600)
+        label(ax, x, 38.6, sub, 7.8, MID, va="top")
+    # panel 1: before 100, after 20-50 (the 50-80% fall)
+    ax.add_patch(Rectangle((6, 8), 8, 22, fc=INK, ec="none")); label(ax, 10, 5.3, "before", 7.6, MID, ha="center")
+    ax.add_patch(Rectangle((18, 8), 8, 22 * 0.5, fc=T, ec=A, lw=0.8)); ax.add_patch(Rectangle((18, 8), 8, 22 * 0.2, fc=A, ec="none"))
+    label(ax, 22, 5.3, "after", 7.6, MID, ha="center")
+    ax.annotate("down 50\u201380%,\nimmediately and\npermanently", xy=(26.3, 8 + 22 * 0.35), xytext=(28.5, 22), fontsize=7.6, color=A, va="center",
+                arrowprops=dict(arrowstyle="-", color=A, lw=0.6))
+    # panel 2: equal bars
+    ax.add_patch(Rectangle((39, 8), 8, 22, fc=INK, ec="none")); label(ax, 43, 5.3, "manual cities", 7.2, MID, ha="center")
+    ax.add_patch(Rectangle((51, 8), 8, 22, fc=INK, ec="none")); label(ax, 55, 5.3, "dial cities", 7.2, MID, ha="center")
+    label(ax, 61, 19, "no difference:\nsecretarial, typing\nand service jobs\nabsorbed them", 7.6, INK, va="center")
+    # panel 3: two downward markers
+    for i, t in enumerate(["less likely to be\nworking at all", "if working, more likely\nin a lower-paid job"]):
+        y = 27 - i * 11
+        arrow(ax, 73, y + 3.2, 73, y - 2.8, A, 1.0, ms=8)
+        label(ax, 75.5, y, t, 7.8, INK, va="center")
+    label(ax, 2, 0.6, "Schematic. Magnitudes from Feigenbaum & Gross (2020), NBER WP 28061.", 7.4, MID)
+    save(fig, "agi", "fig13_operators")
+
+
+def agi_horses_and_cars():
+    """Horses and mules (USDA via Ensminger 1969 / Kilby 2007) and motor-vehicle registrations (FHWA Table MV-200), millions."""
+    A = ACCENT["agi"]
+    years = [1900, 1905, 1910, 1915, 1920, 1925, 1930, 1935, 1940, 1945, 1950, 1955, 1960]
+    horses = [21.531635, 22.077, 24.042882, 26.493, 25.199552, 22.08152, 18.885856, 16.676, 13.931531, 11.629, 7.604, 4.309, 3.089]
+    cars = [0.008, 0.0788, 0.4685, 2.490932, 9.239161, 20.068543, 26.749853, 26.546126, 32.453233, 31.03542, 49.161691, 62.688792, 73.857768]
+    fig, ax = plt.subplots(figsize=(W_IN, 2.9))
+    ax.plot(years, horses, color=INK, lw=1.7, marker="o", ms=3.2)
+    ax.plot(years, cars, color=A, lw=1.7, marker="o", ms=3.2)
+    ax.text(1960.6, 3.1, "horses and\nmules", color=INK, fontsize=8.2, va="center")
+    ax.text(1960.6, 73.9, "motor\nvehicles", color=A, fontsize=8.2, va="center")
+    ax.annotate("1915: 26.5 million animals,\n2.5 million vehicles", xy=(1915, 26.5), xytext=(1901, 46), fontsize=8.0, color=INK,
+                arrowprops=dict(arrowstyle="-", color=MID, lw=0.7))
+    ax.annotate("1930: 26.7 million vehicles,\n18.9 million animals", xy=(1930, 26.75), xytext=(1931.5, 11), fontsize=8.0, color=INK,
+                arrowprops=dict(arrowstyle="-", color=MID, lw=0.7))
+    ax.set_xlim(1899, 1961); ax.set_ylim(0, 80); ax.set_xticks(range(1900, 1961, 10))
+    ax.set_ylabel("millions", color=MID, fontsize=8.5); ax.grid(axis="y", color=RULE, lw=0.6); ax.set_axisbelow(True)
+    fig.subplots_adjust(right=0.84)
+    save(fig, "agi", "fig14_horses_and_cars")
+
+
+def agi_engels_pause():
+    """Allen (2009): output per worker +46% and real wage +12% over 1780-1840; +90% and +123% over 1840-1900. Index 1780 = 100."""
+    A, T = ACCENT["agi"], TINT["agi"]
+    yrs = [1780, 1840, 1900]
+    out = [100, 146, 146 * 1.90]
+    wage = [100, 112, 112 * 2.23]
+    fig, ax = plt.subplots(figsize=(W_IN, 2.75))
+    ax.axvspan(1780, 1840, color=T, lw=0)
+    ax.plot(yrs, out, color=INK, lw=1.7, marker="o", ms=3.5)
+    ax.plot(yrs, wage, color=A, lw=1.7, marker="o", ms=3.5)
+    ax.text(1901, out[-1], "output per worker", color=INK, fontsize=8.2, va="center")
+    ax.text(1901, wage[-1], "real wage", color=A, fontsize=8.2, va="center")
+    ax.text(1810, 262, "Engels\u2019 pause: sixty years in which\noutput per worker rose 46%\nand the real wage rose 12%", ha="center", fontsize=8.0, color=INK)
+    ax.text(1870, 118, "after 1840 the two\nmove together", ha="center", fontsize=8.0, color=MID)
+    ax.set_xlim(1778, 1902); ax.set_ylim(90, 300); ax.set_xticks([1780, 1800, 1820, 1840, 1860, 1880, 1900])
+    ax.set_ylabel("index, 1780 = 100", color=MID, fontsize=8.5); ax.grid(axis="y", color=RULE, lw=0.6); ax.set_axisbelow(True)
+    fig.subplots_adjust(right=0.80)
+    save(fig, "agi", "fig15_engels_pause")
+
+
+def agi_electrification():
+    """Three anchors: under 5% in 1899, about half two decades later, over 75% by 1929 (David 1990; Devine 1983 via
+    Atkeson & Kehoe 2001). Drawn as anchors joined by a dotted line, not as a measured curve."""
+    A, T = ACCENT["agi"], TINT["agi"]
+    fig, ax = plt.subplots(figsize=(W_IN, 2.7))
+    xs, ys, labs = [1899, 1920, 1929], [5, 50, 76], ["under 5%", "about half", "over 75%"]
+    ax.axvspan(1920, 1930, color=T, lw=0)
+    ax.plot(xs, ys, color=LIGHT, lw=1.0, ls=(0, (2, 3)), zorder=1)
+    ax.plot(xs, ys, "o", color=A, ms=5, zorder=3)
+    for x, y, l in zip(xs, ys, labs):
+        ax.text(x, y + 6, f"{x}: {l}", ha="center", fontsize=8.2, color=INK)
+    ax.axvline(1882, color=MID, lw=0.7)
+    ax.text(1883, 92, "1882: Edison\u2019s Pearl Street\nstation, New York", fontsize=7.8, color=MID, va="top")
+    ax.text(1925, 22, "1920s: factories rebuilt\naround unit drive; manufacturing\nproductivity growth responds", ha="center", fontsize=7.8, color=A)
+    ax.set_xlim(1878, 1935); ax.set_ylim(0, 100); ax.set_xticks([1880, 1890, 1900, 1910, 1920, 1930])
+    ax.set_ylabel("share of factory mechanical drive (%)", color=MID, fontsize=8.5); ax.grid(axis="y", color=RULE, lw=0.6); ax.set_axisbelow(True)
+    save(fig, "agi", "fig16_electrification")
+
+
+def agi_books():
+    """Buringh & van Zanden (2009): ~5 million manuscript books in the 15th century; 12.6 million printed books 1454-1500.
+    Febvre & Martin (1958): 150-200 million copies in the 16th century."""
+    A = ACCENT["agi"]
+    fig, ax = plt.subplots(figsize=(W_IN, 2.2))
+    rows = [("manuscripts copied by hand,\n1400s (a hundred years)", 5.0e6, INK), ("printed books, 1454\u20131500\n(forty-six years)", 12.6e6, A),
+            ("printed books, 1500s\n(a hundred years)", 175e6, A)]
+    for i, (name, v, c) in enumerate(rows[::-1]):
+        ax.barh(i, v, color=c, height=0.55)
+        ax.text(1.6e5, i, name, va="center", ha="right", fontsize=8.2, color=INK)
+    ax.plot([150e6, 200e6], [0, 0], color=PAPER, lw=1.2)
+    ax.plot([150e6, 200e6], [0, 0], color=INK, lw=0.8); ax.plot([150e6, 150e6], [-0.14, 0.14], color=INK, lw=0.8); ax.plot([200e6, 200e6], [-0.14, 0.14], color=INK, lw=0.8)
+    for i, (name, v, c) in enumerate(rows[::-1]):
+        ax.text(v * 1.25 if i else 2.1e8 * 1.1, i, "5 million" if i == 2 else ("12.6 million" if i == 1 else "150\u2013200 million"), va="center", fontsize=8.2, color=INK)
+    ax.set_xscale("log"); ax.set_xlim(2e5, 2e9); ax.set_yticks([]); ax.spines["left"].set_visible(False)
+    ax.set_xticks([1e6, 1e7, 1e8, 1e9]); ax.set_xticklabels(["1 million", "10 million", "100 million", "1 billion"])
+    fig.subplots_adjust(left=0.40)
+    save(fig, "agi", "fig17_books")
+
+
+def agi_containers():
+    """Levinson (2006): $5.83 a ton to load loose cargo by hand, 15.8 cents a ton for the Ideal-X's containers.
+    ILWU-PMA Mechanization and Modernization Agreement, 18 Oct 1960; $29 million paid into the fund by 1966."""
+    A, T = ACCENT["agi"], TINT["agi"]
+    fig, ax = blank(3.0)
+    ax.add_patch(Rectangle((8, 12), 14, 26, fc=INK, ec="none")); label(ax, 15, 40.5, "$5.83 a ton", 9.0, INK, 600, ha="center")
+    label(ax, 15, 8.5, "loose cargo,\nloaded by hand", 7.8, MID, ha="center", va="top")
+    ax.add_patch(Rectangle((28, 12), 14, 26 * 0.158 / 5.83, fc=A, ec="none")); label(ax, 35, 16.5, "16 cents a ton", 9.0, A, 600, ha="center")
+    label(ax, 35, 8.5, "the Ideal-X\u2019s\nfifty-eight boxes, 1956", 7.8, MID, ha="center", va="top")
+    # timeline
+    x0, x1 = 54, 97
+    ax.plot([x0, x1], [20, 20], color=RULE, lw=1.0)
+    for yr, text, dy in ((1956, "26 April 1956\nIdeal-X sails,\nNewark to Houston", 1), (1960, "18 October 1960\nunion and employers sign\nthe M&M Agreement", -1),
+                         (1966, "by 1966\n$29 million paid for\nretirements and\nguaranteed pay", 1)):
+        x = x0 + (yr - 1955) / (1967 - 1955) * (x1 - x0)
+        ax.add_patch(Circle((x, 20), 0.9, fc=A if yr == 1960 else INK, ec="none"))
+        label(ax, x, 20 + dy * 3.2, text, 7.4, INK if yr == 1960 else MID, ha="center", va="bottom" if dy > 0 else "top", linespacing=1.3)
+    save(fig, "agi", "fig18_containers")
+
+
+def agi_wheat():
+    """India wheat production, USDA PSD series (market years), 1960-1985, million tonnes."""
+    A, T = ACCENT["agi"], TINT["agi"]
+    years = list(range(1960, 1986))
+    mt = [10.320, 10.995, 12.076, 10.779, 9.854, 12.258, 10.394, 11.393, 16.540, 18.651, 20.093, 23.832, 26.410, 24.735, 21.778, 24.104,
+          28.846, 29.010, 31.749, 35.508, 31.830, 36.313, 37.452, 42.794, 45.476, 44.069]
+    fig, ax = plt.subplots(figsize=(W_IN, 2.75))
+    ax.plot(years, mt, color=INK, lw=1.7, marker="o", ms=2.8)
+    ax.axvline(1966, color=A, lw=0.9, ls=(0, (3, 2)))
+    ax.text(1966.4, 44, "1966: 18,000 tonnes of\nMexican seed imported", fontsize=8.0, color=A, va="top")
+    ax.annotate("1968: 16.5 million tonnes,\nup from 11.4", xy=(1968, 16.54), xytext=(1969.5, 9), fontsize=8.0, color=INK,
+                arrowprops=dict(arrowstyle="-", color=MID, lw=0.7))
+    ax.annotate("1964\u201366: two failed\nmonsoons", xy=(1966, 10.39), xytext=(1960.2, 20), fontsize=8.0, color=MID,
+                arrowprops=dict(arrowstyle="-", color=MID, lw=0.7))
+    ax.set_xlim(1959.5, 1985.5); ax.set_ylim(0, 50); ax.set_xticks(range(1960, 1986, 5))
+    ax.set_ylabel("million tonnes", color=MID, fontsize=8.5); ax.grid(axis="y", color=RULE, lw=0.6); ax.set_axisbelow(True)
+    save(fig, "agi", "fig19_wheat")
+
+
+def agi_upi():
+    """UPI transactions per calendar year, NPCI product statistics (millions)."""
+    A = ACCENT["agi"]
+    years = list(range(2016, 2025))
+    vol = [2.65, 418.8, 3746.32, 10787.54, 18880.89, 38744.55, 74044.48, 117675.97, 139995.98]
+    fig, ax = plt.subplots(figsize=(W_IN, 2.75))
+    ax.bar(years, vol, color=[INK] + [A] * 8, width=0.62)
+    for y, v in zip(years, vol):
+        lab = f"{v/1000:.0f} bn" if v >= 1000 else (f"{v:.0f} m" if v >= 10 else f"{v:.2f} m")
+        ax.text(y, v * 1.25, lab, ha="center", fontsize=7.8, color=INK)
+    ax.set_yscale("log"); ax.set_ylim(1, 1e6); ax.set_xlim(2015.4, 2024.6)
+    ax.set_yticks([1, 10, 100, 1e3, 1e4, 1e5, 1e6]); ax.set_yticklabels(["1 m", "10 m", "100 m", "1 bn", "10 bn", "100 bn", "1 tn"])
+    ax.text(2016, 0.45 * 1e6, "launched April 2016,\n21 banks; most paper\ncurrency withdrawn\nthat November", fontsize=7.8, color=MID, va="top", ha="left")
+    ax.grid(axis="y", color=RULE, lw=0.6); ax.set_axisbelow(True); ax.tick_params(axis="x", length=0)
+    save(fig, "agi", "fig20_upi")
+
+
+def agi_forecasts():
+    """Predicted arrival of human-level machines against the year of the forecast. Sources in chapter 12."""
+    A, T = ACCENT["agi"], TINT["agi"]
+    fig, ax = plt.subplots(figsize=(W_IN, 3.0))
+    x = np.array([1950, 2030])
+    ax.fill_between(x, x + 15, x + 25, color=T, lw=0, label="15\u201325 years out")
+    ax.plot(x, x, color=LIGHT, lw=0.9, ls=(0, (3, 2)))
+    ax.axhline(2026, color=MID, lw=0.7)
+    ax.text(1950.8, 2027, "2026: forecasts below this line have come due", fontsize=7.8, color=MID, va="bottom")
+    ax.text(2004, 2036.5, "15\u201325 years out:\nthe most common\nhorizon (Armstrong\n& Sotala, 2012)", fontsize=7.6, color=A, ha="center", va="center")
+    pts = [(1955, 1956, 1956, "Dartmouth proposal:\n\u201ca summer\u201d"), (1965, 1985, 1985, "Simon: \u201cwithin\ntwenty years\u201d"),
+           (1970, 1973, 1978, "Minsky: \u201cthree to\neight years\u201d"), (2013, 2023, 2033, "Frey & Osborne:\n\u201ca decade or two\u201d"),
+           (2016, 2021, 2021, "Hinton: radiologists,\nfive years")]
+    for yr, lo, hi, text in pts:
+        if lo != hi:
+            ax.plot([yr, yr], [lo, hi], color=INK, lw=1.4)
+        ax.plot([yr], [(lo + hi) / 2], "o", color=INK, ms=4.6, zorder=3)
+    for yr in (2016, 2019, 2022):
+        ax.plot([yr], [yr + 1], "o", color=A, ms=4.0, zorder=3)
+    ax.text(2023.2, 2019.5, "full self-driving\n\u201cnext year\u201d,\n2016\u20132023", fontsize=7.6, color=A, va="center")
+    offs = {1955: (1957, 1949.5), 1965: (1959, 1991.5), 1970: (1972, 1969), 2013: (1998, 2010.5), 2016: (2000.5, 2027.5)}
+    for yr, lo, hi, text in pts:
+        tx, ty = offs[yr]
+        ax.annotate(text, xy=(yr, (lo + hi) / 2), xytext=(tx, ty), fontsize=7.6, color=INK, va="center", ha="left",
+                    arrowprops=dict(arrowstyle="-", color=LIGHT, lw=0.6, shrinkA=2, shrinkB=3))
+    ax.set_xlim(1950, 2030); ax.set_ylim(1945, 2045); ax.set_xticks(range(1950, 2031, 10)); ax.set_yticks(range(1950, 2041, 10))
+    ax.set_xlabel("year the forecast was made", color=MID, fontsize=8.5); ax.set_ylabel("year it said machines would match people", color=MID, fontsize=8.5)
+    ax.grid(color=RULE, lw=0.5); ax.set_axisbelow(True)
+    save(fig, "agi", "fig21_forecasts")
+
+
 AGI = [agi_levels_map, agi_saturation, agi_four_channels, agi_entry_ladder, agi_proof_practice, agi_bottleneck,
-       agi_five_questions, agi_trifecta, agi_reliability, agi_three_layers, agi_dpi_stack, agi_diffusion]
+       agi_five_questions, agi_trifecta, agi_reliability, agi_three_layers, agi_dpi_stack, agi_diffusion,
+       agi_operators, agi_horses_and_cars, agi_engels_pause, agi_electrification, agi_books, agi_containers, agi_wheat, agi_upi, agi_forecasts]
 SYSTEMS = [sys_tail_at_scale, sys_concurrency, sys_hit_rate, sys_memory_hierarchy, sys_consistency, sys_idempotency,
            sys_availability, sys_queue_depth, sys_error_budget, sys_knee, sys_cost_crossover, sys_decision_loop]
 
 if __name__ == "__main__":
     which = sys.argv[1] if len(sys.argv) > 1 else "all"
-    for f in (AGI if which == "agi" else SYSTEMS if which == "systems" else AGI + SYSTEMS):
+    fns = AGI if which == "agi" else SYSTEMS if which == "systems" else AGI + SYSTEMS
+    if which == "history":
+        fns = [agi_operators, agi_horses_and_cars, agi_engels_pause, agi_electrification, agi_books, agi_containers, agi_wheat, agi_upi, agi_forecasts]
+    for f in fns:
         f()

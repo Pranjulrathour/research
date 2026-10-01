@@ -92,6 +92,22 @@ The largest models are governed differently from everything else. The EU's syste
 
 Enforcement trails enactment by years. The EU's bans applied in 2025 and its high-risk rules from 2026 at the earliest, so the first serious fines, court rulings and clarifying guidance will come through 2027 and 2028. India's data-protection rules phase in until 2027. Colorado's law only took effect in mid-2026. This decade will be shaped less by the texts than by how they're enforced, and enforcement is where most of the uncertainty is.
 
+## A transition that was negotiated
+
+Most of this chapter is about rules written by governments. I want to end the survey with a transition that was governed a different way, because it's the clearest case I know of institutions deciding, in advance and on paper, who would pay for a technology and who would gain.
+
+On 26 April 1956 a converted tanker called the *Ideal-X* left Newark for Houston carrying fifty-eight metal boxes on its deck. Loading loose cargo onto a ship by hand had cost about $5.83 a ton. Loading those boxes cost about sixteen cents a ton.[^box] A cost reduction of that size does not leave an industry as it found it. Within two decades the container had emptied the old finger piers of New York and London, built new ports in places that had never had one, and made it cheaper to ship a television across an ocean than across a city. World trade reorganised itself around the box.
+
+The people in the way were the longshoremen, who had loaded ships by hand, in gangs, for as long as there had been ports, and whose unions were among the strongest in either country. What happened to them depended on what their institutions did, and the two American coasts did different things.
+
+On the Pacific coast, the union and the employers negotiated. In October 1960 the International Longshore and Warehouse Union, led by Harry Bridges, signed the Mechanization and Modernization Agreement with the Pacific Maritime Association. The employers got what they wanted: freedom to introduce machines and new working methods without the old rules on gang sizes and workloads. The workers got a share of the gains, written down: a fund paid for by the employers, used for early retirement on generous terms for the men who left and a guaranteed weekly wage for those who stayed if the work shrank. By 1966 the shipping companies had paid about $29 million into it.[^mm] The ports mechanised, the workforce shrank mostly through retirement rather than dismissal, and productivity rose for everyone left.
+
+![The container's arithmetic, and the deal that distributed it. Loading cost per ton before and after the box, with the 1960 agreement that traded work rules for a share of the gains. From Levinson (2006) and the agreement's records.](figures/fig18_containers.png)
+
+On the Atlantic coast, the union fought the box for years, port by port, and the eventual settlement guaranteed its members an annual income whether or not there was work for them. Both coasts ended up with containers. One of them spent a decade and a great deal of trust getting there.
+
+The reason I include this in a chapter on governance is that neither path was decided by the technology. The container's economics were identical in Oakland and in Brooklyn. What differed was the institution that sat between the technology and the workers, and the choices it made about who bore the cost of adjusting. That is what every rule in this chapter is, underneath the legal language: a decision about where the costs of a transition land. The EU puts some of them on the developers of high-risk systems. The United States, for now, mostly leaves them where they fall. India has chosen to build first and decide later. The 1960 agreement is a reminder that the decision can also be made by the people directly affected, before the cutover rather than after it, and that when it is, the technology arrives faster and the people it displaces are not simply left on the pier.
+
 ## What it means if you build things
 
 If you're a student or an engineer rather than a policy person, governance reaches you in four practical ways.
@@ -126,7 +142,11 @@ Read one law's actual text, not a summary of it. Choose the one that applies whe
 [^4]: Digital Personal Data Protection Act, 2023 (Act No. 22 of 2023), assented 11 August 2023; Digital Personal Data Protection Rules, 2025, notified November 2025.
 [^5]: Bengio, Y. et al. (2025), *International AI Safety Report*, January 2025, and second edition, February 2026.
 
+[^box]: Levinson, M. (2006), *The Box: How the Shipping Container Made the World Smaller and the World Economy Bigger*, Princeton University Press, ch. 1 and 3; the loading-cost figures ($5.83 against 15.8 cents a ton) are his.
+[^mm]: The Mechanization and Modernization Agreement between the ILWU and the Pacific Maritime Association, signed 18 October 1960; see Fairley, L. (1979), *Facing Mechanization: The West Coast Longshore Plan*, UCLA Institute of Industrial Relations, and Levinson (2006), ch. 6, on the fund and the $29 million paid by 1966.
+
 ### Sources for this chapter
+- Levinson (2006), *The Box*; Fairley (1979), *Facing Mechanization* — the container and the 1960 West Coast agreement.
 - Regulation (EU) 2024/1689 (AI Act), OJ L, 12 July 2024 — text, Annex III, Article 113 timetable; Directive (EU) 2024/2853 on liability for defective products.
 - US: EO 14110 (2023); EO 14179 (2025); *America's AI Action Plan* (July 2025); NIST *AI Risk Management Framework 1.0* (January 2023); Colorado SB 24-205 (2024); California SB 53 (2025); Texas HB 149 (2025).
 - China: CAC Interim Measures on Generative AI (2023); Deep Synthesis Provisions (2023); Algorithmic Recommendation Provisions (2022); Labeling Measures (2025).

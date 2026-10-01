@@ -26,6 +26,20 @@ And over a term or a whole degree, a student can build up a portfolio of verifia
 
 In each case the question being asked shifts from "what did you produce?" to "what can you do, and how did you do it?". That shift is right, it's overdue, and it means more work for everyone involved. It also happens to bring assessment into line with what employers were already asking for, which chapter 10 takes up.
 
+## The last time the artefact changed
+
+Universities have been through this once before, and it's worth knowing how it went, because the first reaction then was the same as the first reaction now.
+
+Before the 1450s, a book was something a person made by hand. A university lecture was, in large part, a reading: the master read the authoritative text aloud, slowly, and the students wrote it down, because writing it down was how you got a copy and, not incidentally, how you learned it. Copying was practice and proof at once. The medieval student's notebook was his textbook, his evidence of attendance, and his training in the discipline of attention, all in one object, in exactly the way the essay has been all of those things for the modern student.[^print1]
+
+Then printing arrived. Gutenberg's Bible was finished around 1454. By 1500, presses were running in more than two hundred European towns and had printed somewhere between twelve and twenty million books, depending on whose estimate you prefer; the careful recent count puts it at 12.6 million in forty-six years, against roughly five million manuscript books produced across the whole of the preceding century.[^print2] In the sixteenth century the presses produced something like 150 to 200 million copies. The price of a book fell by a large fraction within a couple of decades, and a text that had taken a scribe months to reproduce could be had in an afternoon.[^print2]
+
+![Books in Western Europe before and after the press. Manuscript output in the fifteenth century, printed output in the forty-six years to 1500, and the sixteenth century, on a log scale. Estimates from Buringh and van Zanden (2009) and Febvre and Martin (1958).](figures/fig17_books.png)
+
+The reaction of the people whose craft this threatened was to defend the craft. In 1492 the abbot Johannes Trithemius wrote a tract, *In Praise of Scribes*, arguing that monks should carry on copying by hand because the labour was spiritually formative and the printed page would not last. He had it printed, so that it would reach more readers.[^print3] The universities' reaction was slower and more interesting. Dictation lectures carried on for a surprisingly long time, because institutions change at the pace of the people in them. But once students could own the text, the lecture gradually stopped being a reading and became an explanation; the student's time moved from copying to reading, comparing and arguing; and the examination, which had always leaned on oral disputation, leaned on it more. Learning did not collapse when the artefact stopped carrying information. The institution rebuilt its assessment around what could still be observed, which was the student's mind in conversation.
+
+That is the pattern I expect this time, and the historical case suggests the two mistakes to avoid. One is Trithemius's: defending the exercise for its own sake, when the exercise only ever mattered for what it built. The other is pretending the artefact still proves what it used to. Neither the scribes nor the dictating masters survived in their old form, and the university did better than survive. It became the institution that taught people to read critically, because reading had become cheap and judgement had not. Substitute "generate" for "read" and that sentence is the thesis of this chapter.
+
 ## The detector
 
 After late 2022 the first instinct of many institutions was to buy a detector. What happened next is the clearest lesson I know of in why that instinct doesn't work.
@@ -104,7 +118,12 @@ Build one thing that a system can't do for you, and document how you did it. Pic
 [^4]: Turnitin (2023), "AI writing detection" product announcement and FAQ, April 2023, stating a document-level false-positive rate below 1 per cent.
 [^5]: Vanderbilt University (2023), "Guidance on AI detection and why we're disabling Turnitin's AI detector", Brightspace / Center for Teaching announcement, 16 August 2023.
 
+[^print1]: On the lecture as dictation and the student's copy as both text and training, see Eisenstein, E. L. (1979), *The Printing Press as an Agent of Change*, Cambridge University Press, vol. 1, ch. 1–2, and Hamesse, J. (1999), "The scholastic model of reading", in Cavallo & Chartier (eds.), *A History of Reading in the West*.
+[^print2]: Buringh, E. & van Zanden, J. L. (2009), "Charting the 'Rise of the West': Manuscripts and Printed Books in Europe, a Long-Term Perspective from the Sixth through Eighteenth Centuries", *Journal of Economic History* 69(2), 409–445 (12.6 million printed books 1454–1500; about five million manuscripts in the fifteenth century). The twenty-million and 150–200-million figures are from Febvre, L. & Martin, H.-J. (1958; English edn 1976), *The Coming of the Book*, which also records presses in some 236 towns by 1500.
+[^print3]: Trithemius, J. (1492), *De laude scriptorum* (*In Praise of Scribes*), printed at Mainz by Peter von Friedberg in 1494.
+
 ### Sources for this chapter
+- Eisenstein (1979), *The Printing Press as an Agent of Change*; Buringh & van Zanden (2009); Febvre & Martin (1958) — the press, book output and the universities.
 - Bloom (1984), *Educational Researcher* 13(6) — the two-sigma problem.
 - Liang et al. (2023), *Patterns* 4(7) — detector bias against non-native writers.
 - Kestin et al. (2025), *Scientific Reports* 15 — AI tutoring RCT.

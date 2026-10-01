@@ -20,6 +20,18 @@ This paper asks two concrete questions of recent public data. The first is how l
 
 The contribution is intentionally modest. It is a clean out-of-sample comparison on two indices with a design fixed in advance, standard backtests, and public code and data. The paper also reports a specification that failed during the study, because the reason it failed turns out to be informative about the whole question.
 
+### 1.1 Contributions
+
+- A measurement, on 16.75 years of daily data for a major emerging-market index and a major developed-market index, of how far Gaussian one-day VaR under-covers at 95% and 99%, with the Kupiec and Christoffersen tests reported in full (Section 4.2).
+- A design that separates the two causes of that failure. Six models are arranged so that tail shape and volatility dynamics vary independently (Figure 1), which lets the coverage test diagnose one and the independence test the other.
+- Evidence that the unconditional Student-t degrees of freedom mostly measure volatility clustering rather than tail thickness: fitted on volatility-standardised returns, the median df rises from 3.0 to 4.7 for the S&P 500 and from 5.5 to 6.5 for NIFTY 50 (Section 4.3).
+- A documented negative result. A specification that reused the raw-return df inside a volatility model produced 273 and 317 violations where 181 and 186 were expected, and Section 5.3 explains why.
+- Full reproducibility: one command, public code, hashed data snapshots, and every number in a machine-readable results file.
+
+### 1.2 Related work
+
+Heavy tails in asset returns go back to Mandelbrot (1963) and Fama (1965), and volatility clustering to Engle (1982) and Bollerslev (1986), whose ARCH and GARCH models were the first to treat the two together. The backtests used here are the standard ones: Kupiec (1995) for unconditional coverage and Christoffersen (1998) for independence and conditional coverage. Filtered historical simulation was proposed by Barone-Adesi, Giannopoulos and Vosper (1999) as a way to combine a volatility filter with the empirical distribution of standardised returns. The most thorough comparison of VaR methods, Kuester, Mittnik and Paolella (2006), found on three decades of NASDAQ data that filtered and GARCH-based approaches dominated unconditional ones, which is the pattern this paper finds on current data for two indices it did not cover. Berkowitz, Christoffersen and Pelletier (2011) review the backtesting literature and show how weak the independence tests can be in small samples, which bears on the 99% results here. Work on Indian equity risk has been sparser; the present paper's contribution to it is a current, fully reproducible baseline rather than a methodological advance.
+
 ## 2. Data
 
 Daily closing levels of the NIFTY 50 (Yahoo Finance ticker `^NSEI`) and the S&P 500 (`^GSPC`) were downloaded on 1 October 2026 using the `yfinance` library, version 1.7.0. These are unadjusted index levels, so dividends are excluded, which does not matter for one-day log returns. NIFTY 50 history on Yahoo starts on 17 September 2007, and both series were cut to a common window from 1 January 2010 to 30 September 2026. That leaves 4,113 daily log returns for the NIFTY 50 and 4,211 for the S&P 500, each on its own trading calendar. The tickers, row counts, download time and SHA-256 hash of each file are recorded in `data/SNAPSHOT.json`. The price files themselves are not redistributed, because the index providers license their data. The repository's `fetch_data.py` downloads them again, and a second download on the same day reproduced both files byte for byte.
@@ -207,7 +219,10 @@ On sixteen and three-quarter years of daily NIFTY 50 and S&P 500 data, the Gauss
 
 - Barone-Adesi, G., Giannopoulos, K. & Vosper, L. (1999). VaR without correlations for portfolios of derivative securities. *Journal of Futures Markets*, 19(5), 583–602.
 - Basel Committee on Banking Supervision (2019). *Minimum capital requirements for market risk*. Bank for International Settlements.
+- Berkowitz, J., Christoffersen, P. & Pelletier, D. (2011). Evaluating value-at-risk models with desk-level data. *Management Science*, 57(12), 2213–2227.
+- Bollerslev, T. (1986). Generalized autoregressive conditional heteroskedasticity. *Journal of Econometrics*, 31(3), 307–327.
 - Christoffersen, P. F. (1998). Evaluating interval forecasts. *International Economic Review*, 39(4), 841–862.
+- Engle, R. F. (1982). Autoregressive conditional heteroscedasticity with estimates of the variance of United Kingdom inflation. *Econometrica*, 50(4), 987–1007.
 - Engle, R. F. & Manganelli, S. (2004). CAViaR: Conditional autoregressive value at risk by regression quantiles. *Journal of Business & Economic Statistics*, 22(4), 367–381.
 - Fama, E. F. (1965). The behavior of stock-market prices. *Journal of Business*, 38(1), 34–105.
 - J.P. Morgan/Reuters (1996). *RiskMetrics — Technical Document*, 4th ed.
@@ -223,4 +238,53 @@ All code, `results.json` with every number in this paper, the figure code and `d
 
 *Competing interests and funding.* The author has no competing interests and received no funding for this work.
 
-*Use of AI tools.* Generative AI tools were used to help draft parts of the text and code. All results were produced by the published scripts from the committed data, and the author reviewed the analysis and takes full responsibility for the content.
+*Use of AI tools.* Generative AI tools were used to help draft parts of the text and code. All results were produced by the published scripts from the snapshot data, and the author reviewed the analysis and takes full responsibility for the content.
+
+## Appendix A. Violations of 99% VaR by calendar year
+
+Tables A1 and A2 give the counts behind Figure 4 and the independence results of Section 4.2, from `results.json`. Two years carry most of the story. In 2020 every model was breached more than its annual expectation of about 2.5 violations, and the breaches came within a few weeks of each other in March, which is what the Christoffersen independence test penalises. For the S&P 500, 2018 is the other outlier: the Gaussian model recorded 21 violations in a year that began with the February volatility spike and ended with the fourth-quarter sell-off, against 3 for FHS, because the Gaussian window still contained the quiet 2016–2017 period and its VaR had drifted down to about 1.5%. A model that rescales by current volatility recovers from a quiet window within weeks; a 500-day constant-volatility window takes two years.
+
+**Table A1. NIFTY 50, violations of one-day 99% VaR by year (expected about 2.5 per full year).**
+
+| Year | Gaussian | Historical | Student-t | EWMA-Gaussian | Filtered Student-t | FHS |
+|---|---|---|---|---|---|---|
+| 2012 | 1 | 1 | 0 | 1 | 1 | 1 |
+| 2013 | 4 | 5 | 4 | 8 | 6 | 6 |
+| 2014 | 0 | 0 | 0 | 3 | 3 | 3 |
+| 2015 | 6 | 3 | 3 | 5 | 4 | 4 |
+| 2016 | 4 | 2 | 2 | 7 | 4 | 4 |
+| 2017 | 0 | 0 | 0 | 2 | 2 | 2 |
+| 2018 | 9 | 7 | 7 | 4 | 4 | 4 |
+| 2019 | 2 | 2 | 2 | 1 | 1 | 1 |
+| 2020 | 15 | 12 | 10 | 13 | 10 | 8 |
+| 2021 | 1 | 0 | 0 | 5 | 4 | 1 |
+| 2022 | 3 | 0 | 3 | 4 | 4 | 1 |
+| 2023 | 0 | 0 | 0 | 3 | 2 | 0 |
+| 2024 | 4 | 3 | 3 | 5 | 5 | 5 |
+| 2025 | 2 | 2 | 1 | 2 | 2 | 2 |
+| 2026 (to Sept.) | 6 | 5 | 2 | 6 | 4 | 4 |
+| Total | 57 | 42 | 37 | 69 | 56 | 46 |
+
+**Table A2. S&P 500, violations of one-day 99% VaR by year (expected about 2.5 per full year).**
+
+| Year | Gaussian | Historical | Student-t | EWMA-Gaussian | Filtered Student-t | FHS |
+|---|---|---|---|---|---|---|
+| 2011 (Dec.) | 0 | 0 | 0 | 0 | 0 | 0 |
+| 2012 | 0 | 0 | 0 | 5 | 2 | 2 |
+| 2013 | 0 | 0 | 0 | 5 | 5 | 3 |
+| 2014 | 9 | 2 | 4 | 10 | 7 | 6 |
+| 2015 | 10 | 6 | 7 | 6 | 4 | 4 |
+| 2016 | 5 | 3 | 3 | 2 | 2 | 2 |
+| 2017 | 0 | 0 | 0 | 4 | 4 | 3 |
+| 2018 | 21 | 9 | 7 | 8 | 5 | 3 |
+| 2019 | 5 | 1 | 1 | 5 | 3 | 2 |
+| 2020 | 13 | 10 | 13 | 12 | 10 | 5 |
+| 2021 | 0 | 0 | 0 | 8 | 6 | 2 |
+| 2022 | 12 | 7 | 11 | 4 | 2 | 1 |
+| 2023 | 0 | 0 | 0 | 2 | 0 | 1 |
+| 2024 | 3 | 2 | 2 | 6 | 6 | 6 |
+| 2025 | 10 | 6 | 6 | 6 | 6 | 4 |
+| 2026 (to Sept.) | 1 | 0 | 1 | 2 | 2 | 2 |
+| Total | 89 | 46 | 55 | 85 | 64 | 46 |
+
+The constant-volatility models also show the opposite failure: whole calendar years with no violation at all (2017 for every one of them on both indices; 2012, 2013, 2021 and 2023 on the S&P 500), which means their VaR was far too conservative in calm periods. Correct coverage on average, achieved by alternating years of zero and years of twenty, is exactly what the independence test is designed to catch.

@@ -24,6 +24,20 @@ And institutions lag, then catch up, roughly. Education, law, professional norms
 
 None of this proves that this time will be the same. What it does is put the burden of proof on anyone claiming this time is different, and the proof ought to come as measurements rather than demonstrations.
 
+## Seventy years of "twenty years away"
+
+There's a second set of base rates worth knowing, and they're about the forecasters rather than the technology.
+
+In the summer of 1955, four researchers wrote a proposal for a workshop at Dartmouth College. They wanted to study how to make machines use language, form concepts and improve themselves, and they wrote that "a significant advance can be made in one or more of these problems if a carefully selected group of scientists work on it together for a summer."[^8] The workshop happened the next year, and it gave the field its name. The summer was not enough.
+
+Ten years later, Herbert Simon, who would go on to win a Nobel prize in economics and a Turing award in computing, wrote that "machines will be capable, within twenty years, of doing any work a man can do."[^9] That put the date at 1985. In 1970 Marvin Minsky, who had been at Dartmouth, told *Life* magazine that "in from three to eight years we will have a machine with the general intelligence of an average human being."[^10] That put it somewhere between 1973 and 1978. These were not cranks. They were among the most capable people ever to work on the problem, and they were wrong by half a century and counting.
+
+The forecasts of the 2010s that I grade below have the same shape: a serious person, a real trend, and a date that turned out to be far too close. When two researchers collected ninety-five published predictions of human-level AI made between 1950 and 2012 and plotted when each predicted it would arrive, the single most common answer was fifteen to twenty-five years from whenever the prediction was made.[^11] Experts and non-experts predicted about the same horizon. The horizon had barely moved in sixty years. It is just far enough away to be beyond the forecaster's career, just close enough to be exciting, and it has been "about twenty years" since before anyone reading this book was born.
+
+![When machines were predicted to match people, against when the prediction was made, 1955–2016. The diagonal is the present; the shaded band is the fifteen-to-twenty-five-year horizon that Armstrong and Sotala found most common. Every point above the diagonal that has already passed was wrong.](figures/fig21_forecasts.png)
+
+I don't take this to mean the current forecasts are wrong. Some trend has to be the one that finally delivers, and the systems of 2026 can do things the systems of 1985 could not. I take it to mean that "twenty years away" is what a confident technologist says when they don't know, and that a date attached to a capability forecast should be weighed by the record of such dates, which is poor. The base rate for the technology is decades of diffusion. The base rate for the forecasters is that the exciting date arrives late and the dull one, the institutional one, arrives on schedule.
+
 ## The decision journal
 
 The second part of the method is a record. The idea is old (serious investors and forecasters have done it for decades) and simple enough that almost nobody bothers.
@@ -104,6 +118,10 @@ Start the journal today with a single entry: the most consequential decision you
 [^5]: Arntz, M., Gregory, T. & Zierahn, U. (2016), "The Risk of Automation for Jobs in OECD Countries: A Comparative Analysis", OECD Social, Employment and Migration Working Papers No. 189.
 [^6]: Geoffrey Hinton, remarks at the Machine Learning and Market for Intelligence conference, Toronto, October 2016, widely reported; see also Hinton's later comments revising the timeline (2023–2024).
 [^7]: Public statements by Tesla's chief executive on the timeline for full self-driving capability, 2016–2024, as compiled in contemporaneous press coverage; graded against the deployment status of unsupervised autonomy in 2026.
+[^8]: McCarthy, J., Minsky, M. L., Rochester, N. & Shannon, C. E. (1955), "A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence", 31 August 1955.
+[^9]: Simon, H. A. (1965), *The Shape of Automation for Men and Management*, Harper & Row, p. 96.
+[^10]: Darrach, B. (1970), "Meet Shaky, the first electronic person", *Life*, 20 November 1970, quoting Marvin Minsky.
+[^11]: Armstrong, S. & Sotala, K. (2012), "How We're Predicting AI, or Failing To", in *Beyond AI: Artificial Dreams*, University of West Bohemia, 52–75; the database of 95 predictions and the 15-to-25-year finding are theirs.
 
 ### Sources for this chapter
 - David (1990), *AER* 80(2) — electricity's forty-year lag.
@@ -111,5 +129,6 @@ Start the journal today with a single entry: the most consequential decision you
 - Brynjolfsson, Rock & Syverson (2021), *AEJ: Macro* 13(1) — the J-curve.
 - Bresnahan, T. & Trajtenberg, M. (1995), "General purpose technologies: 'Engines of growth'?", *Journal of Econometrics* 65(1) — the GPT framework.
 - Frey & Osborne (2013); Arntz, Gregory & Zierahn (2016) — the two automation-risk estimates.
+- McCarthy et al. (1955); Simon (1965); Darrach (1970); Armstrong & Sotala (2012) — seventy years of forecasts and their horizon.
 - Tetlock, P. E. & Gardner, D. (2015), *Superforecasting* — the evidence that recording and scoring beliefs improves calibration.
 - Kwa et al. (2025), METR — the task-horizon measurement named as the number to watch.

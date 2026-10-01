@@ -34,6 +34,24 @@ AI systems create value when they can act on real processes using real data. In 
 
 That's why the version of the future in which India is "the world's AI back office" (data labelling, model evaluation, support and integration for products built elsewhere) isn't the only one on offer. The alternative is building AI products for the Indian economy itself, on rails that already exist, for 1.4 billion people, most of whom are badly served by every kind of formal service from credit to health care to legal advice to education. The rails make that possible. They don't make it inevitable.
 
+## Two transitions India has already made
+
+It's easy to talk about India's "AI transition" as if the country had never been through anything like it. It has, twice in living memory, and both times the lesson was the same: the technology was necessary and the institutions around it were decisive.
+
+The first was wheat. In 1965 and 1966 the monsoon failed two years running. India's wheat harvest fell to about 10 million tonnes, grain was being shipped in from the United States faster than it could be unloaded, and the phrase of the time was that the country lived "ship to mouth". In 1963 the agronomist M. S. Swaminathan had invited Norman Borlaug to India and begun trials of the short, stiff-strawed Mexican wheats that could carry heavy fertiliser without falling over. In 1965 the government imported 250 tonnes of seed. In 1966 it imported 18,000 tonnes, enough to plant the irrigated plains of Punjab, Haryana and western Uttar Pradesh.[^wheat] The harvest of 1968 was 16.5 million tonnes, half as much again as the year before. By 1971 it was 23.8 million; by 1985, 44 million.[^wheat]
+
+![India's wheat harvest, 1960–1985, in million tonnes. The seed arrived in 1966; the harvest moved two years later and never came back down. USDA series.](figures/fig19_wheat.png)
+
+The seed gets the credit in the textbooks, and it deserves a lot of it. But the seed had existed in Mexico for years. What made 1968 happen in India was everything built around it in a hurry: a guaranteed minimum price announced before sowing so that farmers would risk the new variety; a Food Corporation to buy the grain at that price; fertiliser and credit pushed through the cooperative banks; the agricultural universities at Ludhiana and Pantnagar, modelled on the American land-grant colleges, which bred the Indian varieties (Kalyan Sona, Sonalika) that replaced the Mexican imports within three seasons; and canal water from Bhakra. Remove any of those and the seed is a curiosity. That's the pattern chapter 3 described, the complementary investments deciding the outcome, except that here the investments were made deliberately, fast, by a state that had decided it could not afford another 1966.
+
+The second was payments. In April 2016 the National Payments Corporation of India switched on the Unified Payments Interface with twenty-one banks. In its first calendar year it carried fewer than three million transactions. The next year it carried 419 million; the year after that, 3.7 billion. In 2024 it carried 140 billion, and by 2025 it accounted for more than four-fifths of all digital payments in the country.[^upi] Nothing like that curve exists anywhere else in the world for a payments system.
+
+![UPI transactions per calendar year, 2016–2024, on a log scale. Eight years from launch to 140 billion. NPCI figures.](figures/fig20_upi.png)
+
+Again, the technology was not the scarce part. Instant mobile payments existed elsewhere. What India did differently was institutional: a single open standard that every bank had to join, run by a non-profit the banks jointly owned, with no fee to the person paying, built on top of a universal identity system that already existed, and then a shock, the withdrawal of most of the paper currency in November 2016, that pushed hundreds of millions of people to try it in the same few months. Design plus a forcing event plus rails that were already there. The result was that a vegetable seller in Kanpur accepts payment by QR code and a hundred-rupee transfer costs nothing, a state of affairs that richer countries have still not reached.
+
+I put these two stories here because they are the right template for the next five years, and because they correct a mistake I hear often, which is that India's AI future depends on whether India builds a frontier model. The wheat didn't depend on inventing the seed. The payments didn't depend on inventing the smartphone. Both depended on a small number of institutional decisions, made early, that let a technology invented elsewhere reach a billion people on terms that suited them. The digital public infrastructure described below is the modern version of the canals and the minimum price. The question is what gets planted on it.
+
 ## Language: barrier and moat
 
 India has 22 scheduled languages and hundreds more in daily use, and the current generation of AI systems was trained overwhelmingly on English. In 2023 the gap was stark. Models were dramatically worse in Hindi than in English and close to useless in most other Indian languages, partly because there was so little training data and partly because tokenisers designed for English made Indian-language text several times more expensive to process.[^5]
@@ -95,7 +113,12 @@ Build something for an Indian language or an Indian institution. Choose a proble
 [^7]: Annual reports and fourth-quarter FY2024 results of Tata Consultancy Services, Infosys and Wipro (April 2024), each reporting a year-on-year net decline in employees; coverage of the combined figure and of campus-hiring trends in *The Economic Times* and *Mint*, April–May 2024.
 [^8]: Tata Consultancy Services, statement and press coverage, 27 July 2025, on a planned workforce reduction of about 2 per cent during FY2026.
 
+[^wheat]: Wheat production is the USDA series (market years: 1966, 10.4 million tonnes; 1967, 11.4; 1968, 16.5; 1971, 23.8; 1985, 44.1). On the seed imports (250 tonnes in 1965, 18,000 in 1966) and the Swaminathan–Borlaug collaboration, see Swaminathan, M. S. (2010), *From Green to Evergreen Revolution*, Academic Foundation, and Perkins, J. H. (1997), *Geopolitics and the Green Revolution*, Oxford University Press.
+[^upi]: National Payments Corporation of India, UPI product statistics (monthly volumes, aggregated by calendar year: 2016, 2.65 million; 2017, 419 million; 2018, 3.75 billion; 2019, 10.8 billion; 2020, 18.9 billion; 2021, 38.7 billion; 2022, 74.0 billion; 2023, 117.7 billion; 2024, 140.0 billion). The 2016 launch with 21 banks is from NPCI's own account; the share of digital payments is the RBI's 2025 figure.
+
 ### Sources for this chapter
+- Swaminathan (2010); Perkins (1997); USDA production series — the Green Revolution in wheat.
+- NPCI UPI statistics; RBI payment system reports — the growth of UPI.
 - NASSCOM Strategic Reviews (2024, 2025); NASSCOM–Zinnov GCC reports.
 - NPCI UPI statistics; UIDAI dashboard; RBI/Sahamati Account Aggregator data; ONDC documentation.
 - IndiaAI Mission (Cabinet approval, 7 March 2024); MeitY *India AI Governance Guidelines* (November 2025); DPDP Act 2023 and Rules 2025.

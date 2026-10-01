@@ -46,15 +46,41 @@ A third is prices and volumes in exposed sectors. If translation gets ten times 
 
 It's a good habit to distrust any single number about "jobs" that doesn't come with a time horizon, an occupation and a wage attached.
 
+## The pause that lasted a working lifetime
+
+Wages are also where the most sobering story in the history of technology shows up, and I want to tell it before the more cheerful ones, because it's the one the cheerful ones tend to leave out.
+
+Britain between 1780 and 1840 was the first economy to industrialise, and by every aggregate measure it worked. According to the standard estimates, output per worker rose by about 46 per cent over those sixty years. The real wage of the average worker rose by about 12 per cent.[^engels] For two generations, almost the whole of the gain from the new machines went to the people who owned them. Profits roughly doubled as a share of national income. Friedrich Engels described the result from Manchester in 1844, and the economic historian Robert Allen, who assembled the numbers, named the period after him: Engels' pause. It ended around the time Engels was writing. Between 1840 and 1900 output per worker rose another 90 per cent and real wages rose 123 per cent, and the modern pattern, in which pay and productivity move together, took hold.[^engels]
+
+![Britain, 1780–1900. For sixty years output per worker rose and the average wage barely moved; after 1840 the two climbed together. Index, 1780 = 100, from the estimates Allen (2009) assembles.](figures/fig15_engels_pause.png)
+
+Inside the averages were people whose pause never ended. The handloom weavers are the famous case. Machine spinning in the 1780s produced a flood of cheap yarn and a shortage of people to weave it, and for a generation weaving at home was one of the best-paid trades a working man could enter. Employment climbed to around a quarter of a million by 1810 or so, roughly one in ten of the male workforce.[^weavers] Those high wages were exactly what made the power loom worth inventing. As mills adopted it through the 1820s and 1830s, the weavers' earnings fell from over twenty shillings a week to six or seven, and they kept weaving anyway, because it was the only skill they had, until there was nothing left to weave.[^weavers] The economy did not run out of work. It ran out of work for them.
+
+I tell this story for two reasons. The first is that the four channels say nothing about *when* the gains arrive or *to whom*, and a transition in which the aggregate numbers are excellent can still be a disaster for the people living through it. The second is that the pause ended. It ended through institutions, not through the technology: trade unions, the franchise, schooling, the Factory Acts, and a labour market that eventually tightened. Whether this transition has a pause, how long it lasts, and who sits inside it, are questions about institutions, which is why chapters 4, 5 and 7 spend so long on them.
+
 ## Why history keeps showing all four
 
 The ATM isn't an exception. Every general-purpose technology has followed the same pattern, and the pattern has a shape worth understanding, because you are going to live inside it.
 
-Electrification took roughly forty years to go from the first power stations to measurable productivity gains in manufacturing. Factories had been built around a single central steam shaft, and swapping it for a single central electric motor gained very little. The gains arrived when factories were redesigned around small motors at each workstation, which took new buildings, new ways of organising work and a generation of managers who had grown up with the possibility.[^6] The technology was ready decades before the institutions were.
+Electrification took roughly forty years to go from the first power stations to measurable productivity gains in manufacturing. Factories had been built around a single central steam shaft, and swapping it for a single central electric motor gained very little. The gains arrived when factories were redesigned around small motors at each workstation, which took new buildings, new ways of organising work and a generation of managers who had grown up with the possibility.[^6] The technology was ready decades before the institutions were. In 1899, seventeen years after the first central power station opened in New York, electric motors supplied less than 5 per cent of the mechanical power in American factories. It took another two decades to reach half, and it was only then, in the 1920s, that manufacturing productivity visibly responded.[^6]
+
+![Electricity in American factories: the share of mechanical drive supplied by electric motors, with the dates that bracket it. Three anchor points from David (1990) and Devine (1983), joined for the eye.](figures/fig16_electrification.png)
 
 Computing had the same lag. Robert Solow's 1987 line, that you could see the computer age everywhere except in the productivity statistics, stayed accurate for roughly another decade, until organisations rebuilt their processes around the machines instead of bolting machines onto old processes.[^7] Economists now call this the productivity J-curve: in the early years of a general-purpose technology, investment shows up as cost without output, because the complementary investments (training, reorganisation, new business models) are intangible and slow, and only later does the curve turn upward.[^8]
 
 AI will probably trace the same shape, and probably faster than electricity did, because software spreads at the speed of a download rather than a construction project. But faster than forty years is still not instant, and the complementary investments are the familiar ones: redesigned workflows, retrained people, new institutions for trust and verification. Displacement moves at download speed. The other three channels move at the speed of redesign. The transition is the gap between those speeds, and the rest of this book is largely about living in it.
+
+## The horse, the car and the fourth channel
+
+If you want to watch all four channels run their full course, the cleanest case I know is the one that happened to the American horse.
+
+In 1900 there were about 21.5 million horses and mules in the United States, and the number was still rising. They pulled the ploughs, hauled the freight, drew the streetcars and carried the doctor. A whole economy stood around them: farriers and harness-makers, stables and feed merchants, the teamsters who drove them, and the farmers who grew their food, which by 1915 took about 93 million acres of cropland, nearly a quarter of everything harvested.[^horses] That same year there were 2.5 million motor vehicles on the roads, up from eight thousand in 1900. The horse population peaked in 1915 at 26.5 million. By 1930 there were 26.7 million motor vehicles and 18.9 million horses and mules; by 1960, 74 million vehicles and 3.1 million animals, most of them no longer working at all.[^horses]
+
+![Horses and mules against motor vehicles in the United States, 1900–1960. The animals peaked in 1915; the lines cross in the 1920s; by 1960 the working horse was gone.](figures/fig14_horses_and_cars.png)
+
+Run it through the channels. Displacement was total: the horse's task was taken over entirely, and so was the task of everyone whose work was the horse. Productivity rose, because a truck does the work of many teams and never needs feeding. New tasks appeared in quantities nobody had planned for: mechanics, drivers, road builders, the oil and rubber and steel industries that supplied the cars, the motels and suburbs and supermarkets that only make sense once most people can drive. And demand did the rest. Transport got so much cheaper that people travelled and shipped vastly more than before, and the land that had grown horse feed, about 80 million acres of it, went over to growing food for people.[^horses]
+
+The reason economists keep returning to this case is a remark the Nobel laureate Wassily Leontief made in 1983: that labour might one day go the way of the horse, whose role in production was "first diminished and then eliminated" by the engine.[^leontief] It's a fair worry and worth taking seriously, and I think the history answers it in a specific way. The horse lost because it couldn't do any of the new tasks. It couldn't become a mechanic or a road engineer, and it had no claim on the gains from the land it freed. People could, and did, and the fourth channel is the record of them doing it. The question for this decade is not whether the first channel will operate. It will. The question is whether the people displaced can move to the new tasks fast enough, and that depends on the speed of the other three channels, which is a question about training, institutions and time, not about engines.
 
 ## Two experiments that show the channels at work
 
@@ -104,8 +130,14 @@ Break your own job, or the one you're training for, into tasks. Write down ten t
 [^8]: Brynjolfsson, E., Rock, D. & Syverson, C. (2021), "The Productivity J-Curve: How Intangibles Complement General Purpose Technologies", *American Economic Journal: Macroeconomics* 13(1).
 [^9]: Brynjolfsson, E., Li, D. & Raymond, L. (2025), "Generative AI at Work", *Quarterly Journal of Economics* 140(2), 889–942; the figures quoted are from the working-paper version, NBER Working Paper 31161 (2023).
 [^10]: Dell'Acqua, F. et al. (2023), "Navigating the Jagged Technological Frontier: Field Experimental Evidence of the Effects of AI on Knowledge Worker Productivity and Quality", Harvard Business School Working Paper 24-013.
+[^engels]: Allen, R. C. (2009), "Engels' pause: Technical change, capital accumulation, and inequality in the British industrial revolution", *Explorations in Economic History* 46(4), 418–435. The output-per-worker figures are the Crafts–Harley estimates and the wage series is Feinstein's, both as reported by Allen.
+[^weavers]: Allen, R. C. (2018), "The hand loom weaver and the power loom: a Schumpeterian perspective", *European Review of Economic History* 22(4), for employment at the peak and the mechanism; Bythell, D. (1969), *The Handloom Weavers*, Cambridge University Press, for the collapse in weekly earnings.
+[^horses]: Horse and mule numbers from USDA figures as compiled in Ensminger (1969) and reproduced in Kilby, E. R. (2007), "The demographics of the U.S. equine population", *The State of the Animals IV*; motor-vehicle registrations from the Federal Highway Administration, *Highway Statistics Summary to 1995*, Table MV-200; cropland used for feed from Olmstead, A. L. & Rhode, P. W. (2001), "Reshaping the Landscape: The Impact and Diffusion of the Tractor in American Agriculture, 1910–1960", *Journal of Economic History* 61(3).
+[^leontief]: Leontief, W. (1983), "Technological Advance, Economic Growth, and the Distribution of Income", *Population and Development Review* 9(3), 403–410.
 
 ### Sources for this chapter
+- Allen (2009), *Explorations in Economic History* 46(4) — Engels' pause; Allen (2018) and Bythell (1969) — the handloom weavers.
+- Kilby (2007) and FHWA Table MV-200 — horses and motor vehicles, 1900–1960; Olmstead & Rhode (2001) — the tractor and the land it freed; Leontief (1983) — the horse analogy.
 - Acemoglu & Restrepo (2018, 2019) — the task framework and its four channels.
 - Autor, Chin, Salomons & Seegmiller (2024), *QJE* 139(3) — new work since 1940.
 - Bessen (2015), *Learning by Doing* — the ATM and bank-teller case.

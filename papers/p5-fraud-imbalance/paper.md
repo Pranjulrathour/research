@@ -23,6 +23,18 @@ The third is **threshold selection on the test set**. A probabilistic classifier
 
 This paper avoids all three and measures what the first one costs. On this dataset the answer turns out to be very little, and the reason is instructive: a random split leaks information only to the extent that the future differs from the past, and two days of transactions barely drift. The contribution is a clean, reproducible baseline on the most widely used public fraud dataset, using the methodology practitioners need and students are rarely shown, together with an honest measurement of the leak, including when it comes out near zero.
 
+### 1.1 Contributions
+
+- A benchmark of seven standard classifiers on the ULB credit-card data under a pre-registered, chronological protocol, with PR-AUC as the primary metric, five seeds per stochastic model and a cost-based threshold chosen on validation data (Section 4.2).
+- A direct comparison of ROC-AUC and PR-AUC rankings on the same models, showing that ROC-AUC would have chosen a different and weaker model (Section 4.2).
+- A measurement of what class weighting does to calibration as well as to ranking: PR-AUC improves for every model family, while the Brier score of the logistic model deteriorates 25-fold (Section 4.3).
+- A diagnosis, confirmed by a post-hoc ablation, of why unweighted gradient boosting is unstable across seeds: scikit-learn's default early stopping on a random holdout containing about 38 frauds (Section 4.5).
+- An honest negative result on the study's own hypothesis: a stratified random split did not inflate performance on this two-day dataset, with an explanation of why (Sections 4.6 and 5.1).
+
+### 1.2 Related work
+
+The ULB dataset was introduced by Dal Pozzolo, Caelen, Johnson and Bontempi (2015), whose paper also showed that undersampling distorts posterior probabilities and must be corrected, and Dal Pozzolo et al. (2018) describe a realistic fraud-detection setting with delayed labels, concept drift and daily retraining, which is the production context this paper's batch protocol only approximates. He and Garcia (2009) survey learning from imbalanced data. On metrics, Davis and Goadrich (2006) establish the relationship between precision–recall and ROC curves, and Saito and Rehmsmeier (2015) show on imbalanced data how ROC curves can look favourable while precision is poor. Elkan (2001) is the foundation for cost-sensitive thresholding, and Niculescu-Mizil and Caruana (2005) document how different model families miscalibrate and how to repair them. Kaufman, Rosset, Perlich and Stitelman (2012) formalise leakage in data mining; this paper's temporal split follows their advice, and its near-zero measured leak is consistent with their observation that leakage requires the test data to carry information unavailable at prediction time.
+
 ## 2. Data
 
 The dataset is the credit-card transaction set released by the Université Libre de Bruxelles Machine Learning Group (Dal Pozzolo et al., 2015), containing 284,807 transactions made by European cardholders over two days in September 2013, of which 492 (0.1727 per cent) are frauds. Features V1–V28 are principal components of the original confidential variables; `Time` is the number of seconds since the first transaction; `Amount` is the transaction value; `Class` is the label.
@@ -176,6 +188,7 @@ On the ULB credit-card data, a random forest with balanced class weights was the
 - Saito, T. & Rehmsmeier, M. (2015). The precision–recall plot is more informative than the ROC plot when evaluating binary classifiers on imbalanced datasets. *PLoS ONE*, 10(3), e0118432.
 - Davis, J. & Goadrich, M. (2006). The relationship between precision–recall and ROC curves. *ICML 2006*, 233–240.
 - Elkan, C. (2001). The foundations of cost-sensitive learning. *IJCAI 2001*, 973–978.
+- He, H. & Garcia, E. A. (2009). Learning from imbalanced data. *IEEE Transactions on Knowledge and Data Engineering*, 21(9), 1263–1284.
 - Kaufman, S., Rosset, S., Perlich, C. & Stitelman, O. (2012). Leakage in data mining: Formulation, detection, and avoidance. *ACM TKDD*, 6(4), 15.
 - Niculescu-Mizil, A. & Caruana, R. (2005). Predicting good probabilities with supervised learning. *ICML 2005*, 625–632.
 - Pedregosa, F. et al. (2011). Scikit-learn: Machine learning in Python. *JMLR*, 12, 2825–2830.
@@ -189,3 +202,35 @@ Code, `results.json` (every number in this paper), the figures and `data/SNAPSHO
 *Competing interests and funding.* The author has no competing interests and received no funding for this work.
 
 *Use of AI tools.* Generative AI tools were used to help draft parts of the text and code. All results were produced by the published scripts from the snapshot data, and the author reviewed the analysis and takes full responsibility for the content.
+
+## Appendix A. All metrics for both protocols
+
+Tables A1 and A2 give every metric recorded for every model, from `results.json`. Recall@P0.5 is the recall achievable at 50 per cent precision. The threshold column is the score cut-off chosen on the validation block; the dummy's "flag nothing" is the infinite threshold described in Section 3.6. Fit time is on the test laptop with other work running, and the two forests differ because the balanced-subsample forest grows shallower trees.
+
+**Table A1. Time-aware split (test: 56,962 transactions, 75 frauds).**
+
+| Model | PR-AUC | ROC-AUC | Recall@P0.5 | Recall@P0.9 | Precision@R0.8 | Brier | Threshold | Savings | Alerts | Fit (s) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Amount rule (top 0.2%) | 0.0014 | 0.382 | 0.00 | 0.00 | 0.001 | | | | | |
+| Majority dummy | 0.001 | 0.500 | 0.00 | 0.00 | 0.001 | 0.00132 | flag nothing | 0 | 0 | 0 |
+| Logistic regression | 0.712 | 0.975 | 0.80 | 0.45 | 0.508 | 0.00062 | 0.098 | 4,570 | 80 | 2 |
+| Logistic regression, weighted | 0.748 | 0.983 | 0.80 | 0.67 | 0.504 | 0.01571 | 0.9999 | 4,959 | 65 | 4 |
+| Random forest | 0.792 ± 0.002 | 0.956 ± 0.003 | 0.79 | 0.73 | 0.462 | 0.00044 | 0.178 | 5,090 ± 94 | 76 | 485 |
+| Random forest, weighted | 0.811 ± 0.003 | 0.947 ± 0.005 | 0.81 | 0.76 | 0.667 | 0.00045 | 0.067 | 5,168 ± 7 | 81 | 283 |
+| Gradient boosting | 0.502 ± 0.124 | 0.755 ± 0.105 | 0.59 | 0.24 | 0.007 | 0.00098 | 0.038 | 3,929 ± 943 | 148 | 6 |
+| Gradient boosting, weighted | 0.752 ± 0.008 | 0.952 ± 0.009 | 0.76 | 0.70 | 0.301 | 0.00327 | 0.881 | 3,901 ± 392 | 70 | 143 |
+
+**Table A2. Stratified random split (test: 56,962 transactions, 98 frauds).**
+
+| Model | PR-AUC | ROC-AUC | Recall@P0.5 | Recall@P0.9 | Precision@R0.8 | Brier | Threshold | Savings | Alerts | Fit (s) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Amount rule (top 0.2%) | 0.0017 | 0.387 | 0.00 | 0.00 | 0.002 | | | | | |
+| Majority dummy | 0.002 | 0.500 | 0.00 | 0.00 | 0.002 | 0.00172 | flag nothing | 0 | 0 | 0 |
+| Logistic regression | 0.715 | 0.967 | 0.84 | 0.14 | 0.738 | 0.00075 | 0.010 | 5,911 | 217 | 1 |
+| Logistic regression, weighted | 0.702 | 0.975 | 0.83 | 0.00 | 0.669 | 0.02286 | 0.994 | 6,081 | 124 | 3 |
+| Random forest | 0.796 ± 0.002 | 0.946 ± 0.008 | 0.81 | 0.69 | 0.763 | 0.00054 | 0.151 | 6,032 ± 82 | 104 | 726 |
+| Random forest, weighted | 0.822 ± 0.002 | 0.952 ± 0.006 | 0.85 | 0.78 | 0.819 | 0.00051 | 0.169 | 5,905 ± 5 | 92 | 2,662 |
+| Gradient boosting | 0.597 ± 0.050 | 0.828 ± 0.036 | 0.70 | 0.11 | 0.011 | 0.00101 | 0.485 | 4,920 ± 433 | 100 | 2 |
+| Gradient boosting, weighted | 0.691 ± 0.006 | 0.945 ± 0.008 | 0.80 | 0.00 | 0.472 | 0.00391 | 0.708 | 5,533 ± 146 | 155 | 50 |
+
+One row deserves a comment. The weighted logistic model's recall at 90 per cent precision is 0.67 on the time-aware split and 0.00 on the random one, although its PR-AUC is similar on both. At the top of its ranking on the random split sit a few legitimate transactions scored above every fraud, so precision never reaches 90 per cent at any recall. Single operating-point metrics are brittle in this way with fewer than a hundred positives, which is one more reason to rank models by the area and to report several points along the curve.

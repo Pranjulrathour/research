@@ -20,6 +20,18 @@ Two questions follow for anyone outside a well-resourced research group. First, 
 
 This paper answers both on data anyone can download. Its ambition is deliberately limited: it is a small-scale replication, not a new method, and its value is in the protocol (fixed in advance, out of sample, with the wrong way measured alongside the right one) and in the candour of its reporting.
 
+### 1.1 Contributions
+
+- A walk-forward comparison of six return-prediction models on 29 large US stocks over fifteen test years, with hyperparameters chosen only on past data, reported against both a zero forecast and the expanding historical mean (Section 4.2).
+- Evidence that at this scale the ranking of the reference study inverts: no model beats the historical mean, the best model has shrunk into it, and the three nonlinear models are significantly worse than OLS by Diebold–Mariano tests (Sections 4.2–4.3).
+- A record of what validation chose: the most regularised setting of nearly every model in nearly every year (Section 4.5 and Appendix A), which is independent evidence that the data cannot support flexible models here.
+- A measurement of the look-ahead that shuffled cross-validation creates in a stock panel, 14 to 18 percentage points of R² for the tree models, together with a diagnosis of its source: not training on later years, but training on the same month's returns for other stocks (Section 4.7).
+- Full reproducibility, with a post-hoc summary from the saved predictions kept separate from the pre-specified results.
+
+### 1.2 Related work
+
+Gu, Kelly and Xiu (2020) is the reference point, and Kelly and Xiu (2023) survey the literature it started. Two earlier debates frame how this paper reads its results. Welch and Goyal (2008) showed that most proposed predictors of the equity premium failed out of sample against the historical mean, and Campbell and Thompson (2008) argued that even very small positive out-of-sample R² can be economically meaningful when the benchmark is right. Both are why this paper reports R² against the historical mean as well as against zero. On evaluation, Harvey, Liu and Zhu (2016) document how many published return predictors are likely to be false discoveries under conventional significance thresholds, and Bailey, Borwein, López de Prado and Zhu (2014) show how backtest overfitting manufactures apparent skill. López de Prado (2018) describes the specific leakage that random cross-validation creates in financial panels and proposes purged, embargoed splits; Section 4.7 of this paper measures that leakage directly and locates it in the cross-section. The features used are the standard price-based characteristics of Jegadeesh and Titman (1993) and Bali, Cakici and Whitelaw (2011), among others.
+
 ## 2. Data
 
 Daily adjusted closing prices for the 30 current constituents of the Dow Jones Industrial Average and daily closes of the S&P 500 index were downloaded on 1 October 2026 via `yfinance` (version 1.7.0) for 2 January 2004 to 30 September 2026. One constituent, Visa, lacked a full history over the window (it listed in March 2008) and was dropped by a 95 per cent completeness rule, leaving 29 stocks; the dropped ticker is recorded in `results.json`. The download date, row counts and SHA-256 hashes of both files are recorded in `data/SNAPSHOT.json`. The files themselves are not redistributed, because the price data are licensed; `fetch_data.py p2` downloads them again. A second download on the same day reproduced the S&P 500 file exactly and the Dow 30 adjusted closes to within 1.5 parts per million, which is rounding in Yahoo's adjustment.
@@ -171,6 +183,8 @@ On 29 Dow Jones stocks with ten price-based features, the machine-learning advan
 ## References
 
 - Gu, S., Kelly, B. & Xiu, D. (2020). Empirical asset pricing via machine learning. *Review of Financial Studies*, 33(5), 2223–2273.
+- Harvey, C. R., Liu, Y. & Zhu, H. (2016). … and the cross-section of expected returns. *Review of Financial Studies*, 29(1), 5–68.
+- Kelly, B. & Xiu, D. (2023). Financial machine learning. *Foundations and Trends in Finance*, 13(3–4), 205–363.
 - Campbell, J. Y. & Thompson, S. B. (2008). Predicting excess stock returns out of sample: Can anything beat the historical average? *Review of Financial Studies*, 21(4), 1509–1531.
 - Welch, I. & Goyal, A. (2008). A comprehensive look at the empirical performance of equity premium prediction. *Review of Financial Studies*, 21(4), 1455–1508.
 - Diebold, F. X. & Mariano, R. S. (1995). Comparing predictive accuracy. *Journal of Business & Economic Statistics*, 13(3), 253–263.
@@ -189,3 +203,47 @@ Code, `results.json`, the figures and `data/SNAPSHOT.json` are at https://github
 *Competing interests and funding.* The author has no competing interests and received no funding for this work.
 
 *Use of AI tools.* Generative AI tools were used to help draft parts of the text and code. All results were produced by the published scripts from the snapshot data, and the author reviewed the analysis and takes full responsibility for the content.
+
+## Appendix A. Hyperparameters chosen on the validation blocks
+
+**Table A1. The setting chosen for each test year by mean squared error on the last 24 months of the training window, raw target.** The grids were ridge α ∈ {0.1, 1, 10, 100}, lasso α ∈ {10⁻⁴, 10⁻³, 10⁻²}, forest depth ∈ {3, 6, none}, boosting depth ∈ {2, 3, 5} and MLP weight decay α ∈ {10⁻³, 10⁻², 10⁻¹}. In 71 of the 75 choices, validation picked the most regularised option.
+
+| Test year | Ridge α | Lasso α | Forest depth | Boosting depth | MLP α |
+|---|---|---|---|---|---|
+| 2012 | 100 | 0.01 | 3 | 2 | 0.1 |
+| 2013 | 100 | 0.01 | 3 | 2 | 0.1 |
+| 2014 | 100 | 0.01 | 3 | 2 | 0.1 |
+| 2015 | 100 | 0.01 | 3 | 2 | 0.1 |
+| 2016 | 100 | 0.01 | 3 | 2 | 0.1 |
+| 2017 | 100 | 0.01 | 3 | 2 | 0.1 |
+| 2018 | 100 | 0.01 | 3 | 2 | 0.1 |
+| 2019 | 100 | 0.01 | 3 | 2 | 0.1 |
+| 2020 | 100 | 0.01 | 6 | 2 | 0.1 |
+| 2021 | 100 | 0.01 | 3 | 2 | 0.1 |
+| 2022 | 100 | 0.01 | 3 | 3 | 0.1 |
+| 2023 | 100 | 0.01 | none | 2 | 0.1 |
+| 2024 | 100 | 0.01 | 3 | 2 | 0.1 |
+| 2025 | 100 | 0.0001 | 6 | 2 | 0.1 |
+| 2026 | 100 | 0.001 | 3 | 2 | 0.1 |
+
+## Appendix B. Out-of-sample R² by test year
+
+**Table B1. Pooled out-of-sample R² against a zero forecast within each test year, raw target, seed 0, in per cent.** The historical mean and lasso track each other almost exactly, which is the shrinkage described in Section 4.2. The nonlinear models' bad years (2018, 2020, 2022) are much worse than the linear models' bad years.
+
+| Year | Hist. mean | OLS | Ridge | Lasso | Forest | Boosting | MLP |
+|---|---|---|---|---|---|---|---|
+| 2012 | +4.2 | +4.0 | +4.0 | +4.3 | −1.1 | −10.5 | −5.9 |
+| 2013 | +7.0 | +6.3 | +6.3 | +6.9 | +4.8 | −6.7 | −8.0 |
+| 2014 | +4.9 | +1.6 | +1.7 | +4.9 | +1.0 | −2.7 | −2.2 |
+| 2015 | −0.6 | −2.8 | −2.7 | −0.6 | −1.1 | +2.9 | −3.2 |
+| 2016 | +7.8 | +7.3 | +7.3 | +7.8 | +10.6 | +7.9 | +7.3 |
+| 2017 | +12.7 | +12.8 | +12.8 | +12.7 | +10.5 | +4.9 | +12.1 |
+| 2018 | −2.4 | −7.5 | −7.4 | −2.4 | −11.5 | −15.7 | −14.4 |
+| 2019 | +5.0 | +2.3 | +2.5 | +5.0 | +6.8 | +4.9 | +5.0 |
+| 2020 | +1.2 | +0.8 | +0.8 | +1.2 | −11.9 | −2.8 | −2.0 |
+| 2021 | +4.3 | +2.7 | +2.8 | +4.3 | +3.4 | +4.5 | +2.7 |
+| 2022 | −2.0 | −4.7 | −4.6 | −2.0 | −5.1 | −9.8 | −6.2 |
+| 2023 | +3.2 | +3.9 | +3.9 | +3.2 | +9.2 | +7.9 | +0.4 |
+| 2024 | +4.6 | +4.5 | +4.6 | +4.6 | +4.1 | +0.7 | +5.3 |
+| 2025 | +1.5 | +0.7 | +0.9 | +0.9 | −0.5 | −1.3 | −3.3 |
+| 2026 (to Aug.) | −0.4 | −0.6 | −0.6 | −0.5 | −0.2 | +0.8 | +0.3 |

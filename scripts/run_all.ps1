@@ -17,9 +17,12 @@ foreach ($j in $jobs) {
     if ($Only.Count -gt 0 -and $Only -notcontains $id) { continue }
     $argList = @("-u", $script)
     if ($ScriptArgs.ContainsKey($id)) { $argList += $ScriptArgs[$id] }
-    "=== $id start $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') args=$($argList -join ' ')" | Tee-Object -FilePath (Join-Path $papers "run_all.log") -Append
+    # Add-Content with an explicit encoding: Tee-Object -FilePath writes UTF-16 in Windows PowerShell 5.1
+    $line = "=== $id start $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') args=$($argList -join ' ')"
+    $line; Add-Content -Path (Join-Path $papers "run_all.log") -Value $line -Encoding UTF8
     Push-Location (Join-Path $papers $id)
     $p = Start-Process -FilePath "python" -ArgumentList $argList -NoNewWindow -PassThru -Wait -RedirectStandardOutput "run.log" -RedirectStandardError "run.err.log"
     Pop-Location
-    "=== $id end   $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') exit=$($p.ExitCode)" | Tee-Object -FilePath (Join-Path $papers "run_all.log") -Append
+    $line = "=== $id end   $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') exit=$($p.ExitCode)"
+    $line; Add-Content -Path (Join-Path $papers "run_all.log") -Value $line -Encoding UTF8
 }
