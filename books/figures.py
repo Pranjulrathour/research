@@ -73,6 +73,9 @@ HEADLINES = {
     "fig10_knee": ("Past about 80% busy, waiting explodes", "time in system as a multiple of service time, single queue"),
     "fig11_cost_crossover": ("Count the people and the crossover moves", "schematic: managed against self-hosted cost as volume grows"),
     "fig12_decision_loop": ("Decide, record, measure, repeat", "the design loop that turns opinions into evidence"),
+    "fig13_measured_tail": ("The tail opens before the body moves", "the thread-per-connection server on the I/O-bound workload, measured (paper P3)"),
+    "fig14_same_throughput": ("Same work, four times the tail", "four servers at 256 clients on the CPU-bound workload, measured (paper P3)"),
+    "fig15_glove_collapse": ("Approximate search is not always faster", "GloVe-100: throughput against recall, with exact search, measured (paper P4)"),
 }
 
 
@@ -845,11 +848,85 @@ def agi_forecasts():
     save(fig, "agi", "fig21_forecasts")
 
 
+
+# ================================================================================================ Book 2: measured
+import json as _json
+PAPERS = HERE.parent / "papers"
+
+
+def _p3_rows():
+    return _json.load(open(PAPERS / "p3-tail-latency" / "results.json"))["rows"]
+
+
+def sys_measured_tail():
+    """P3: the threaded server on the I/O-bound workload, p50 and p99 against concurrency."""
+    A = ACCENT["systems"]
+    rows = [r for r in _p3_rows() if r["server"] == "threaded" and r["workload"] == "io"]
+    rows.sort(key=lambda r: r["concurrency"])
+    c = [r["concurrency"] for r in rows]; p50 = [r["p50_ms"] for r in rows]; p99 = [r["p99_ms"] for r in rows]
+    fig, ax = plt.subplots(figsize=(W_IN, 2.75))
+    ax.plot(c, p99, color=A, lw=1.8, marker="o", ms=3.5); ax.plot(c, p50, color=INK, lw=1.6, marker="o", ms=3.5)
+    ax.text(c[-1] * 1.08, p99[-1], "p99", color=A, fontsize=8.6, va="center", fontweight=600)
+    ax.text(c[-1] * 1.08, p50[-1], "p50", color=INK, fontsize=8.6, va="center", fontweight=600)
+    ax.axhline(20, color=LIGHT, lw=0.8, ls=(0, (3, 2))); ax.text(1.05, 18.3, "20 ms simulated wait", fontsize=7.8, color=MID, va="top")
+    ax.annotate(f"128 clients: median up {p50[3]-p50[0]:.0f} ms,\np99 already doubled ({p99[0]:.0f} → {p99[3]:.0f} ms)", xy=(128, p99[3]),
+                xytext=(9, 120), fontsize=8.0, color=INK, arrowprops=dict(arrowstyle="-", color=MID, lw=0.7))
+    ax.set_xscale("log", base=2); ax.set_xticks(c); ax.set_xticklabels([str(x) for x in c]); ax.minorticks_off()
+    ax.set_yscale("log"); ax.set_yticks([20, 50, 100, 200, 300]); ax.set_yticklabels(["20", "50", "100", "200", "300"])
+    ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter()); ax.yaxis.set_minor_locator(matplotlib.ticker.NullLocator())
+    ax.set_xlim(0.9, 330); ax.set_ylim(15, 400)
+    ax.set_xlabel("concurrent clients", color=MID, fontsize=8.5); ax.set_ylabel("latency (ms)", color=MID, fontsize=8.5)
+    ax.grid(axis="y", color=RULE, lw=0.6); ax.set_axisbelow(True)
+    save(fig, "systems", "fig13_measured_tail")
+
+
+def sys_same_throughput():
+    """P3: the four servers at 256 clients on the CPU-bound workload, throughput beside p99."""
+    A = ACCENT["systems"]
+    order = ["threaded", "async", "hybrid_thread", "hybrid_proc"]; names = ["threads", "event loop", "loop +\nthread pool", "loop +\nprocess pool"]
+    rows = {r["server"]: r for r in _p3_rows() if r["workload"] == "cpu" and r["concurrency"] == 256}
+    rps = [rows[o]["throughput_rps"] for o in order]; p99 = [rows[o]["p99_ms"] / 1000 for o in order]
+    fig, axes = plt.subplots(1, 2, figsize=(W_IN, 2.45))
+    cols = [INK if o != "threaded" else A for o in order]
+    for ax, vals, lab, fmt in ((axes[0], rps, "requests per second", "{:.0f}"), (axes[1], p99, "p99 latency (seconds)", "{:.1f} s")):
+        ax.bar(range(4), vals, color=cols, width=0.62)
+        for i, v in enumerate(vals):
+            ax.text(i, v * 1.03, fmt.format(v), ha="center", va="bottom", fontsize=8.0, color=INK)
+        ax.set_xticks(range(4)); ax.set_xticklabels(names, fontsize=7.0); ax.tick_params(axis="x", length=0)
+        ax.set_title(lab, loc="left", fontsize=8.8, color=MID, pad=6); ax.set_yticks([]); ax.spines["left"].set_visible(False)
+        ax.margins(y=0.18)
+    fig.tight_layout(w_pad=1.6)
+    save(fig, "systems", "fig14_same_throughput")
+
+
+def sys_glove_collapse():
+    """P4: GloVe-100, batched throughput against recall for IVF-Flat (nlist 1024) and FAISS HNSW (M 32), with exact search."""
+    A = ACCENT["systems"]
+    rows = [r for r in _json.load(open(PAPERS / "p4-ann-frontiers" / "results.json"))["rows"] if r["dataset"] == "glove-100-angular"]
+    flat = next(r for r in rows if r["index"] == "flat")
+    ivf = sorted([(r["recall@10"], r["qps"]) for r in rows if r["index"] == "ivf_flat" and r["params"]["nlist"] == 1024])
+    hnsw = sorted([(r["recall@10"], r["qps"]) for r in rows if r["index"] == "hnsw_faiss" and r["params"]["M"] == 32])
+    fig, ax = plt.subplots(figsize=(W_IN, 2.8))
+    ax.plot([q[0] for q in ivf], [q[1] for q in ivf], color=INK, lw=1.6, marker="o", ms=3.2)
+    ax.plot([q[0] for q in hnsw], [q[1] for q in hnsw], color=A, lw=1.6, marker="o", ms=3.2)
+    ax.text(ivf[0][0], ivf[0][1] * 1.25, "inverted file (IVF)", color=INK, fontsize=8.4)
+    ax.text(hnsw[0][0] - 0.005, hnsw[0][1] * 1.3, "graph (HNSW)", color=A, fontsize=8.4)
+    ax.axhline(flat["qps"], color=MID, lw=0.9, ls=(0, (3, 2)))
+    ax.text(0.31, flat["qps"] * 1.12, f"exact search over every vector: {flat['qps']:,.0f} queries/s", fontsize=8.0, color=MID)
+    ax.axvspan(0.95, 0.975, color=TINT["systems"], lw=0)
+    ax.text(0.962, 12000, "at 95% recall\nneither index\nis faster than\nbrute force", ha="center", fontsize=7.8, color=A)
+    ax.set_yscale("log"); ax.set_ylim(300, 80000); ax.set_xlim(0.3, 0.98)
+    ax.set_xlabel("recall@10", color=MID, fontsize=8.5); ax.set_ylabel("queries per second (batched, 8 threads)", color=MID, fontsize=8.5)
+    ax.grid(axis="y", color=RULE, lw=0.6); ax.set_axisbelow(True)
+    save(fig, "systems", "fig15_glove_collapse")
+
+
 AGI = [agi_levels_map, agi_saturation, agi_four_channels, agi_entry_ladder, agi_proof_practice, agi_bottleneck,
        agi_five_questions, agi_trifecta, agi_reliability, agi_three_layers, agi_dpi_stack, agi_diffusion,
        agi_operators, agi_horses_and_cars, agi_engels_pause, agi_electrification, agi_books, agi_containers, agi_wheat, agi_upi, agi_forecasts]
 SYSTEMS = [sys_tail_at_scale, sys_concurrency, sys_hit_rate, sys_memory_hierarchy, sys_consistency, sys_idempotency,
-           sys_availability, sys_queue_depth, sys_error_budget, sys_knee, sys_cost_crossover, sys_decision_loop]
+           sys_availability, sys_queue_depth, sys_error_budget, sys_knee, sys_cost_crossover, sys_decision_loop,
+           sys_measured_tail, sys_same_throughput, sys_glove_collapse]
 
 if __name__ == "__main__":
     which = sys.argv[1] if len(sys.argv) > 1 else "all"

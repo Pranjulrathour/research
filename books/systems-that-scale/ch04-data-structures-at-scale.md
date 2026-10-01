@@ -64,6 +64,8 @@ On SIFT, the textbook case, the graph index won at every level of recall. Exact 
 
 GloVe, the hard case, overturned the ranking entirely. No index reached 99 per cent recall at all. At 90 per cent the approximate indexes were three times faster than brute force. At 95 per cent they were slower: the best inverted-file setting ran at about 690 queries a second and the best graph at about 630, while exact search over the whole collection ran at 750, because a dense matrix product on eight cores is a very efficient way to compare a million vectors, and an approximate index has to beat it with a chain of dependent memory accesses. The approximate indexes still answered a single query five to six times faster than exact search. But the thing the leaderboards are built to show, the gap in batched throughput, had closed.
 
+![GloVe-100 in the companion study: batched throughput against recall for an inverted-file index and a graph index, with exact search as the dashed line. Both frontiers fall to the brute-force line at about 95 per cent recall. Log scale.](figures/fig15_glove_collapse.png)
+
 And the number a service actually pays, single-query latency on one thread, was two and a half to fifteen times what the batched figures implied, with a median of about six on SIFT and four on GloVe. Batching amortises the fixed cost of a search call and uses every core. A request arriving alone gets neither.
 
 Three features of the frontiers are worth carrying away.

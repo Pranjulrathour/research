@@ -64,6 +64,8 @@ The floor is set by physics and the body by design. On the I/O-bound workload, n
 
 The tail opens before the body moves. On that same workload at 128 clients, the threaded server's median had moved from 21 ms to 25, a change nobody would notice, while its p99 had already doubled from 24 ms to 51. The system was serving most requests well and a growing minority badly. A dashboard showing the mean would have shown a gentle slope, while the users in the p99 would have been describing a system that had started to hang.
 
+![The thread-per-connection server on the I/O-bound workload, as measured in the companion study. The median barely moves until 256 clients; the p99 has left it behind well before that. Log scales.](figures/fig13_measured_tail.png)
+
 The ratio of p99 to p50 is a design signature. At full load, every event-loop design in the study had a ratio between 1.2 and 1.6 on every workload: its slowest one per cent of requests waited at most half again as long as the median. The threaded server's ratios were 3.1, 4.3 and 5.4. The ratio barely depends on the machine, which makes it one number worth putting on a dashboard, because it captures the shape the mean throws away.
 
 One more habit the study paid for: every setting was run three times, and the three p99 values are kept next to the one reported. Most agreed within 10 or 20 per cent. One server's didn't, its p99 at 256 clients ranging from 1.7 to 2.6 seconds across the repeats, and a background-load sample taken right after it showed other processes had woken up during its run. Without the repeats and the sample, that would have been a finding. With them, it's a footnote.
