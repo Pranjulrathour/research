@@ -234,7 +234,21 @@ def main() -> None:
             "datasets": "ann-benchmarks.com sift-128-euclidean.hdf5, glove-100-angular.hdf5 (downloaded 2026-10-01)"}
     rows = []
     meta["background_after_dataset"] = {}
+    done = set()
+    if "--resume" in sys.argv and (HERE / "results.json").exists():
+        # Explicit opt-in only: keep the datasets a previous run completed (results.json is written after each dataset)
+        # and run the rest. Used once, on 2026-10-01, after the process was killed part-way through the second dataset.
+        prev = json.load(open(HERE / "results.json"))
+        rows = prev["rows"]
+        done = {ds for ds in DATASETS if any(r["dataset"] == ds and r["index"] == "hnsw_usearch" for r in rows)}
+        rows = [r for r in rows if r["dataset"] in done]
+        meta["resumed"] = {"kept_datasets": sorted(done), "previous_run_utc": prev["meta"].get("run_utc"),
+                           "previous_background_at_start": prev["meta"].get("background_at_start"),
+                           "previous_background_after_dataset": prev["meta"].get("background_after_dataset")}
+        print("resuming: keeping", sorted(done), flush=True)
     for ds in DATASETS:
+        if ds in done:
+            continue
         rows += run_dataset(ds)
         meta["background_after_dataset"][ds] = benchenv.sample_load()
         json.dump({"meta": meta, "rows": rows}, open(HERE / "results.json", "w"), indent=1)
