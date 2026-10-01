@@ -1,0 +1,27 @@
+{
+ "dataset": "Credit Card Fraud Detection (ULB Machine Learning Group)",
+ "source": "OpenML data id 1597 (creditcard), raw ARFF file_id 1673544 downloaded directly; OpenML marks Time as the row_id attribute so sklearn.fetch_openml drops it, the ARFF keeps it",
+ "url": "https://www.openml.org/d/1597",
+ "original_publication": "Dal Pozzolo, A., Caelen, O., Johnson, R. A. & Bontempi, G. (2015). Calibrating probability with undersampling for unbalanced classification. IEEE SSCI.",
+ "licence": "Public (as stated on OpenML); originally released on Kaggle under the Open Database License (ODbL)",
+ "snapshot_utc": "2026-10-01T06:40",
+ "file": "creditcard.csv",
+ "bytes": 148701764,
+ "rows": 284807,
+ "columns": [
+  "Time",
+  "V1-V28 (PCA components)",
+  "Amount",
+  "Class"
+ ],
+ "positives": 492,
+ "positive_rate": 0.001727,
+ "note": "Two days of European card transactions, September 2013. Features V1-V28 are PCA-transformed for confidentiality; Time is seconds from the first transaction and is used only for the chronological split.",
+ "url_file": "https://openml.org/data/v1/download/1673544/creditcard.arff",
+ "bytes_arff": 150829308,
+ "time_monotonic_increasing": true,
+ "time_range_seconds": [
+  0.0,
+  172792.0
+ ]
+}
