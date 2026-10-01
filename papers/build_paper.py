@@ -54,6 +54,8 @@ code {{ font-family: "Mono"; font-size: 0.84em; }}
 blockquote {{ margin: 0.5em 1.5em; }}
 blockquote p {{ text-indent: 0; }}
 table {{ border-collapse: collapse; width: 100%; font-size: 0.82em; line-height: 1.25; margin: 0.25em 0 0.9em; break-inside: avoid; text-align: left; hyphens: manual; }}
+table.wide {{ font-size: 0.72em; }}
+table.wide th, table.wide td {{ padding: 0.2em 0.3em; }}
 th, td {{ padding: 0.22em 0.45em; vertical-align: top; text-align: left; }}
 thead th {{ border-top: 1.1px solid #111; border-bottom: 0.6px solid #111; font-weight: 700; }}
 tbody tr:last-child td {{ border-bottom: 1.1px solid #111; }}
@@ -115,6 +117,13 @@ def build(pid: str, two_column: bool) -> Path:
     # table captions and sub-captions
     html = re.sub(r"<p><strong>(Table \d+\.)(.*?)</strong>(.*?)</p>", r'<p class="tcap"><b>\1</b>\2\3</p>', html, flags=re.S)
     html = re.sub(r"<p><em>([^<]{3,160})</em></p>(\s*<table>)", r'<p class="tsub">\1</p>\2', html)
+    # wide tables (ten or more columns) get a smaller face, and "±" never breaks a cell across lines
+    def widen(m):
+        block = m.group(0)
+        ncol = block.split("</tr>", 1)[0].count("<th")
+        block = block.replace(" ± ", "&nbsp;±&nbsp;")
+        return block.replace("<table>", '<table class="wide">', 1) if ncol >= 10 else block
+    html = re.sub(r"<table>.*?</table>", widen, html, flags=re.S)
     # references block
     html = re.sub(r'(<h2>(?:<span class="n">\d+</span>)?References</h2>)(.*?)(?=<h2|$)', r'\1<div class="refs">\2</div>', html, flags=re.S)
     kw = ""
