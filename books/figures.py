@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 import matplotlib
+import matplotlib.text
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import font_manager as fm
@@ -24,7 +25,9 @@ fm.fontManager.addfont(str(HERE / "assets" / "fonts" / "IBMPlexMono-Regular.ttf"
 INK, MID, LIGHT, RULE, PAPER = "#16161a", "#6e6c73", "#b9b7bd", "#e6e4e8", "#ffffff"
 ACCENT = {"agi": "#c8432b", "systems": "#d4860b"}
 TINT = {"agi": "#f6e3dd", "systems": "#f8ecd6"}
-W_IN, DPI = 7.2, 250
+# Drawn at roughly the printed size (text block 4.5 in) so labels print at 6.5-8.5 pt and stay legible on a phone.
+# Schematic layouts use a 0-100 coordinate grid whose height is defined against a 7.2 in reference width (REF_W).
+W_IN, DPI, REF_W, FS = 5.0, 320, 7.2, 0.93
 
 plt.rcParams.update({
     "font.family": "Inter", "font.size": 9.5, "text.color": INK, "axes.edgecolor": INK, "axes.labelcolor": INK,
@@ -35,6 +38,8 @@ plt.rcParams.update({
 
 
 def save(fig, book: str, name: str):
+    for t in fig.findobj(matplotlib.text.Text):
+        t.set_fontsize(t.get_fontsize() * FS)
     out = HERE / ("agi-transition" if book == "agi" else "systems-that-scale") / "figures"
     out.mkdir(exist_ok=True)
     fig.savefig(out / f"{name}.png", dpi=DPI, bbox_inches="tight", pad_inches=0.12)
@@ -43,8 +48,8 @@ def save(fig, book: str, name: str):
 
 
 def blank(h_in: float):
-    fig = plt.figure(figsize=(W_IN, h_in))
-    ax = fig.add_axes([0, 0, 1, 1]); ax.set_xlim(0, 100); ax.set_ylim(0, 100 * h_in / W_IN); ax.axis("off")
+    fig = plt.figure(figsize=(W_IN, h_in * W_IN / REF_W))
+    ax = fig.add_axes([0, 0, 1, 1]); ax.set_xlim(0, 100); ax.set_ylim(0, 100 * h_in / REF_W); ax.axis("off")
     return fig, ax
 
 
@@ -94,7 +99,7 @@ def agi_levels_map():
 
 def agi_saturation():
     A = ACCENT["agi"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.3))
+    fig, ax = plt.subplots(figsize=(W_IN, 2.80))
     t = np.linspace(0, 10, 400)
     s = 25 + 68.5 / (1 + np.exp(-(t - 4.2) * 1.15))
     ax.plot(t, s, color=INK, lw=1.6)
@@ -114,22 +119,22 @@ def agi_saturation():
 
 def agi_four_channels():
     A, T = ACCENT["agi"], TINT["agi"]
-    fig, ax = blank(3.5)
-    box(ax, 2, 20, 20, 12, "A task is\nautomated", fc="#f7f6f8", ec=INK, size=10, weight=600)
-    rows = [("Displacement", "demand for people on that task falls", "−", "immediate"),
-            ("Productivity", "the other tasks around it become worth more", "+", "months"),
-            ("New tasks", "work that did not exist before", "+", "years"),
-            ("Demand", "cheaper output, more of it bought", "+", "years")]
+    fig, ax = blank(3.6)
+    box(ax, 1, 21, 19, 12, "A task is\nautomated", fc="#f7f6f8", ec=INK, size=9.6, weight=600)
+    rows = [("Displacement", "less demand for people on it", "−", "at once"),
+            ("Productivity", "the tasks around it gain value", "+", "months"),
+            ("New tasks", "work that did not exist", "+", "years"),
+            ("Demand", "cheaper output, more bought", "+", "years")]
     for i, (name, desc, sign, when) in enumerate(rows):
-        y = 39 - i * 9.4
-        arrow(ax, 22, 26, 31, y + 3.6, MID, 0.8)
-        box(ax, 31, y, 46, 7.4, "", fc=PAPER, ec=RULE if i else A, lw=0.9 if i else 1.1)
-        label(ax, 33, y + 4.9, name, 9.4, INK, 600)
-        label(ax, 33, y + 2.2, desc, 8.0, MID)
-        label(ax, 74.8, y + 3.7, sign, 13, A if sign == "−" else INK, 600, ha="right")
-        label(ax, 79, y + 3.7, when, 7.8, MID)
-    box(ax, 31, 1.2, 46, 6.0, "net effect on workers = the sum of all four", fc=T, ec=A, size=8.8, weight=600)
-    label(ax, 79, 47.6, "shows up", 7.6, MID, 600)
+        y = 40 - i * 9.4
+        arrow(ax, 20, 27, 27, y + 3.6, MID, 0.8)
+        box(ax, 27, y, 52, 7.6, "", fc=PAPER, ec=RULE if i else A, lw=0.9 if i else 1.1)
+        label(ax, 29.5, y + 5.0, name, 9.2, INK, 600)
+        label(ax, 29.5, y + 2.2, desc, 7.9, MID)
+        label(ax, 77, y + 3.8, sign, 12, A if sign == "−" else INK, 600, ha="right")
+        label(ax, 82, y + 3.8, when, 7.8, MID)
+    label(ax, 82, 49.5, "shows up", 7.6, MID, 600)
+    box(ax, 27, 1.0, 52, 6.4, "net effect = the sum of all four", fc=T, ec=A, size=8.6, weight=600)
     save(fig, "agi", "fig03_four_channels")
 
 
@@ -151,8 +156,8 @@ def agi_entry_ladder():
         label(ax, x0 + w + 4, y - 1.6, desc, 7.9, MID)
     ax.add_patch(Rectangle((x0 + 0.6, 4), w - 1.2, 9.5, fc=T, ec="none"))
     label(ax, x0 + w / 2, 10.2, "where current tools are strongest", 8.2, A, 500, ha="center")
-    label(ax, 2, 8.6, "how juniors\nhave always\nlearned", 8, MID)
-    arrow(ax, 13.5, 8.6, x0 - 1.5, 8.6, MID, 0.8)
+    label(ax, 1, 9.5, "how juniors\nhave always\nlearned", 7.6, MID)
+    arrow(ax, 14.5, 9.5, x0 - 1.0, 9.5, MID, 0.8)
     save(fig, "agi", "fig04_entry_ladder")
 
 
@@ -197,59 +202,57 @@ def agi_bottleneck():
 
 def agi_five_questions():
     A = ACCENT["agi"]
-    fig, ax = blank(3.9)
-    qs = ["Which uses are treated differently?", "What must be disclosed?", "Who checks?", "Is there a size threshold?", "Who pays when it fails?"]
+    fig, ax = blank(4.1)
+    qs = ["Which uses get stricter rules?", "What must be disclosed?", "Who checks?", "Is there a size threshold?", "Who pays when it fails?"]
     cols = ["EU", "US", "China", "India"]
     # 2 = binding rule in force or enacted; 1 = partial / sectoral / state-level / voluntary; 0 = no AI-specific rule
     grid = [[2, 1, 1, 0], [2, 1, 2, 1], [2, 1, 2, 1], [2, 1, 0, 0], [1, 0, 1, 1]]
-    notes = [["four risk tiers", "state laws", "by service type", "—"], ["GPAI docs, labels", "state laws", "labels, filing", "synthetic-content rules"],
-             ["conformity, AI Office", "NIST RMF (voluntary)", "state assessment", "voluntary"], ["10²⁵ FLOP", "CA SB 53: 10²⁶", "—", "—"],
-             ["Product Liability Dir.", "existing law", "civil code", "existing law"]]
-    x0, cw, top, rh = 36, 15.6, 42, 7.4
+    notes = [["risk tiers", "state laws", "by service", "—"], ["docs, labels", "state laws", "labels, filing", "synthetic media"],
+             ["conformity", "NIST, voluntary", "state review", "voluntary"], ["10²⁵ FLOP", "CA: 10²⁶", "—", "—"],
+             ["PLD 2024", "existing law", "civil code", "existing law"]]
+    x0, cw, top, rh = 44, 14, 45, 7.6
+    label(ax, 99, top + 6.8, "as of October 2026", 7.4, MID, ha="right")
     for j, c in enumerate(cols):
-        label(ax, x0 + j * cw + cw / 2, top + 3, c, 9.5, INK, 600, ha="center")
+        label(ax, x0 + j * cw + cw / 2, top + 2.6, c, 9.2, INK, 600, ha="center")
     for i, q in enumerate(qs):
         y = top - (i + 1) * rh
-        ax.plot([2, 98], [y + rh, y + rh], color=RULE, lw=0.7)
-        label(ax, 2, y + rh / 2, q, 8.8, INK, 500)
+        ax.plot([1, 99], [y + rh, y + rh], color=RULE, lw=0.7)
+        label(ax, 1, y + rh / 2, q, 8.4, INK, 500)
         for j, v in enumerate(grid[i]):
             cx = x0 + j * cw + cw / 2
-            ax.add_patch(Circle((cx, y + rh / 2 + 1.1), 1.35, fc=PAPER, ec=INK, lw=0.9))
-            if v == 2:
-                ax.add_patch(Circle((cx, y + rh / 2 + 1.1), 1.35, fc=INK, ec=INK, lw=0.9))
-            elif v == 1:
-                ax.add_patch(Wedge((cx, y + rh / 2 + 1.1), 1.35, 90, 270, fc=INK, ec="none"))
-            label(ax, cx, y + rh / 2 - 1.75, notes[i][j], 6.6, MID, ha="center")
-    ax.plot([2, 98], [top - 5 * rh, top - 5 * rh], color=RULE, lw=0.7)
-    y = 2.0
-    for k, (v, t) in enumerate([(2, "binding rule in force or enacted"), (1, "partial, sectoral, state-level or voluntary"), (0, "no AI-specific rule")]):
-        cx = 3.5 + k * 32
-        ax.add_patch(Circle((cx, y), 1.1, fc=INK if v == 2 else PAPER, ec=INK, lw=0.8))
+            cy = y + rh / 2 + 1.2
+            ax.add_patch(Circle((cx, cy), 1.3, fc=INK if v == 2 else PAPER, ec=INK, lw=0.9))
+            if v == 1:
+                ax.add_patch(Wedge((cx, cy), 1.3, 90, 270, fc=INK, ec="none"))
+            label(ax, cx, y + rh / 2 - 1.9, notes[i][j], 6.6, MID, ha="center")
+    ax.plot([1, 99], [top - 5 * rh, top - 5 * rh], color=RULE, lw=0.7)
+    for k, (v, t) in enumerate([(2, "binding rule"), (1, "partial, state-level or voluntary"), (0, "none specific to AI")]):
+        cx = 2.2 + [0, 26, 70][k]
+        ax.add_patch(Circle((cx, 2.6), 1.1, fc=INK if v == 2 else PAPER, ec=INK, lw=0.8))
         if v == 1:
-            ax.add_patch(Wedge((cx, y), 1.1, 90, 270, fc=INK, ec="none"))
-        label(ax, cx + 2.2, y, t, 7.6, MID)
-    label(ax, 98, top + 7.2, "as of October 2026", 7.5, MID, ha="right")
+            ax.add_patch(Wedge((cx, 2.6), 1.1, 90, 270, fc=INK, ec="none"))
+        label(ax, cx + 2.2, 2.6, t, 7.4, MID)
     save(fig, "agi", "fig07_five_questions")
 
 
 def agi_trifecta():
     A, T = ACCENT["agi"], TINT["agi"]
-    fig, ax = blank(3.9)
-    centres = [(40, 34), (60, 34), (50, 17.5)]
-    names = [("access to\nprivate data", (27, 40)), ("exposure to\nuntrusted content", (73, 40)), ("ability to\ncommunicate outside", (50, 9.0))]
+    fig, ax = blank(4.4)
+    centres = [(38, 40), (58, 40), (48, 23.5)]
     for (cx, cy) in centres:
         ax.add_patch(Circle((cx, cy), 15, fc="none", ec=INK, lw=1.0))
-    for s, (x, y) in names:
-        label(ax, x, y, s, 8.8, INK, 500, ha="center")
-    ax.add_patch(Circle((50, 28.5), 4.2, fc=T, ec=A, lw=1.1))
-    label(ax, 50, 28.5, "leak\nrisk", 7.8, A, 600, ha="center")
-    label(ax, 82, 18, "Any two can be\nmade safe. All three\nis a design decision\nto revisit.", 8.2, MID)
+    label(ax, 30, 58.2, "private data", 8.8, INK, 600, ha="center")
+    label(ax, 66, 58.2, "untrusted content", 8.8, INK, 600, ha="center")
+    label(ax, 48, 4.6, "external communication", 8.8, INK, 600, ha="center")
+    ax.add_patch(Circle((48, 34.5), 4.4, fc=T, ec=A, lw=1.1))
+    label(ax, 48, 34.5, "leak\nrisk", 7.8, A, 600, ha="center")
+    label(ax, 76, 26, "Any two can be\nmade safe. All three\ntogether is a design\ndecision to revisit.", 8.0, MID)
     save(fig, "agi", "fig08_lethal_trifecta")
 
 
 def agi_reliability():
     A = ACCENT["agi"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.5))
+    fig, ax = plt.subplots(figsize=(W_IN, 2.97))
     n = np.arange(1, 51)
     for p, c, lw in ((0.999, INK, 1.2), (0.99, INK, 1.2), (0.95, A, 1.8), (0.90, MID, 1.2)):
         ax.plot(n, p ** n * 100, color=c, lw=lw)
@@ -284,51 +287,51 @@ def agi_three_layers():
 
 def agi_dpi_stack():
     A, T = ACCENT["agi"], TINT["agi"]
-    fig, ax = blank(3.8)
-    box(ax, 10, 41, 80, 7, "AI applications for Indian users, in Indian languages", fc=T, ec=A, lw=1.1, size=9.5, weight=600, color=INK)
-    rows = [("Commerce", "ONDC", "open network for buying and selling"),
-            ("Data", "Account Aggregator · DigiLocker", "consent-based sharing of records"),
-            ("Payments", "UPI", "≈ 18–20 bn transactions a month (2025)"),
+    fig, ax = blank(3.9)
+    box(ax, 4, 42, 92, 7, "AI applications for Indian users, in Indian languages", fc=T, ec=A, lw=1.1, size=9.0, weight=600, color=INK)
+    rows = [("Commerce", "ONDC", "open network for trade"),
+            ("Data", "Account Aggregator,\nDigiLocker", "consented data sharing"),
+            ("Payments", "UPI", "≈18–20 bn a month (2025)"),
             ("Identity", "Aadhaar", "1.3 bn+ enrolments")]
     for i, (layer, name, note) in enumerate(rows):
-        y = 31 - i * 8.6
-        box(ax, 10, y, 80, 7, "", fc="#f7f6f8", ec=RULE, lw=0.8)
-        label(ax, 13, y + 3.5, layer.upper(), 7.6, MID, 600)
-        label(ax, 33, y + 3.5, name, 9.4, INK, 600)
-        label(ax, 88, y + 3.5, note, 8.0, MID, ha="right")
-    label(ax, 10, 1.6, "Figures from UIDAI and NPCI; see chapter sources.", 7.5, MID)
+        y = 32 - i * 8.6
+        box(ax, 4, y, 92, 7, "", fc="#f7f6f8", ec=RULE, lw=0.8)
+        label(ax, 7, y + 3.5, layer.upper(), 7.2, MID, 600)
+        label(ax, 28, y + 3.5, name, 8.8, INK, 600)
+        label(ax, 93, y + 3.5, note, 7.8, MID, ha="right")
+    label(ax, 4, 1.8, "Figures from UIDAI and NPCI; see chapter sources.", 7.2, MID)
     save(fig, "agi", "fig11_dpi_stack")
 
 
 def agi_diffusion():
     A = ACCENT["agi"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.4))
-    rows = [("Electricity", 1882, 1925, "first central power stations → factory productivity gains"),
-            ("Computing", 1970, 1997, "business computing → the late-1990s productivity surge"),
-            ("The internet", 1993, 2008, "commercial web → search, platforms, cloud, smartphones"),
+    fig, ax = plt.subplots(figsize=(W_IN, 3.0))
+    rows = [("Electricity", 1882, 1925, "power stations → factory productivity"),
+            ("Computing", 1970, 1997, "business computers → late-1990s surge"),
+            ("Internet", 1993, 2008, "commercial web → search, cloud, phones"),
             ("Generative AI", 2022, None, "")]
     for i, (name, a, b, note) in enumerate(rows):
         y = len(rows) - 1 - i
         if b:
-            ax.plot([a, b], [y, y], color=INK, lw=5, solid_capstyle="butt")
-            ax.text(b + 1.5, y, f"~{b - a} years", va="center", fontsize=8.3, color=INK, fontweight=600)
+            ax.plot([a, b], [y, y], color=INK, lw=6, solid_capstyle="butt")
+            ax.text(b + 1.8, y, f"~{b - a} yr", va="center", fontsize=8.4, color=INK, fontweight=600)
+            ax.text(a, y - 0.3, note, fontsize=7.5, color=MID, va="top")
         else:
-            ax.plot([a, a + 14], [y, y], color=A, lw=5, solid_capstyle="butt", ls=(0, (1.2, 1.0)))
-            ax.text(a + 15.5, y, "?", va="center", fontsize=11, color=A, fontweight=600)
-        ax.plot([a], [y], "o", color=A if not b else INK, ms=5)
-        ax.text(a, y - 0.34, note, fontsize=7.6, color=MID, va="top")
-    ax.set_xlim(1876, 2045); ax.set_ylim(-0.8, 3.5)
-    ax.set_yticks([3, 2, 1, 0]); ax.set_yticklabels([r[0] for r in rows], fontsize=9, fontweight=600, color=INK)
-    ax.tick_params(axis="y", length=0)
-    ax.set_xticks([1880, 1900, 1920, 1940, 1960, 1980, 2000, 2020, 2040]); ax.spines["left"].set_visible(False)
-    ax.text(2045, 3.4, "dates approximate", ha="right", fontsize=7.5, color=MID)
+            ax.plot([a, a + 12], [y, y], color=A, lw=2.0, ls=(0, (1, 1.6)))
+            ax.plot([a], [y], "o", color=A, ms=6)
+            ax.text(a + 13.5, y, "?", va="center", fontsize=11, color=A, fontweight=600)
+    ax.set_xlim(1876, 2045); ax.set_ylim(-0.75, 3.45)
+    ax.set_yticks([3, 2, 1, 0]); ax.set_yticklabels([r[0] for r in rows], fontsize=8.8, fontweight=600, color=INK)
+    ax.tick_params(axis="y", length=0); ax.spines["left"].set_visible(False)
+    ax.set_xticks([1880, 1920, 1960, 2000, 2040])
+    ax.text(2045, 3.35, "dates approximate", ha="right", fontsize=7.4, color=MID)
     save(fig, "agi", "fig12_diffusion")
 
 
 # ================================================================================================ Book 2
 def sys_tail_at_scale():
     A = ACCENT["systems"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.3))
+    fig, ax = plt.subplots(figsize=(W_IN, 2.80))
     n = np.arange(1, 201)
     ax.plot(n, (1 - 0.99 ** n) * 100, color=A, lw=1.8)
     ax.plot(n, (1 - 0.999 ** n) * 100, color=INK, lw=1.2)
@@ -384,7 +387,7 @@ def sys_concurrency():
 
 def sys_hit_rate():
     A = ACCENT["systems"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.2))
+    fig, ax = plt.subplots(figsize=(W_IN, 2.71))
     p = np.linspace(0, 0.999, 600); h, m = 1.0, 50.0
     ax.plot(p * 100, p * h + (1 - p) * m, color=INK, lw=1.6, label="average latency")
     p99 = np.where(p < 0.99, m, h)
@@ -399,7 +402,7 @@ def sys_hit_rate():
 
 def sys_memory_hierarchy():
     A = ACCENT["systems"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.3))
+    fig, ax = plt.subplots(figsize=(W_IN, 2.80))
     rows = [("L1 cache reference", 1e-9), ("L2 cache reference", 4e-9), ("main memory reference", 100e-9),
             ("SSD random read", 16e-6), ("round trip in one datacentre", 500e-6), ("disk seek", 2e-3),
             ("packet round trip across continents", 150e-3)]
@@ -458,7 +461,7 @@ def sys_idempotency():
 
 def sys_availability():
     A = ACCENT["systems"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.3))
+    fig, ax = plt.subplots(figsize=(W_IN, 2.80))
     n = np.arange(1, 51)
     for a, c, lw in ((0.9999, INK, 1.2), (0.9995, MID, 1.2), (0.999, A, 1.8)):
         ax.plot(n, a ** n * 100, color=c, lw=lw)
@@ -475,7 +478,7 @@ def sys_availability():
 
 def sys_queue_depth():
     A = ACCENT["systems"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.2))
+    fig, ax = plt.subplots(figsize=(W_IN, 2.71))
     t = np.arange(0, 301)
     ax.plot(t, 200 * t, color=A, lw=1.8)
     ax.text(8, 58000, "arrivals 1,000/s, service 800/s:\ngrows by 200 every second, forever", ha="left", va="top", fontsize=8.2, color=A)
@@ -495,14 +498,14 @@ def sys_queue_depth():
 
 def sys_error_budget():
     A = ACCENT["systems"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.2))
+    fig, ax = plt.subplots(figsize=(W_IN, 2.71))
     budget = 0.001 * 30 * 24 * 60
     d = np.linspace(0, 30, 600)
     for rate, c, lw, name in ((1, INK, 1.4, "burn rate 1: budget lasts the window"), (2, MID, 1.2, "burn rate 2: gone in 15 days"),
-                              (14.4, A, 1.8, "burn rate 14.4: gone in about 2 days")):
+                              (14.4, A, 1.8, "burn rate 14.4: ~2 days")):
         rem = np.clip(budget - budget * rate * d / 30, 0, None)
         ax.plot(d, rem, color=c, lw=lw)
-        pos = {1: (17.5, 24.0), 2: (15.5, 1.4), 14.4: (2.4, 4.0)}[rate]
+        pos = {1: (17.5, 24.0), 2: (15.5, 1.4), 14.4: (2.6, 1.4)}[rate]
         ax.text(*pos, name, fontsize=8.0, color=c)
     ax.set_xlim(0, 30); ax.set_ylim(0, budget * 1.08)
     ax.set_xlabel("days into the 30-day window", color=MID, fontsize=8.5); ax.set_ylabel("error budget left (minutes)", color=MID, fontsize=8.5)
@@ -513,7 +516,7 @@ def sys_error_budget():
 
 def sys_knee():
     A, T = ACCENT["systems"], TINT["systems"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.3))
+    fig, ax = plt.subplots(figsize=(W_IN, 2.80))
     rho = np.linspace(0, 0.97, 500)
     ax.axvspan(70, 85, color=T, lw=0)
     ax.plot(rho * 100, 1 / (1 - rho), color=INK, lw=1.7)
@@ -529,15 +532,15 @@ def sys_knee():
 
 def sys_cost_crossover():
     A = ACCENT["systems"]
-    fig, ax = plt.subplots(figsize=(W_IN, 3.1))
+    fig, ax = plt.subplots(figsize=(W_IN, 2.63))
     v = np.linspace(0, 10, 200)
     ax.plot(v, 1.0 * v, color=A, lw=1.8, label="managed / pay per use")
     ax.plot(v, 3 + 0.35 * v, color=INK, lw=1.4, label="self-hosted, infrastructure only")
     ax.plot(v, 5.2 + 0.35 * v, color=INK, lw=1.2, ls=(0, (4, 3)), label="self-hosted, counting the engineers who run it")
-    ax.legend(loc="upper left", fontsize=8.2, handlelength=2.6)
+    ax.legend(loc="lower right", fontsize=7.8, handlelength=2.4)
     for x in (3 / 0.65, 5.2 / 0.65):
         ax.plot([x], [x], "o", color=A, ms=4)
-    ax.annotate("the crossover moves right\nonce people are counted", xy=(5.2 / 0.65, 5.2 / 0.65), xytext=(7.0, 2.2), fontsize=8.2, color=INK,
+    ax.annotate("the crossover moves right\nonce people are counted", xy=(5.2 / 0.65, 5.2 / 0.65), xytext=(0.4, 9.0), fontsize=8.0, color=INK,
                 arrowprops=dict(arrowstyle="-", color=MID, lw=0.7))
     ax.set_xlim(0, 10); ax.set_ylim(0, 10); ax.set_xticks([]); ax.set_yticks([])
     ax.set_xlabel("steady volume", color=MID, fontsize=8.5); ax.set_ylabel("cost per month", color=MID, fontsize=8.5)

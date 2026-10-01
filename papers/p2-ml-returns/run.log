@@ -1,0 +1,9 @@
+panel: 7537 stock-months, 29 tickers, 2005-01-31 .. 2026-08-31
+  walk-forward target    ols_s0     done
+  walk-forward target    ridge_s0   done
+  walk-forward target    lasso_s0   done
+  walk-forward target    rf_s0      done
+  walk-forward target    rf_s1      done
+  walk-forward target    rf_s2      done
+  walk-forward target    rf_s3      done
+  walk-forward target    rf_s4      done
