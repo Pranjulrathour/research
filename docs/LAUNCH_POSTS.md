@@ -52,7 +52,24 @@ Preprint: <DOI> · Code: github.com/Pranjulrathour/research/tree/main/papers/p1-
 
 ## 4. Paper P2 — Machine-learning return predictors vs linear baselines
 
-<!-- fill after results: lead with the honest-vs-leaky R² comparison and whether anything beat OLS -->
+**LinkedIn**
+New preprint: *Do Machine-Learning Return Predictors Beat Linear Baselines Out of Sample? A Small-Scale Walk-Forward Replication on Public Equity Data*.
+
+The famous result is that trees and neural networks beat linear models at predicting stock returns. It was found on about 30,000 stocks. I tested it on the 29 Dow stocks with complete histories, walk-forward from 2012 to 2026, tuning only on past data.
+
+What I found:
+
+1. Nothing beat the historical average. The best model, lasso, had quietly shrunk itself into that average: its forecasts barely differed from stock to stock.
+
+2. Random forest, gradient boosting and a neural network were all significantly worse than plain OLS. Validation kept choosing the most constrained version of every model, year after year.
+
+3. Then I evaluated the same models the wrong way, with shuffled cross-validation. The tree models jumped from below zero to 13–16% R². That gain comes entirely from the shared monthly part of returns: shuffle a panel and a tree can work out which month it is looking at, then read off what the other stocks did that month.
+
+Small data, honest protocol, negative result, and a very clear picture of how a leak manufactures skill.
+
+Preprint: <DOI> · Code: github.com/Pranjulrathour/research/tree/main/papers/p2-ml-returns
+
+**Blogger (long)**: abstract, Figure 1 (the protocol), Table 2, Figure 4 (honest vs shuffled R²), the section "The leak, measured", and the reproduction command.
 
 ## 5. Paper P3 — Tail latency under load
 

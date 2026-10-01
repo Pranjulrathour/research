@@ -7,3 +7,60 @@ panel: 7537 stock-months, 29 tickers, 2005-01-31 .. 2026-08-31
   walk-forward target    rf_s2      done
   walk-forward target    rf_s3      done
   walk-forward target    rf_s4      done
+  walk-forward target    hgb_s0     done
+  walk-forward target    hgb_s1     done
+  walk-forward target    hgb_s2     done
+  walk-forward target    hgb_s3     done
+  walk-forward target    hgb_s4     done
+  walk-forward target    mlp_s0     done
+  walk-forward target    mlp_s1     done
+  walk-forward target    mlp_s2     done
+  walk-forward target    mlp_s3     done
+  walk-forward target    mlp_s4     done
+  leaky cv ols done
+  leaky cv ridge done
+  leaky cv lasso done
+  leaky cv rf done
+  leaky cv hgb done
+  leaky cv mlp done
+  walk-forward target_dm ols_s0     done
+  walk-forward target_dm ridge_s0   done
+  walk-forward target_dm lasso_s0   done
+  walk-forward target_dm rf_s0      done
+  walk-forward target_dm rf_s1      done
+  walk-forward target_dm rf_s2      done
+  walk-forward target_dm rf_s3      done
+  walk-forward target_dm rf_s4      done
+  walk-forward target_dm hgb_s0     done
+  walk-forward target_dm hgb_s1     done
+  walk-forward target_dm hgb_s2     done
+  walk-forward target_dm hgb_s3     done
+  walk-forward target_dm hgb_s4     done
+  walk-forward target_dm mlp_s0     done
+  walk-forward target_dm mlp_s1     done
+  walk-forward target_dm mlp_s2     done
+  walk-forward target_dm mlp_s3     done
+  walk-forward target_dm mlp_s4     done
+  leaky cv ols done
+  leaky cv ridge done
+  leaky cv lasso done
+  leaky cv rf done
+  leaky cv hgb done
+  leaky cv mlp done
+
+== raw target ==  histmean R2 vs zero: 2.41%
+  ols    R2   1.09% (sd 0.00)  dir  56.6%  DM vs OLS +0.00 (p 1.00)  LS Sharpe +0.35  leaky-CV R2   1.76%
+  ridge  R2   1.17% (sd 0.00)  dir  56.6%  DM vs OLS +3.57 (p 0.00)  LS Sharpe +0.34  leaky-CV R2   1.76%
+  lasso  R2   2.36% (sd 0.00)  dir  58.3%  DM vs OLS +5.95 (p 0.00)  LS Sharpe -0.21  leaky-CV R2   1.84%
+  rf     R2  -0.27% (sd 0.12)  dir  56.8%  DM vs OLS -2.50 (p 0.01)  LS Sharpe +0.34  leaky-CV R2  13.44%
+  hgb    R2  -1.68% (sd 0.00)  dir  55.3%  DM vs OLS -4.76 (p 0.00)  LS Sharpe +0.10  leaky-CV R2  15.89%
+  mlp    R2  -1.69% (sd 1.08)  dir  54.8%  DM vs OLS -5.47 (p 0.00)  LS Sharpe -0.00  leaky-CV R2  -3.01%
+
+== demeaned target ==  histmean R2 vs zero: 0.00%
+  ols    R2  -0.12% (sd 0.00)  dir  51.5%  DM vs OLS +0.00 (p 1.00)  LS Sharpe +0.35  leaky-CV R2  -0.06%
+  ridge  R2  -0.07% (sd 0.00)  dir  51.1%  DM vs OLS +2.19 (p 0.03)  LS Sharpe +0.36  leaky-CV R2  -0.06%
+  lasso  R2  -0.11% (sd 0.00)  dir  50.2%  DM vs OLS +0.07 (p 0.95)  LS Sharpe -0.14  leaky-CV R2   0.05%
+  rf     R2  -0.33% (sd 0.09)  dir  50.6%  DM vs OLS -0.87 (p 0.41)  LS Sharpe +0.17  leaky-CV R2  -0.18%
+  hgb    R2  -1.68% (sd 0.00)  dir  50.9%  DM vs OLS -3.46 (p 0.00)  LS Sharpe +0.10  leaky-CV R2  -1.52%
+  mlp    R2  -2.29% (sd 0.81)  dir  50.7%  DM vs OLS -5.13 (p 0.00)  LS Sharpe +0.06  leaky-CV R2  -6.00%
+wrote results.json and 4 figures

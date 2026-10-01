@@ -249,9 +249,11 @@ def plots(res: dict, preds_raw: pd.DataFrame) -> None:
     ax.bar(xs + w / 2, lk, w * 0.92, color=ps.ACCENT, label="shuffled 5-fold CV (look-ahead)", zorder=2)
     span = max(max(wf), max(lk)) - min(min(wf), min(lk), 0)
     for x, v in list(zip(xs - w / 2, wf)) + list(zip(xs + w / 2, lk)):
-        ax.text(x, v + (0.02 * span if v >= 0 else -0.02 * span), f"{v:.1f}", ha="center", va="bottom" if v >= 0 else "top",
-                fontsize=6.8, color=ps.MID)
+        ax.text(x, v + (0.02 * span if v >= 0 else -0.02 * span), f"{v:.1f}".replace("-", "\u2212"), ha="center",
+                va="bottom" if v >= 0 else "top", fontsize=6.8, color=ps.MID)
     ax.axhline(0, color=ps.INK, lw=0.6); ax.set_xticks(xs); ax.set_xticklabels([label[n] for n in names], fontsize=7.6)
+    hm = res["walk_forward"]["raw"]["benchmarks"]["histmean"]["r2_vs_zero"] * 100
+    ax.axhline(hm, color=ps.MID, lw=0.6, ls=(0, (3, 2)), label=f"historical mean, walk-forward ({hm:.1f})")
     ax.tick_params(axis="x", length=0)
     ax.set_ylabel("out-of-sample R² (%)")
     ax.legend(loc="upper left", handlelength=1.0, handleheight=0.8)
@@ -277,11 +279,30 @@ def plots(res: dict, preds_raw: pd.DataFrame) -> None:
     ax.axhline(0, color=ps.MID, lw=0.5)
     ax.set_ylabel("out-of-sample R² in the year (%)")
     ax.set_xticks(range(FIRST_TEST_YEAR, LAST_TEST_YEAR + 1, 2))
-    ax.legend(loc="lower left", ncol=4, handlelength=1.4, columnspacing=1.2)
+    ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=4, handlelength=1.4, columnspacing=1.2)
     fig.tight_layout(); fig.savefig(FIG / "fig3_yearly_r2.png"); plt.close(fig)
 
 
 PRED_CACHE = HERE / "build" / "preds_raw.pkl"
+
+
+def post_hoc(preds: pd.DataFrame) -> dict:
+    """Descriptive numbers computed from the saved walk-forward predictions (raw target, seed 0) after the main run; they
+    explain results and change none. (1) How often next-month returns were positive, the directional-accuracy baseline of
+    a forecast that is always positive. (2) How much each model's forecasts vary across stocks within a month: a model
+    whose forecasts barely vary is predicting the level of returns, not which stocks will do better. (3) R^2 by test year."""
+    out = {"share_positive_targets": float((preds["target"] > 0).mean())}
+    spread, yearly = {}, {}
+    for n in GRIDS:
+        c = f"{n}_s0"
+        spread[n] = {"within_month_sd_of_forecast": float(preds.groupby("date")[c].std().mean()),
+                     "sd_of_forecast_overall": float(preds[c].std())}
+        yearly[n] = {str(Y): r2_oos(g["target"].values, g[c].values, 0.0) for Y, g in preds.groupby("year")}
+    yearly["histmean"] = {str(Y): r2_oos(g["target"].values, g["histmean"].values, 0.0) for Y, g in preds.groupby("year")}
+    out["forecast_spread"] = spread
+    out["target_within_month_sd"] = float(preds.groupby("date")["target"].std().mean())
+    out["r2_by_year"] = yearly
+    return out
 
 
 def main():
@@ -289,6 +310,11 @@ def main():
     if "--plots-only" in sys.argv and PRED_CACHE.exists():
         plots(json.load(open(HERE / "results.json")), pd.read_pickle(PRED_CACHE))
         print("redrew figures from cache"); return
+    if "--post-hoc" in sys.argv and PRED_CACHE.exists():
+        res = json.load(open(HERE / "results.json"))
+        res["post_hoc"] = post_hoc(pd.read_pickle(PRED_CACHE))
+        json.dump(res, open(HERE / "results.json", "w"), indent=1, default=str)
+        print(json.dumps(res["post_hoc"], indent=1)); return
     df = build_panel()
     print(f"panel: {len(df)} stock-months, {df.ticker.nunique()} tickers, {df.date.min().date()} .. {df.date.max().date()}", flush=True)
     res = {"meta": json.load(open(HERE / "data" / "SNAPSHOT.json")), "features": FEATURES, "seeds": list(SEEDS),
