@@ -1,0 +1,26 @@
+{
+ "source": "ann-benchmarks.com public datasets (Aumüller, Bernhardsson & Faithfull, 2020), HDF5 format",
+ "snapshot_utc": "2026-10-01T06:39",
+ "files": {
+  "sift-128-euclidean.hdf5": {
+   "url": "http://ann-benchmarks.com/sift-128-euclidean.hdf5",
+   "bytes": 525128288,
+   "train": [1000000, 128],
+   "test": [10000, 128],
+   "neighbors": "100 exact nearest neighbours per test query (ground truth shipped in file)",
+   "distance": "euclidean",
+   "origin": "SIFT1M descriptors, Jégou, Douze & Schmid (2011), TEXMEX corpus (INRIA)"
+  },
+  "glove-100-angular.hdf5": {
+   "url": "http://ann-benchmarks.com/glove-100-angular.hdf5",
+   "bytes": 485413888,
+   "train": [1183514, 100],
+   "test": [10000, 100],
+   "neighbors": "100 exact nearest neighbours per test query (ground truth shipped in file)",
+   "distance": "angular (cosine); vectors are L2-normalised in benchmark.py so inner product equals cosine",
+   "origin": "GloVe word vectors, Pennington, Socher & Manning (2014), Stanford NLP; glove.twitter.27B 100d"
+  }
+ },
+ "licence": "ann-benchmarks: MIT (tool); SIFT1M: free for research use (INRIA TEXMEX); GloVe: Public Domain Dedication and License v1.0 (ODC-PDDL)",
+ "note": "Files are not committed (1 GB); benchmark.py expects them in this folder. Re-download from the URLs above."
+}
