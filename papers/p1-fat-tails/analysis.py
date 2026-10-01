@@ -208,7 +208,7 @@ def plots(returns: dict[str, pd.Series], fits: dict[str, pd.DataFrame], fc: dict
         z = ((r - r.mean()) / r.std(ddof=1)).values
         stats.probplot(z, dist="norm", plot=ax)
         ax.get_lines()[0].set(marker=".", markersize=3, color="#1c1b22"); ax.get_lines()[1].set(color="#ff4d2e")
-        ax.set_title(f"{name}: standardised daily log returns vs normal"); ax.set_xlabel("theoretical quantiles"); ax.set_ylabel("sample quantiles")
+        ax.set_title(f"{name}: standardised returns vs normal", fontsize=10); ax.set_xlabel("theoretical quantiles"); ax.set_ylabel("sample quantiles")
     fig.tight_layout(); fig.savefig(FIG / "fig1_qq.png", dpi=160); plt.close(fig)
     # 2. Tail exceedance ratio bars
     fig, ax = plt.subplots(figsize=(7, 3.6))

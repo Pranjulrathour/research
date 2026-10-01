@@ -88,6 +88,10 @@ Figure 1 shows normal quantile–quantile plots; Figure 2 shows the exceedance r
 | 4σ | 17 | 0.26 | 65 | 28 | 0.27 | 105 |
 | 5σ | 10 | 0.0024 | 4,241 | 12 | 0.0024 | 4,971 |
 
+![Figure 1. Normal quantile–quantile plots of standardised daily log returns, 2010–2026. The S-shape is the signature of heavy tails: extreme observations lie far beyond the line a normal distribution predicts.](figures/fig1_qq.png)
+
+![Figure 2. Observed frequency of |z| > k relative to the normal expectation (log scale). Both indices exceed the Gaussian prediction by a factor of 4–5 at 3σ, 65–105 at 4σ and over 4,000 at 5σ.](figures/fig2_exceedance_ratio.png)
+
 At two standard deviations the normal distribution is approximately right; the discrepancy opens at three and becomes extreme at four and five. Under a Gaussian model a 5σ day should occur about once in 1,700 years of trading; each index had ten or more in under seventeen years. Both Jarque–Bera statistics reject normality at any conventional level.
 
 The full-sample Student-t fits give 4.06 degrees of freedom for NIFTY 50 and 2.78 for the S&P 500. A df below 4 implies an infinite fourth moment; a df below 3, an infinite third. These should be read as summaries of the unconditional histogram rather than as structural parameters, for the reason developed in Section 5.3.
@@ -142,6 +146,10 @@ Forecasts begin on 13 January 2012 (NIFTY 50; 3,613 forecast days) and 27 Decemb
 | Filtered Student-t | 64 | 0.000 | 0.005 | 0.000 | 2.49% | 0.66% |
 | FHS | 46 | **0.157** | 0.002 | 0.004 | 2.88% | 0.62% |
 
+![Figure 3. Violations of one-day 99% VaR by model over 3,613 (NIFTY 50) and 3,711 (S&P 500) out-of-sample days; the dashed line is the expected count under correct coverage.](figures/fig3_var99_violations.png)
+
+![Figure 4. S&P 500 daily log returns against three out-of-sample 99% VaR paths. The constant-volatility models move slowly and are breached in clusters; the filtered model rises with volatility and is breached less often but still in March 2020.](figures/fig4_sp500_var_paths.png)
+
 Four patterns stand out.
 
 **At 95%, the Gaussian model's coverage is fine; its independence is not.** On both indices the Gaussian violation count is within sampling error of expected (161 vs 181; 181 vs 186), yet the independence test rejects decisively (p = 0.017 and p < 0.001). The problem at 95% is not the tail shape but the clustering: violations arrive in bunches during volatile periods and are absent in calm ones. The three constant-volatility models (Gaussian, historical, Student-t) all fail independence on both indices; the three EWMA-based models all pass it at 95%.
@@ -155,6 +163,8 @@ Four patterns stand out.
 Two secondary observations. The EWMA-based models have markedly smaller losses beyond VaR on violation days (0.6–0.8% against 1.0–1.5% for the constant-volatility models): when they are wrong, they are less wrong, because their VaR has already risen with the volatility. And the models' mean VaR levels differ by up to 40% (2.13% to 3.00% at 99% on the S&P 500), which in practice is a 40% difference in required capital; the historical and Student-t models buy their coverage with permanently higher VaR, while FHS buys it with a VaR that is high only when volatility is high.
 
 ### 4.3 Degrees of freedom over time
+
+![Figure 5. Student-t degrees of freedom fitted on each rolling 500-day window (capped at 20 for display): raw returns (left) and EWMA-standardised returns (right). The dashed line marks df = 4, below which the fourth moment is infinite.](figures/fig5_rolling_df.png)
 
 Figure 5 plots the rolling fitted degrees of freedom. The raw-return fits (left) are low and unstable: the S&P 500 median across windows is 3.0, 62% of windows are below 4 and 17% are at or below 2, with the fit jumping between local optima in 2014–2016 and 2024–2025. The fits on EWMA-standardised returns (right) are higher and smoother: medians of 6.5 (NIFTY 50) and 4.7 (S&P 500), no window at or below 2, and 3.6% and 38% of windows below 4. Once volatility clustering is removed, the remaining tail is heavy but finite-variance and far less extreme than the unconditional histogram suggests.
 
