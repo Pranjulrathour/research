@@ -11,6 +11,8 @@ I have published a book.
 
 Every chapter ends with "What would make this chapter wrong" and "What to do this year". Every number has a source and a year. Nothing depends on a product that could vanish.
 
+Running through it are nine stories from transitions we already know the end of: the telephone operators of the 1920s, the sixty-year pause in British wages, the horse, the scribes who argued against printing (in print), the dockworkers who negotiated for the container before it arrived, India's wheat and India's UPI, and seventy years of "twenty years away". Each with a chart drawn from the original numbers.
+
 Written from Kanpur, for the students who kept asking me "what should I do now?"
 
 Available on Kindle, Leanpub and Google Play: <link>
@@ -73,7 +75,24 @@ Preprint: <DOI> · Code: github.com/Pranjulrathour/research/tree/main/papers/p2-
 
 ## 5. Paper P3 — Tail latency under load
 
-<!-- fill after results: lead with the async-inline collapse on CPU work and the p99/p50 signatures -->
+**LinkedIn**
+New preprint: *Tail Latency Under Load: An Empirical Comparison of Threaded, Event-Loop and Hybrid API Server Designs*.
+
+I wrote four tiny Python servers that differ only in how they handle concurrency, hit each with the same load on three workloads, and recorded every request's latency.
+
+The result I keep coming back to: at 256 clients on CPU-bound work, the thread-per-connection server and the single-threaded event loop did the same amount of work (116 vs 152 requests a second) with the same median. Their p99s were 8.2 seconds and 2.2 seconds, and the threaded server's worst request took 16.7 seconds. Same capacity, four times the tail. The event loop serves requests in order; 256 threads fighting for the interpreter lock are scheduled with no fairness at all.
+
+Two more:
+
+1. Moving CPU work to a thread pool, which every async framework recommends, kept the loop responsive and bought zero throughput under the lock.
+
+2. The process pool paid about 4.7 ms per hand-off, more than the 2.8 ms of work it carried, then doubled throughput and quartered the tail, then plateaued at about one core's worth, because the dispatcher is serial.
+
+One number to put on a dashboard: p99 divided by p50 at full load. Every event-loop design: 1.2 to 1.6. Threads: 3.1 to 5.4.
+
+Preprint: <DOI> · Code: github.com/Pranjulrathour/research/tree/main/papers/p3-tail-latency
+
+**Blogger (long)**: abstract, Figure 1 (how each design spends a request's time), Figure 2 (p99 vs concurrency), Table 3, the fairness discussion, the failed first run (a listen backlog of five), and the reproduction command.
 
 ## 6. Paper P4 — Recall–latency frontiers of ANN indexes
 

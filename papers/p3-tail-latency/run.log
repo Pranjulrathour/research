@@ -1,0 +1,68 @@
+[benchenv] waiting for a quiet machine: other cores 2.51 (max 0.75), RAM free 7.4 GB (min 4.0); top: [('rsEngineSvc.exe', 0.46), ('MsMpEng.exe', 0.34), ('svchost.exe', 0.33)]
+[benchenv] waiting for a quiet machine: other cores 3.41 (max 0.75), RAM free 7.3 GB (min 4.0); top: [('MsMpEng.exe', 0.58), ('rsEngineSvc.exe', 0.57), ('claude.exe', 0.55)]
+[benchenv] waiting for a quiet machine: other cores 4.96 (max 0.75), RAM free 6.4 GB (min 4.0); top: [('MBAMessageCenter.exe', 1.45), ('MsMpEng.exe', 0.91), ('claude.exe', 0.48)]
+[benchenv] waiting for a quiet machine: other cores 2.99 (max 0.75), RAM free 5.6 GB (min 4.0); top: [('rsEngineSvc.exe', 0.96), ('svchost.exe', 0.33), ('MsMpEng.exe', 0.28)]
+[benchenv] waiting for a quiet machine: other cores 0.87 (max 0.75), RAM free 7.0 GB (min 4.0); top: [('UnifiedStub-installer.exe', 0.28), ('claude.exe', 0.25), ('WmiPrvSE.exe', 0.2)]
+[benchenv] waiting for a quiet machine: other cores 1.16 (max 0.75), RAM free 6.9 GB (min 4.0); top: [('MBAMessageCenter.exe', 0.51), ('WmiPrvSE.exe', 0.16), ('svchost.exe', 0.11)]
+[benchenv] start sample: other cores 0.7, RAM free 7.1 GB, quiet=True, waited 7.1 min, top: [('claude.exe', 0.22), ('claude.exe', 0.19), ('WmiPrvSE.exe', 0.15)]
+cpu_work ~ 2.82 ms; GIL enabled: True
+threaded      io    c=   1  p50=   21.2  p95=   21.9  p99=    22.0  rps=     47
+threaded      io    c=   8  p50=   21.2  p95=   22.5  p99=    23.3  rps=    374
+threaded      io    c=  32  p50=   20.9  p95=   22.6  p99=    23.8  rps=   1500
+threaded      io    c= 128  p50=   24.6  p95=   40.8  p99=    51.1  rps=   4386
+threaded      io    c= 256  p50=   99.2  p95=  226.9  p99=   307.3  rps=   2079
+threaded      cpu   c=   1  p50=   10.1  p95=   10.9  p99=    11.2  rps=     98
+threaded      cpu   c=   8  p50=   45.6  p95=  141.2  p99=   211.4  rps=    131
+threaded      cpu   c=  32  p50=  148.9  p95=  615.4  p99=   993.4  rps=    132
+threaded      cpu   c= 128  p50=  660.9  p95= 2669.2  p99=  4048.6  rps=    118
+threaded      cpu   c= 256  p50= 1517.5  p95= 5623.3  p99=  8244.4  rps=    116
+threaded      mixed c=   1  p50=   27.6  p95=   30.9  p99=    31.0  rps=     36
+threaded      mixed c=   8  p50=   49.0  p95=   76.4  p99=    92.5  rps=    151
+threaded      mixed c=  32  p50=  246.8  p95=  676.7  p99=   924.4  rps=    104
+threaded      mixed c= 128  p50=  898.3  p95= 2569.4  p99=  3551.1  rps=    111
+threaded      mixed c= 256  p50= 1486.1  p95= 4476.9  p99=  6367.2  rps=    130
+async         io    c=   1  p50=   31.3  p95=   32.2  p99=    32.3  rps=     32
+async         io    c=   8  p50=   31.2  p95=   32.1  p99=    32.7  rps=    257
+async         io    c=  32  p50=   31.4  p95=   33.3  p99=    35.4  rps=   1009
+async         io    c= 128  p50=   31.3  p95=   37.2  p99=    39.8  rps=   3967
+async         io    c= 256  p50=   31.7  p95=   45.8  p99=    48.6  rps=   7433
+async         cpu   c=   1  p50=    2.9  p95=    3.2  p99=     3.2  rps=    345
+async         cpu   c=   8  p50=   35.0  p95=   41.6  p99=    42.3  rps=    230
+async         cpu   c=  32  p50=  206.9  p95=  226.8  p99=   231.5  rps=    153
+async         cpu   c= 128  p50=  783.4  p95=  929.1  p99=   957.0  rps=    158
+async         cpu   c= 256  p50= 1559.1  p95= 2100.0  p99=  2240.2  rps=    152
+async         mixed c=   1  p50=   31.4  p95=   35.3  p99=    37.0  rps=     32
+async         mixed c=   8  p50=   62.8  p95=   78.9  p99=    80.9  rps=    123
+async         mixed c=  32  p50=  204.9  p95=  233.4  p99=   237.0  rps=    153
+async         mixed c= 128  p50=  894.6  p95=  924.3  p99=   970.6  rps=    143
+async         mixed c= 256  p50= 1536.8  p95= 1815.6  p99=  2480.2  rps=    160
+hybrid_thread io    c=   1  p50=   31.4  p95=   32.3  p99=    32.8  rps=     32
+hybrid_thread io    c=   8  p50=   31.2  p95=   32.7  p99=    33.3  rps=    256
+hybrid_thread io    c=  32  p50=   31.4  p95=   35.8  p99=    36.4  rps=   1007
+hybrid_thread io    c= 128  p50=   31.3  p95=   37.2  p99=    40.3  rps=   3980
+hybrid_thread io    c= 256  p50=   31.3  p95=   34.3  p99=    44.5  rps=   7829
+hybrid_thread cpu   c=   1  p50=    3.0  p95=    3.2  p99=     3.8  rps=    334
+hybrid_thread cpu   c=   8  p50=   47.4  p95=   63.2  p99=    79.1  rps=    166
+hybrid_thread cpu   c=  32  p50=  236.6  p95=  254.2  p99=   279.9  rps=    133
+hybrid_thread cpu   c= 128  p50=  941.2  p95=  989.2  p99=  1003.4  rps=    137
+hybrid_thread cpu   c= 256  p50= 1569.5  p95= 2090.0  p99=  2191.8  rps=    155
+hybrid_thread mixed c=   1  p50=   31.5  p95=   42.8  p99=    44.2  rps=     31
+hybrid_thread mixed c=   8  p50=   62.5  p95=   69.9  p99=    81.3  rps=    128
+hybrid_thread mixed c=  32  p50=  248.6  p95=  269.9  p99=   348.8  rps=    129
+hybrid_thread mixed c= 128  p50=  905.6  p95= 1057.0  p99=  1378.1  rps=    142
+hybrid_thread mixed c= 256  p50= 1907.0  p95= 2302.3  p99=  2365.9  rps=    136
+hybrid_proc   io    c=   1  p50=   31.2  p95=   32.0  p99=    33.3  rps=     32
+hybrid_proc   io    c=   8  p50=   31.1  p95=   32.4  p99=    32.5  rps=    257
+hybrid_proc   io    c=  32  p50=   31.2  p95=   32.5  p99=    32.9  rps=   1025
+hybrid_proc   io    c= 128  p50=   31.1  p95=   34.3  p99=    37.8  rps=   4013
+hybrid_proc   io    c= 256  p50=   31.2  p95=   41.7  p99=    48.4  rps=   7665
+hybrid_proc   cpu   c=   1  p50=    7.6  p95=    8.1  p99=     8.2  rps=    131
+hybrid_proc   cpu   c=   8  p50=   23.2  p95=   42.9  p99=   146.2  rps=    276
+hybrid_proc   cpu   c=  32  p50=  129.5  p95=  191.4  p99=   220.8  rps=    235
+hybrid_proc   cpu   c= 128  p50=  397.0  p95=  486.9  p99=   531.7  rps=    311
+hybrid_proc   cpu   c= 256  p50=  896.1  p95= 1097.4  p99=  1152.6  rps=    279
+hybrid_proc   mixed c=   1  p50=   32.3  p95=   46.1  p99=    46.9  rps=     30
+hybrid_proc   mixed c=   8  p50=   31.7  p95=   41.4  p99=    47.7  rps=    244
+hybrid_proc   mixed c=  32  p50=   97.9  p95=  140.1  p99=   161.0  rps=    304
+hybrid_proc   mixed c= 128  p50=  398.9  p95=  488.0  p99=   508.6  rps=    310
+hybrid_proc   mixed c= 256  p50=  803.5  p95=  892.7  p99=   945.7  rps=    316

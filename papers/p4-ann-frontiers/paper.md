@@ -23,6 +23,18 @@ The ann-benchmarks project (Aumüller, Bernhardsson and Faithfull 2020) standard
 
 This paper measures all of these for the two dominant index families on two standard datasets, on one laptop, with a design fixed in advance. It aims to be a clear and reproducible reference for the trade-off; it does not propose a new index.
 
+### 1.1 Contributions
+
+- Recall–throughput frontiers for IVF-Flat and two independent HNSW implementations on SIFT-128 and GloVe-100, with every configuration reported rather than only the frontier points (Section 4 and Appendix A).
+- The serving-style measurement the batched convention omits: single-query latency on one thread, as p50 and p99, for every configuration, and the size of the gap between it and batched per-query cost (Section 4.3).
+- Build time and memory for every index, so that each point on the frontier carries its construction cost (Section 4.4).
+- A documented account of how background load distorts these measurements, including an abandoned run in which batched search slowed roughly tenfold under contention, and the quiet-machine gate adopted in response (Section 3.3).
+- A benchmark that reproduces with one command from public data whose hashes are recorded.
+
+### 1.2 Related work
+
+The ann-benchmarks project (Aumüller, Bernhardsson and Faithfull 2020) is the standard harness and leaderboard for this comparison, and the datasets and parameter sweeps here are its. Li et al. (2020) carried out a broad experimental comparison of approximate nearest-neighbour methods on high-dimensional data and found graph-based indexes to dominate at high recall, a result reproduced here at small scale. HNSW is due to Malkov and Yashunin (2018); the inverted-file approach and its combination with product quantisation to Jégou, Douze and Schmid (2011), with Johnson, Douze and Jégou (2019) and Douze et al. (2024) describing the FAISS library that implements both. Wang et al. (2021) survey graph-based methods and the design choices behind them. The angular GloVe dataset is a known hard case for all of these methods because of its high intrinsic dimension, which is why it is included alongside SIFT. What this paper adds is not a method but a measurement protocol: single-query latency, build cost and background-load accounting reported together for every configuration.
+
 ## 2. Data
 
 Two datasets from ann-benchmarks.com were downloaded in their distributed HDF5 form on 1 October 2026. Their provenance, sizes and SHA-256 hashes are recorded in `data/SNAPSHOT.json`.
@@ -105,6 +117,7 @@ With the two HDF5 files in `data/` (`python fetch_data.py p4` in the `papers/` f
 - Malkov, Y. A. & Yashunin, D. A. (2018). Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs. *IEEE Transactions on Pattern Analysis and Machine Intelligence*, 42(4), 824–836.
 - Pennington, J., Socher, R. & Manning, C. D. (2014). GloVe: Global vectors for word representation. *EMNLP 2014*, 1532–1543.
 - Vardanian, A. (2023). USearch: Smaller and faster single-file vector search engine. Software, version 2.x.
+- Wang, M., Xu, X., Yue, Q. & Wang, Y. (2021). A comprehensive survey and experimental comparison of graph-based approximate nearest neighbor search. *Proceedings of the VLDB Endowment*, 14(11), 1964–1978.
 
 ## Data and code availability
 

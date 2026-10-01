@@ -56,15 +56,17 @@ Two more habits are worth building. Measure in the right place: the service's ow
 
 The companion study for this book (paper P3 in the research repository, described in Appendix A) built four small HTTP servers that differ only in how they handle concurrency, ran the same workloads against each at rising concurrency, and recorded the latency of every request. Chapter 2 is about *why* the designs behave differently. Here the only point is what a latency distribution looks like once you actually measure one.
 
-<!-- P3 numbers: fill from papers/p3-tail-latency/results.json after the run -->
+Here is one row of what came out. At 256 concurrent clients on the CPU-bound workload, the thread-per-connection server and the single-threaded event loop were doing almost the same amount of work: 116 and 152 requests a second. Their medians were similar too, 1.5 and 1.6 seconds. Their p99s were 8.2 seconds and 2.2 seconds, and the slowest request the threaded server answered took 16.7 seconds. Same capacity, four times the tail. If you had been watching a throughput graph, or a mean, you would have called those two servers equivalent.
 
 Three features of these distributions turn up in almost every latency measurement you'll make, and they're exactly the features a mean would hide.
 
-The floor is set by physics and the body by design. On the I/O-bound workload, no design can beat the 20 ms simulated downstream wait, and at low concurrency every server sits within a millisecond or two of it. The design only shows up once the system is under load.
+The floor is set by physics and the body by design. On the I/O-bound workload, no design can beat the 20 ms simulated downstream wait, and from one client to 128 every server's median sat within about ten milliseconds of it. The design only showed up at 256 clients, and then it showed up in the tail: the threaded server's median rose to 99 ms and its p99 to 307 ms, while the three event-loop designs kept their p99s under 50 ms and served three and a half times as many requests.
 
-The tail opens before the body moves. As concurrency rises, the p50 stays near the floor long after the p99 has started to climb. The system is serving most requests well and a growing minority badly. A dashboard showing the mean would show a gentle slope, while the users in the p99 would be describing a system that hangs.
+The tail opens before the body moves. On that same workload at 128 clients, the threaded server's median had moved from 21 ms to 25, a change nobody would notice, while its p99 had already doubled from 24 ms to 51. The system was serving most requests well and a growing minority badly. A dashboard showing the mean would have shown a gentle slope, while the users in the p99 would have been describing a system that had started to hang.
 
-The ratio of p99 to p50 is a design signature. For a well-behaved server under a load it can handle, the ratio stays small, around two or three. When a design hits its structural limit, such as a CPU-bound task blocking an event loop or an exhausted thread pool, the ratio jumps by an order of magnitude while the median barely moves. That makes it one number worth putting on a dashboard, because it captures the shape the mean throws away.
+The ratio of p99 to p50 is a design signature. At full load, every event-loop design in the study had a ratio between 1.2 and 1.6 on every workload: its slowest one per cent of requests waited at most half again as long as the median. The threaded server's ratios were 3.1, 4.3 and 5.4. The ratio barely depends on the machine, which makes it one number worth putting on a dashboard, because it captures the shape the mean throws away.
+
+One more habit the study paid for: every setting was run three times, and the three p99 values are kept next to the one reported. Most agreed within 10 or 20 per cent. One server's didn't, its p99 at 256 clients ranging from 1.7 to 2.6 seconds across the repeats, and a background-load sample taken right after it showed other processes had woken up during its run. Without the repeats and the sample, that would have been a finding. With them, it's a footnote.
 
 ## The question you will be asked
 
@@ -80,7 +82,7 @@ Measuring percentiles costs more than measuring means. You need histograms inste
 
 ## Run this yourself
 
-The harness from the research repository (`papers/p3-tail-latency/harness.py`) is a single Python file containing four servers, three workloads, a load generator and a results file. Run it on an idle machine; it finishes in well under an hour. Then open the results and, for one server and one workload at the highest concurrency, plot the full latency histogram instead of the percentiles. Look at its shape: the floor, the body, the tail. Work out the mean and mark it on the plot, and notice how few requests are anywhere near it. Then change one thing, say halving the simulated I/O wait or doubling the CPU work, and run it again. Watch which part of the distribution moves. An afternoon with the real distribution in front of you will do more for your intuition than any number of percentile tables, including the ones in this book.
+The harness from the research repository (`papers/p3-tail-latency/harness.py`) is a single Python file containing four servers, three workloads, a load generator and a results file. Run it on an idle machine; it takes about an hour, and it waits for the machine to go quiet before it starts. Then open the results and, for one server and one workload at the highest concurrency, plot the full latency histogram instead of the percentiles. Look at its shape: the floor, the body, the tail. Work out the mean and mark it on the plot, and notice how few requests are anywhere near it. Then change one thing, say halving the simulated I/O wait or doubling the CPU work, and run it again. Watch which part of the distribution moves. An afternoon with the real distribution in front of you will do more for your intuition than any number of percentile tables, including the ones in this book.
 
 ---
 

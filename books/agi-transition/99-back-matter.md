@@ -72,6 +72,14 @@ Primary sources only; no commentary, no product documentation. Roughly in the or
 - Brynjolfsson, E., Li, D. & Raymond, L. (2025), "Generative AI at Work", *Quarterly Journal of Economics* 140(2).
 - David, P. A. (1990), "The Dynamo and the Computer", *American Economic Review* 80(2).
 
+**On earlier transitions (the stories in this book)**
+- Allen, R. C. (2009), "Engels' pause", *Explorations in Economic History* 46(4).
+- Feigenbaum, J. & Gross, D. P. (2020, revised), "Automation and the Fate of Young Workers", NBER WP 28061.
+- Levinson, M. (2006), *The Box: How the Shipping Container Made the World Smaller and the World Economy Bigger*.
+- Eisenstein, E. L. (1979), *The Printing Press as an Agent of Change*; Buringh, E. & van Zanden, J. L. (2009), "Charting the 'Rise of the West'", *Journal of Economic History* 69(2).
+- Olmstead, A. L. & Rhode, P. W. (2001), "Reshaping the Landscape: The Impact and Diffusion of the Tractor in American Agriculture", *Journal of Economic History* 61(3).
+- Armstrong, S. & Sotala, K. (2012), "How We're Predicting AI, or Failing To".
+
 **On learning**
 - Bloom, B. S. (1984), "The 2 Sigma Problem", *Educational Researcher* 13(6).
 - Freeman, S. et al. (2014), "Active learning increases student performance in science, engineering, and mathematics", *PNAS* 111(23).
