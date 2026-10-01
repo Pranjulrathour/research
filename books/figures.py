@@ -40,7 +40,7 @@ plt.rcParams.update({
 HEADLINES = {
     # Book 1
     "fig01_levels_map": ("\u201cAGI\u201d is a grid, not a finishing line", "performance against breadth, with 2023 systems placed by the framework's authors"),
-    "fig02_saturation": ("A benchmark stops informing before it reaches 100%", "scores spread out early, then crowd into the instrument's own noise"),
+    "fig02_saturation": ("A benchmark stops informing before it reaches 100%", "schematic: scores spread out early, then crowd into the instrument's own noise"),
     "fig03_four_channels": ("Four channels, and only one shows on day one", "the other three take years, and historically they decide the outcome"),
     "fig04_entry_ladder": ("The tools are strongest exactly where careers begin", "the routine work that trains juniors is the work the tools do best"),
     "fig05_proof_and_practice": ("Practice and proof have come apart", "the essay still teaches; it no longer proves anything"),
@@ -71,7 +71,7 @@ HEADLINES = {
     "fig08_queue_depth": ("Arrivals above capacity grow a queue without limit", "messages waiting under three arrival patterns"),
     "fig09_error_budget": ("At burn rate 14.4, a month's budget lasts two days", "error budget remaining for a 99.9% SLO over 30 days"),
     "fig10_knee": ("Past about 80% busy, waiting explodes", "time in system as a multiple of service time, single queue"),
-    "fig11_cost_crossover": ("Count the people and the crossover moves", "managed against self-hosted cost as volume grows"),
+    "fig11_cost_crossover": ("Count the people and the crossover moves", "schematic: managed against self-hosted cost as volume grows"),
     "fig12_decision_loop": ("Decide, record, measure, repeat", "the design loop that turns opinions into evidence"),
 }
 
@@ -197,7 +197,6 @@ def agi_saturation():
     ax.set_xlim(0, 10); ax.set_ylim(15, 104); ax.set_xticks([]); ax.set_yticks([25, 50, 75, 100])
     ax.set_xlabel("time since the benchmark was released", color=MID, fontsize=8.5)
     ax.set_ylabel("best reported score (%)", color=MID, fontsize=8.5)
-    ax.text(0, 106, "Schematic", fontsize=7.5, color=MID)
     save(fig, "agi", "fig02_saturation")
 
 
@@ -503,7 +502,7 @@ def sys_memory_hierarchy():
 
 def sys_consistency():
     A, T = ACCENT["systems"], TINT["systems"]
-    fig, ax = blank(3.1)
+    fig, ax = blank(3.55)
     models = ["Linearizable", "Sequential", "Causal", "Session\n(read-your-writes,\nmonotonic reads)", "Eventual"]
     promise = ["never stale", "one agreed order", "no effect before\nits cause", "you see your\nown writes", "copies agree\neventually"]
     examples = ["Spanner, etcd,\nZooKeeper", "", "COPS", "edge routing,\nversion tokens", "Dynamo-style stores,\nreplica reads"]
@@ -514,8 +513,8 @@ def sys_consistency():
         label(ax, x + 7, 21.5, pr, 7.9, INK, ha="center", va="top")
         label(ax, x + 7, 9.5, ex, 7.3, MID, ha="center", va="top")
     ax.plot([11, 87], [27, 27], color=INK, lw=0.9, zorder=0)
-    arrow(ax, 82, 44, 18, 44, MID, 0.8)
-    label(ax, 50, 46.5, "more coordination: more latency, less availability during a partition", 7.9, MID, ha="center")
+    arrow(ax, 82, 45.2, 18, 45.2, MID, 0.8)
+    label(ax, 50, 47.6, "more coordination: more latency, less availability during a partition", 7.9, MID, ha="center")
     save(fig, "systems", "fig05_consistency_spectrum")
 
 
@@ -627,7 +626,6 @@ def sys_cost_crossover():
                 arrowprops=dict(arrowstyle="-", color=MID, lw=0.7))
     ax.set_xlim(0, 10); ax.set_ylim(0, 10); ax.set_xticks([]); ax.set_yticks([])
     ax.set_xlabel("steady volume", color=MID, fontsize=8.5); ax.set_ylabel("cost per month", color=MID, fontsize=8.5)
-    ax.text(0, 10.3, "Schematic", fontsize=7.5, color=MID)
     save(fig, "systems", "fig11_cost_crossover")
 
 

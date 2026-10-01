@@ -22,8 +22,8 @@ This paper measures all of these for the two dominant index families on two stan
 ### 1.1 Contributions
 
 - Recall–throughput frontiers for IVF-Flat and two independent HNSW implementations on SIFT-128 and GloVe-100, with every configuration reported rather than only the frontier points (Section 4 and Appendix A).
-- The serving-style measurement the batched convention omits: single-query latency on one thread, as p50 and p99, for every configuration, and the size of the gap between it and batched per-query cost (Section 4.3).
-- Build time and memory for every index, so that each point on the frontier carries its construction cost (Section 4.4).
+- The serving-style measurement the batched convention omits: single-query latency on one thread, as p50 and p99, for every configuration, and the size of the gap between it and batched per-query cost (Section 4.4).
+- Build time and memory for every index, so that each point on the frontier carries its construction cost (Section 4.5).
 - A documented account of how background load distorts these measurements, including an abandoned run in which batched search slowed roughly tenfold under contention, and the quiet-machine gate adopted in response (Section 3.3).
 - A benchmark that reproduces with one command from public data whose hashes are recorded.
 

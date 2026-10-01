@@ -4,3 +4,9 @@
 === p2-ml-returns start 2026-10-01 21:11:04
 === p2-ml-returns end   2026-10-01 22:00:02 exit=0
 === p4-ann-frontiers start 2026-10-01 22:00:02
+=== p4-ann-frontiers start 2026-10-01 23:15:22 args=-u benchmark.py --resume
+=== p4-ann-frontiers end   2026-10-02 00:11:01 exit=0
+=== p3-tail-latency start 2026-10-02 00:11:01 args=-u harness.py
+=== p3-tail-latency end   2026-10-02 01:03:14 exit=0
+=== p4-ann-frontiers start 2026-10-02 01:04:40 args=-u benchmark.py --resume
+=== p4-ann-frontiers end   2026-10-02 02:02:42 exit=0
