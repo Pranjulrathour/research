@@ -41,7 +41,7 @@ HEADLINES = {
     # Book 1
     "fig01_levels_map": ("\u201cAGI\u201d is a grid, not a finishing line", "performance against breadth, with 2023 systems placed by the framework's authors"),
     "fig02_saturation": ("A benchmark stops informing before it reaches 100%", "scores spread out early, then crowd into the instrument's own noise"),
-    "fig03_four_channels": ("Automation works through four channels, and only one shows on day one", "the other three take years, and historically they decide the outcome"),
+    "fig03_four_channels": ("Four channels, and only one shows on day one", "the other three take years, and historically they decide the outcome"),
     "fig04_entry_ladder": ("The tools are strongest exactly where careers begin", "the routine work that trains juniors is the work the tools do best"),
     "fig05_proof_and_practice": ("Practice and proof have come apart", "the essay still teaches; it no longer proves anything"),
     "fig06_bottleneck": ("Speed up the start of the pipeline and the bottleneck moves", "to the stages that need hands, instruments and judgement"),
@@ -51,7 +51,7 @@ HEADLINES = {
     "fig10_three_layers": ("What compounds with the tools sits underneath them", "judgement, systems understanding and domain knowledge are what the tools can't supply"),
     "fig11_dpi_stack": ("Build on shared rails and inherit the plumbing", "identity, payments and consented data, already connected"),
     "fig12_diffusion": ("Twenty to forty years from available to transformative", "three earlier general-purpose technologies, and the open question"),
-    "fig13_operators": ("The first job vanished. The first-timers found another. The incumbents paid.", "the automation of telephone switching, 1920\u20131940"),
+    "fig13_operators": ("The job vanished, the newcomers adapted, the incumbents paid", "the automation of telephone switching, 1920\u20131940"),
     "fig14_horses_and_cars": ("Twenty-six million horses, then three", "horses and mules against motor vehicles in the United States, 1900\u20131960"),
     "fig15_engels_pause": ("Sixty years of growth the average worker never saw", "Britain, output per worker and the real wage, index 1780 = 100"),
     "fig16_electrification": ("Forty years from the power station to the productivity statistics", "share of US factory mechanical drive supplied by electric motors"),
@@ -61,7 +61,7 @@ HEADLINES = {
     "fig20_upi": ("From three million to 140 billion in eight years", "UPI transactions per calendar year, log scale"),
     "fig21_forecasts": ("Human-level machines have been twenty years away for seventy years", "predicted arrival against the year of the prediction"),
     # Book 2
-    "fig01_tail_at_scale": ("Fan out to 100 servers and most requests wait for someone's slowest 1%", "share of requests that touch at least one server's tail"),
+    "fig01_tail_at_scale": ("Fan out to 100 servers and most requests wait for a slow one", "share of requests that touch at least one server's tail"),
     "fig02_concurrency_models": ("What a server does while it waits", "three concurrency models on the same three requests"),
     "fig03_hit_rate": ("A cache fixes the average long before it fixes the tail", "average and p99 latency against hit rate, h = 1 ms, m = 50 ms"),
     "fig04_memory_hierarchy": ("Every level down is a cliff", "approximate access times, 2020s hardware, log scale"),
@@ -76,16 +76,51 @@ HEADLINES = {
 }
 
 
+def _fit_lines(fig, text, size, weight, max_frac=0.985):
+    """Split text into lines that fit the figure width at the given font size (measured with the real renderer)."""
+    renderer = fig.canvas.get_renderer()
+    limit = fig.get_figwidth() * fig.dpi * max_frac
+    words, lines, cur = text.split(), [], ""
+    for w in words:
+        trial = (cur + " " + w).strip()
+        t = fig.text(0, 0, trial, fontsize=size * FS, fontweight=weight)
+        width = t.get_window_extent(renderer).width
+        t.remove()
+        if width > limit and cur:
+            lines.append(cur); cur = w
+        else:
+            cur = trial
+    if cur:
+        lines.append(cur)
+    return lines
+
+
 def headline(fig, name: str):
+    """A bold takeaway sentence and a quiet subtitle in a band reserved above the chart (the band is added to the figure,
+    so no existing artist moves relative to the others)."""
     if name not in HEADLINES:
         return
     title, sub = HEADLINES[name]
-    fig.text(0.0, 1.075, title, fontsize=10.6, fontweight=600, color=INK, ha="left", va="bottom", transform=fig.transFigure, wrap=False)
+    tsize, ssize = 10.4, 8.3
+    lines = _fit_lines(fig, title, tsize, 600)
+    band_in = 0.19 * len(lines) + (0.16 if sub else 0.0) + 0.14
+    w, h = fig.get_size_inches()
+    scale = h / (h + band_in)
+    for ax in fig.axes:
+        b = ax.get_position()
+        ax.set_position([b.x0, b.y0 * scale, b.width, b.height * scale])
+    fig.set_size_inches(w, h + band_in, forward=False)
+    top = 1 - 0.02 * (0.6 / (h + band_in))
+    y = 1 - 0.06 / (h + band_in)
+    for ln in lines:
+        fig.text(0.0, y, ln, fontsize=tsize, fontweight=600, color=INK, ha="left", va="top", transform=fig.transFigure)
+        y -= 0.19 / (h + band_in)
     if sub:
-        fig.text(0.0, 1.02, sub, fontsize=8.4, color=MID, ha="left", va="bottom", transform=fig.transFigure)
+        fig.text(0.0, y - 0.01 / (h + band_in), sub, fontsize=ssize, color=MID, ha="left", va="top", transform=fig.transFigure)
 
 
 def save(fig, book: str, name: str):
+    fig.canvas.draw()
     headline(fig, name)
     for t in fig.findobj(matplotlib.text.Text):
         t.set_fontsize(t.get_fontsize() * FS)
@@ -462,7 +497,6 @@ def sys_memory_hierarchy():
         ax.text(3e-10 * 0.9, i, name, va="center", ha="right", fontsize=8.4, color=INK)
     ax.set_xscale("log"); ax.set_xlim(3e-10, 3); ax.set_yticks([]); ax.spines["left"].set_visible(False)
     ax.set_xticks([1e-9, 1e-6, 1e-3, 1]); ax.set_xticklabels(["1 ns", "1 µs", "1 ms", "1 s"])
-    ax.text(3, 6.6, "approximate, 2020s hardware; log scale", ha="right", fontsize=7.5, color=MID)
     fig.subplots_adjust(left=0.36)
     save(fig, "systems", "fig04_memory_hierarchy")
 
@@ -624,7 +658,7 @@ def agi_operators():
     A, T = ACCENT["agi"], TINT["agi"]
     fig, ax = blank(3.3)
     panels = [(4, "The job", "women 16\u201325 working\nas operators"), (37, "The next cohort", "employment rate of young\nwomen who came after"),
-              (70, "The incumbents", "operators, ten years\nafter the cutover")]
+              (69, "The incumbents", "operators, ten years\nafter the cutover")]
     for x, t, sub in panels:
         label(ax, x, 42.5, t, 9.4, INK, 600)
         label(ax, x, 38.6, sub, 7.8, MID, va="top")
@@ -637,13 +671,12 @@ def agi_operators():
     # panel 2: equal bars
     ax.add_patch(Rectangle((39, 8), 8, 22, fc=INK, ec="none")); label(ax, 43, 5.3, "manual cities", 7.2, MID, ha="center")
     ax.add_patch(Rectangle((51, 8), 8, 22, fc=INK, ec="none")); label(ax, 55, 5.3, "dial cities", 7.2, MID, ha="center")
-    label(ax, 61, 19, "no difference:\nsecretarial, typing\nand service jobs\nabsorbed them", 7.6, INK, va="center")
+    label(ax, 39, 2.4, "no difference: secretarial, typing and service jobs absorbed them", 7.4, INK, va="top")
     # panel 3: two downward markers
     for i, t in enumerate(["less likely to be\nworking at all", "if working, more likely\nin a lower-paid job"]):
         y = 27 - i * 11
-        arrow(ax, 73, y + 3.2, 73, y - 2.8, A, 1.0, ms=8)
-        label(ax, 75.5, y, t, 7.8, INK, va="center")
-    label(ax, 2, 0.6, "Schematic. Magnitudes from Feigenbaum & Gross (2020), NBER WP 28061.", 7.4, MID)
+        arrow(ax, 72, y + 3.2, 72, y - 2.8, A, 1.0, ms=8)
+        label(ax, 74.5, y, t, 7.8, INK, va="center")
     save(fig, "agi", "fig13_operators")
 
 
@@ -660,8 +693,8 @@ def agi_horses_and_cars():
     ax.text(1960.6, 73.9, "motor\nvehicles", color=A, fontsize=8.2, va="center")
     ax.annotate("1915: 26.5 million animals,\n2.5 million vehicles", xy=(1915, 26.5), xytext=(1901, 46), fontsize=8.0, color=INK,
                 arrowprops=dict(arrowstyle="-", color=MID, lw=0.7))
-    ax.annotate("1930: 26.7 million vehicles,\n18.9 million animals", xy=(1930, 26.75), xytext=(1931.5, 11), fontsize=8.0, color=INK,
-                arrowprops=dict(arrowstyle="-", color=MID, lw=0.7))
+    ax.annotate("1930: 26.7 million vehicles,\n18.9 million animals", xy=(1930, 26.75), xytext=(1931.5, 3), fontsize=8.0, color=INK,
+                arrowprops=dict(arrowstyle="-", color=MID, lw=0.7, shrinkB=3))
     ax.set_xlim(1899, 1961); ax.set_ylim(0, 80); ax.set_xticks(range(1900, 1961, 10))
     ax.set_ylabel("millions", color=MID, fontsize=8.5); ax.grid(axis="y", color=RULE, lw=0.6); ax.set_axisbelow(True)
     fig.subplots_adjust(right=0.84)
@@ -791,8 +824,8 @@ def agi_forecasts():
     ax.fill_between(x, x + 15, x + 25, color=T, lw=0, label="15\u201325 years out")
     ax.plot(x, x, color=LIGHT, lw=0.9, ls=(0, (3, 2)))
     ax.axhline(2026, color=MID, lw=0.7)
-    ax.text(1950.8, 2027, "2026: forecasts below this line have come due", fontsize=7.8, color=MID, va="bottom")
-    ax.text(2004, 2036.5, "15\u201325 years out:\nthe most common\nhorizon (Armstrong\n& Sotala, 2012)", fontsize=7.6, color=A, ha="center", va="center")
+    ax.text(1950.8, 2024.8, "2026: forecasts below this line have come due", fontsize=7.8, color=MID, va="top")
+    ax.text(1990, 2008, "15\u201325 years out: the most\ncommon horizon\n(Armstrong & Sotala, 2012)", fontsize=7.4, color=A, ha="center", va="center")
     pts = [(1955, 1956, 1956, "Dartmouth proposal:\n\u201ca summer\u201d"), (1965, 1985, 1985, "Simon: \u201cwithin\ntwenty years\u201d"),
            (1970, 1973, 1978, "Minsky: \u201cthree to\neight years\u201d"), (2013, 2023, 2033, "Frey & Osborne:\n\u201ca decade or two\u201d"),
            (2016, 2021, 2021, "Hinton: radiologists,\nfive years")]
@@ -802,8 +835,8 @@ def agi_forecasts():
         ax.plot([yr], [(lo + hi) / 2], "o", color=INK, ms=4.6, zorder=3)
     for yr in (2016, 2019, 2022):
         ax.plot([yr], [yr + 1], "o", color=A, ms=4.0, zorder=3)
-    ax.text(2023.2, 2019.5, "full self-driving\n\u201cnext year\u201d,\n2016\u20132023", fontsize=7.6, color=A, va="center")
-    offs = {1955: (1957, 1949.5), 1965: (1959, 1991.5), 1970: (1972, 1969), 2013: (1998, 2010.5), 2016: (2000.5, 2027.5)}
+    ax.text(2023.2, 2021.5, "full self-driving\n\u201cnext year\u201d,\n2016\u20132023", fontsize=7.6, color=A, va="center")
+    offs = {1955: (1957, 1949.5), 1965: (1959, 1991.5), 1970: (1972, 1969), 2013: (1989.5, 2033), 2016: (2016.5, 2003)}
     for yr, lo, hi, text in pts:
         tx, ty = offs[yr]
         ax.annotate(text, xy=(yr, (lo + hi) / 2), xytext=(tx, ty), fontsize=7.6, color=INK, va="center", ha="left",

@@ -6,103 +6,101 @@
   "physical_cores": 8,
   "threads_used": 8,
   "background_at_start": {
-   "other_cores_used": 0.44,
+   "other_cores_used": 0.54,
    "top_other_processes": [
     [
-     "svchost.exe",
-     0.28
+     "claude.exe",
+     0.23
     ],
     [
      "WmiPrvSE.exe",
-     0.14
+     0.17
+    ],
+    [
+     "svchost.exe",
+     0.11
     ],
     [
      "claude.exe",
-     0.02
+     0.03
     ]
    ],
-   "ram_available_gb": 7.3,
+   "ram_available_gb": 7.4,
    "ram_total_gb": 15.7,
-   "sampled_utc": "2026-10-01T17:48:51",
+   "sampled_utc": "2026-10-01T19:38:04",
    "quiet": true,
-   "waited_min": 3.5
+   "waited_min": 3.4
   },
   "ram_gb": 15.7,
   "python": "3.13.2",
   "faiss": "1.15.1",
   "usearch": "2.26.2",
-  "run_utc": "2026-10-01T17:48",
+  "run_utc": "2026-10-01T19:38",
   "datasets": "ann-benchmarks.com sift-128-euclidean.hdf5, glove-100-angular.hdf5 (downloaded 2026-10-01)",
-  "background_after_dataset": {},
+  "background_after_dataset": {
+   "glove-100-angular": {
+    "other_cores_used": 0.49,
+    "top_other_processes": [
+     [
+      "WmiPrvSE.exe",
+      0.17
+     ],
+     [
+      "svchost.exe",
+      0.14
+     ],
+     [
+      "claude.exe",
+      0.14
+     ],
+     [
+      "System",
+      0.04
+     ]
+    ],
+    "ram_available_gb": 7.4,
+    "ram_total_gb": 15.7,
+    "sampled_utc": "2026-10-01T20:32:40"
+   }
+  },
   "resumed": {
    "kept_datasets": [
     "sift-128-euclidean"
    ],
-   "previous_run_utc": "2026-10-01T16:30",
+   "previous_run_utc": "2026-10-01T17:48",
    "previous_background_at_start": {
-    "other_cores_used": 0.52,
+    "other_cores_used": 0.44,
     "top_other_processes": [
      [
       "svchost.exe",
-      0.17
-     ],
-     [
-      "claude.exe",
-      0.16
+      0.28
      ],
      [
       "WmiPrvSE.exe",
-      0.11
-     ],
-     [
-      "claude.exe",
-      0.06
+      0.14
      ],
      [
       "claude.exe",
       0.02
      ]
     ],
-    "ram_available_gb": 7.5,
+    "ram_available_gb": 7.3,
     "ram_total_gb": 15.7,
-    "sampled_utc": "2026-10-01T16:30:09",
+    "sampled_utc": "2026-10-01T17:48:51",
     "quiet": true,
-    "waited_min": 0.1
+    "waited_min": 3.5
    },
-   "previous_background_after_dataset": {
-    "sift-128-euclidean": {
-     "other_cores_used": 1.23,
-     "top_other_processes": [
-      [
-       "chrome.exe",
-       0.36
-      ],
-      [
-       "svchost.exe",
-       0.23
-      ],
-      [
-       "chrome.exe",
-       0.18
-      ],
-      [
-       "WmiPrvSE.exe",
-       0.17
-      ],
-      [
-       "chrome.exe",
-       0.1
-      ],
-      [
-       "System",
-       0.08
-      ]
-     ],
-     "ram_available_gb": 6.7,
-     "ram_total_gb": 15.7,
-     "sampled_utc": "2026-10-01T16:48:43"
-    }
-   }
+   "previous_background_after_dataset": {}
+  },
+  "glove_reported": {
+   "method": "best timing per configuration across attempts 2, 3 and 4 (highest QPS, lowest latencies, shortest build); recall from the run itself (identical across attempts)",
+   "attempts": {
+    "2": "run_second_attempt_killed_during_glove.log (IVF and FAISS HNSW only)",
+    "3": "run_third_attempt_glove_contended.json",
+    "4": "run_fourth_attempt_glove_throttled.json"
+   },
+   "configurations_with_three_attempts": 29,
+   "configurations_with_two_attempts": 6
   }
  },
  "rows": [
@@ -680,6 +678,932 @@
    "single_p50_ms": 6.322200002614409,
    "single_p99_ms": 14.256799997383496,
    "single_n": 500
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "flat",
+   "params": {},
+   "build_s": 0.16330159999961325,
+   "mem_mb": 456.26953125,
+   "recall@10": 1.0,
+   "qps": 746.5761346546233,
+   "latency_ms_per_query_batched": 1.3394481199999975,
+   "single_p50_ms": 34.550699999954304,
+   "single_p99_ms": 42.89289999996981,
+   "single_n": 100,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "4"
+   },
+   "recall_across_attempts": [
+    1.0
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 16,
+    "efConstruction": 200,
+    "efSearch": 16
+   },
+   "build_s": 226.38076910000018,
+   "mem_mb": 627.671875,
+   "recall@10": 0.56375,
+   "qps": 44808.62906653031,
+   "latency_ms_per_query_batched": 0.022317130000010368,
+   "single_p50_ms": 0.16650000179652125,
+   "single_p99_ms": 0.40640000224811956,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "2",
+    "single_p99_ms": "2",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.564
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 16,
+    "efConstruction": 200,
+    "efSearch": 32
+   },
+   "build_s": 226.38076910000018,
+   "mem_mb": 627.671875,
+   "recall@10": 0.6751,
+   "qps": 25832.831100047435,
+   "latency_ms_per_query_batched": 0.0387104299999919,
+   "single_p50_ms": 0.23910000163596123,
+   "single_p99_ms": 0.507699998706812,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "2",
+    "single_p99_ms": "2",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.675
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 16,
+    "efConstruction": 200,
+    "efSearch": 64
+   },
+   "build_s": 226.38076910000018,
+   "mem_mb": 627.671875,
+   "recall@10": 0.76384,
+   "qps": 15127.890429272022,
+   "latency_ms_per_query_batched": 0.06610307000009925,
+   "single_p50_ms": 0.3924000011465978,
+   "single_p99_ms": 0.9067999999388121,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "2",
+    "single_p99_ms": "2",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.764
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 16,
+    "efConstruction": 200,
+    "efSearch": 128
+   },
+   "build_s": 226.38076910000018,
+   "mem_mb": 627.671875,
+   "recall@10": 0.83211,
+   "qps": 8029.248948061701,
+   "latency_ms_per_query_batched": 0.12454465000009805,
+   "single_p50_ms": 0.7466999995813239,
+   "single_p99_ms": 1.294399997277651,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "2",
+    "single_p99_ms": "2",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.832
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 16,
+    "efConstruction": 200,
+    "efSearch": 256
+   },
+   "build_s": 226.38076910000018,
+   "mem_mb": 627.671875,
+   "recall@10": 0.88221,
+   "qps": 4111.489619416292,
+   "latency_ms_per_query_batched": 0.24322084999985236,
+   "single_p50_ms": 1.5468999990844168,
+   "single_p99_ms": 2.583800000138581,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "2",
+    "single_p99_ms": "4",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.882
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 16,
+    "efConstruction": 200,
+    "efSearch": 512
+   },
+   "build_s": 226.38076910000018,
+   "mem_mb": 627.671875,
+   "recall@10": 0.92144,
+   "qps": 1909.3740796807638,
+   "latency_ms_per_query_batched": 0.5237318400002551,
+   "single_p50_ms": 3.2598000000234606,
+   "single_p99_ms": 4.796899999973903,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.921
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 32,
+    "efConstruction": 200,
+    "efSearch": 16
+   },
+   "build_s": 329.94859890000225,
+   "mem_mb": 782.6484375,
+   "recall@10": 0.65652,
+   "qps": 30084.661245217707,
+   "latency_ms_per_query_batched": 0.03323952999999165,
+   "single_p50_ms": 0.24560000019846484,
+   "single_p99_ms": 0.48890000107348897,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "3",
+    "single_p99_ms": "2",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.657
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 32,
+    "efConstruction": 200,
+    "efSearch": 32
+   },
+   "build_s": 329.94859890000225,
+   "mem_mb": 782.6484375,
+   "recall@10": 0.75438,
+   "qps": 18067.274943625478,
+   "latency_ms_per_query_batched": 0.055348690000028,
+   "single_p50_ms": 0.3585999984352384,
+   "single_p99_ms": 0.83470000026864,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "2",
+    "single_p99_ms": "2",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.754
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 32,
+    "efConstruction": 200,
+    "efSearch": 64
+   },
+   "build_s": 329.94859890000225,
+   "mem_mb": 782.6484375,
+   "recall@10": 0.83093,
+   "qps": 10202.011040813239,
+   "latency_ms_per_query_batched": 0.09801989000006871,
+   "single_p50_ms": 0.6914000005053822,
+   "single_p99_ms": 1.1980999988736585,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "2",
+    "single_p99_ms": "2",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.831
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 32,
+    "efConstruction": 200,
+    "efSearch": 128
+   },
+   "build_s": 329.94859890000225,
+   "mem_mb": 782.6484375,
+   "recall@10": 0.88965,
+   "qps": 4663.502200617983,
+   "latency_ms_per_query_batched": 0.2144311199997901,
+   "single_p50_ms": 1.2022000000797561,
+   "single_p99_ms": 2.213399999163812,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "3",
+    "single_p99_ms": "2",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.89
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 32,
+    "efConstruction": 200,
+    "efSearch": 256
+   },
+   "build_s": 329.94859890000225,
+   "mem_mb": 782.6484375,
+   "recall@10": 0.93445,
+   "qps": 1223.4745966484659,
+   "latency_ms_per_query_batched": 0.8173443099998622,
+   "single_p50_ms": 2.166299998862087,
+   "single_p99_ms": 4.979100000127801,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "4",
+    "latency_ms_per_query_batched": "4",
+    "single_p50_ms": "4",
+    "single_p99_ms": "3",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.934
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_faiss",
+   "params": {
+    "M": 32,
+    "efConstruction": 200,
+    "efSearch": 512
+   },
+   "build_s": 329.94859890000225,
+   "mem_mb": 782.6484375,
+   "recall@10": 0.96448,
+   "qps": 627.3045719330225,
+   "latency_ms_per_query_batched": 1.5941219700001967,
+   "single_p50_ms": 3.998700000011013,
+   "single_p99_ms": 6.767499999114079,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "2",
+    "latency_ms_per_query_batched": "2",
+    "single_p50_ms": "4",
+    "single_p99_ms": "4",
+    "build_s": "2"
+   },
+   "recall_across_attempts": [
+    0.964
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_usearch",
+   "params": {
+    "connectivity": 16,
+    "expansion_add": 200,
+    "expansion_search": 16
+   },
+   "build_s": 731.007256500001,
+   "mem_mb": 789.2109375,
+   "recall@10": 0.5592,
+   "qps": 26942.275366671875,
+   "latency_ms_per_query_batched": 0.037116390000119286,
+   "single_p50_ms": 0.3050999994229642,
+   "single_p99_ms": 1.2213999998493819,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "4",
+    "latency_ms_per_query_batched": "4",
+    "single_p50_ms": "3",
+    "single_p99_ms": "4",
+    "build_s": "4"
+   },
+   "recall_across_attempts": [
+    0.559
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_usearch",
+   "params": {
+    "connectivity": 16,
+    "expansion_add": 200,
+    "expansion_search": 32
+   },
+   "build_s": 731.007256500001,
+   "mem_mb": 789.2109375,
+   "recall@10": 0.67254,
+   "qps": 8807.118899901261,
+   "latency_ms_per_query_batched": 0.1135445099998833,
+   "single_p50_ms": 0.49419999959354755,
+   "single_p99_ms": 1.8426000006002141,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "4",
+    "latency_ms_per_query_batched": "4",
+    "single_p50_ms": "4",
+    "single_p99_ms": "4",
+    "build_s": "4"
+   },
+   "recall_across_attempts": [
+    0.672,
+    0.673
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_usearch",
+   "params": {
+    "connectivity": 16,
+    "expansion_add": 200,
+    "expansion_search": 64
+   },
+   "build_s": 731.007256500001,
+   "mem_mb": 789.2109375,
+   "recall@10": 0.7631,
+   "qps": 5151.690496323626,
+   "latency_ms_per_query_batched": 0.194111040000098,
+   "single_p50_ms": 1.0130999999091728,
+   "single_p99_ms": 2.869099998861202,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "4",
+    "latency_ms_per_query_batched": "4",
+    "single_p50_ms": "4",
+    "single_p99_ms": "4",
+    "build_s": "4"
+   },
+   "recall_across_attempts": [
+    0.763
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_usearch",
+   "params": {
+    "connectivity": 16,
+    "expansion_add": 200,
+    "expansion_search": 128
+   },
+   "build_s": 731.007256500001,
+   "mem_mb": 789.2109375,
+   "recall@10": 0.83224,
+   "qps": 2628.47527143521,
+   "latency_ms_per_query_batched": 0.38044870000012454,
+   "single_p50_ms": 1.2330999998084735,
+   "single_p99_ms": 1.9833999995171325,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "4",
+    "latency_ms_per_query_batched": "4",
+    "single_p50_ms": "4",
+    "single_p99_ms": "4",
+    "build_s": "4"
+   },
+   "recall_across_attempts": [
+    0.832
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_usearch",
+   "params": {
+    "connectivity": 16,
+    "expansion_add": 200,
+    "expansion_search": 256
+   },
+   "build_s": 731.007256500001,
+   "mem_mb": 789.2109375,
+   "recall@10": 0.88396,
+   "qps": 1329.9440153416213,
+   "latency_ms_per_query_batched": 0.7519113500000458,
+   "single_p50_ms": 2.1623000011459226,
+   "single_p99_ms": 3.42110000019602,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "4",
+    "latency_ms_per_query_batched": "4",
+    "single_p50_ms": "4",
+    "single_p99_ms": "4",
+    "build_s": "4"
+   },
+   "recall_across_attempts": [
+    0.884
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "hnsw_usearch",
+   "params": {
+    "connectivity": 16,
+    "expansion_add": 200,
+    "expansion_search": 512
+   },
+   "build_s": 731.007256500001,
+   "mem_mb": 789.2109375,
+   "recall@10": 0.92536,
+   "qps": 682.4887021502996,
+   "latency_ms_per_query_batched": 1.4652257199999439,
+   "single_p50_ms": 3.7737000002380228,
+   "single_p99_ms": 5.920099998547812,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "4",
+    "latency_ms_per_query_batched": "4",
+    "single_p50_ms": "4",
+    "single_p99_ms": "4",
+    "build_s": "4"
+   },
+   "recall_across_attempts": [
+    0.925
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 1024,
+    "nprobe": 1
+   },
+   "build_s": 2.930565099999967,
+   "mem_mb": 562.703125,
+   "recall@10": 0.37649,
+   "qps": 59229.916319984455,
+   "latency_ms_per_query_batched": 0.016883359999997082,
+   "single_p50_ms": 0.08830000001580629,
+   "single_p99_ms": 0.23709999982202135,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.376
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 1024,
+    "nprobe": 2
+   },
+   "build_s": 2.930565099999967,
+   "mem_mb": 562.703125,
+   "recall@10": 0.50865,
+   "qps": 32435.960062252554,
+   "latency_ms_per_query_batched": 0.030829979999998612,
+   "single_p50_ms": 0.1243000001522887,
+   "single_p99_ms": 0.26180000008935167,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.509
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 1024,
+    "nprobe": 4
+   },
+   "build_s": 2.930565099999967,
+   "mem_mb": 562.703125,
+   "recall@10": 0.62792,
+   "qps": 17990.91494776713,
+   "latency_ms_per_query_batched": 0.05558361000000787,
+   "single_p50_ms": 0.18629999999575375,
+   "single_p99_ms": 0.7381999998870015,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.628
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 1024,
+    "nprobe": 8
+   },
+   "build_s": 2.930565099999967,
+   "mem_mb": 562.703125,
+   "recall@10": 0.72812,
+   "qps": 9683.840990943947,
+   "latency_ms_per_query_batched": 0.10326480999999604,
+   "single_p50_ms": 0.33439999992879166,
+   "single_p99_ms": 0.5902000000332919,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.728
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 1024,
+    "nprobe": 16
+   },
+   "build_s": 2.930565099999967,
+   "mem_mb": 562.703125,
+   "recall@10": 0.81096,
+   "qps": 5084.614079825088,
+   "latency_ms_per_query_batched": 0.1966717600000038,
+   "single_p50_ms": 0.6562999999459862,
+   "single_p99_ms": 1.355699999976423,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.811
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 1024,
+    "nprobe": 32
+   },
+   "build_s": 2.930565099999967,
+   "mem_mb": 562.703125,
+   "recall@10": 0.87497,
+   "qps": 2603.049118027176,
+   "latency_ms_per_query_batched": 0.3841648599999871,
+   "single_p50_ms": 1.291100000116785,
+   "single_p99_ms": 2.160600000024715,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.875
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 1024,
+    "nprobe": 64
+   },
+   "build_s": 2.930565099999967,
+   "mem_mb": 562.703125,
+   "recall@10": 0.92583,
+   "qps": 1350.504165488287,
+   "latency_ms_per_query_batched": 0.7404642100000046,
+   "single_p50_ms": 2.6659999998628336,
+   "single_p99_ms": 4.365000000007058,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.926
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 1024,
+    "nprobe": 128
+   },
+   "build_s": 2.930565099999967,
+   "mem_mb": 562.703125,
+   "recall@10": 0.96257,
+   "qps": 688.6266206965231,
+   "latency_ms_per_query_batched": 1.4521657600000026,
+   "single_p50_ms": 5.302499999970678,
+   "single_p99_ms": 8.423799999945913,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.963
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 4096,
+    "nprobe": 1
+   },
+   "build_s": 21.130863299999874,
+   "mem_mb": 590.8203125,
+   "recall@10": 0.31454,
+   "qps": 57222.150694553005,
+   "latency_ms_per_query_batched": 0.017475749999994152,
+   "single_p50_ms": 0.10219999990113138,
+   "single_p99_ms": 0.15410000014526304,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.315
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 4096,
+    "nprobe": 2
+   },
+   "build_s": 21.130863299999874,
+   "mem_mb": 590.8203125,
+   "recall@10": 0.43175,
+   "qps": 48622.192919238194,
+   "latency_ms_per_query_batched": 0.020566740000003844,
+   "single_p50_ms": 0.10919999999714491,
+   "single_p99_ms": 0.20570000015140977,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.432
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 4096,
+    "nprobe": 4
+   },
+   "build_s": 21.130863299999874,
+   "mem_mb": 590.8203125,
+   "recall@10": 0.54558,
+   "qps": 34306.69429958239,
+   "latency_ms_per_query_batched": 0.029148829999985536,
+   "single_p50_ms": 0.12109999988751952,
+   "single_p99_ms": 0.27769999996962724,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.546
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 4096,
+    "nprobe": 8
+   },
+   "build_s": 21.130863299999874,
+   "mem_mb": 590.8203125,
+   "recall@10": 0.64735,
+   "qps": 23398.857153018696,
+   "latency_ms_per_query_batched": 0.042737130000000435,
+   "single_p50_ms": 0.1824000000851811,
+   "single_p99_ms": 0.36670000008598436,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.647
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 4096,
+    "nprobe": 16
+   },
+   "build_s": 21.130863299999874,
+   "mem_mb": 590.8203125,
+   "recall@10": 0.7341,
+   "qps": 13899.230302323029,
+   "latency_ms_per_query_batched": 0.0719464300000027,
+   "single_p50_ms": 0.2572000000782282,
+   "single_p99_ms": 0.48449999985678005,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.734
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 4096,
+    "nprobe": 32
+   },
+   "build_s": 21.130863299999874,
+   "mem_mb": 590.8203125,
+   "recall@10": 0.80714,
+   "qps": 7917.2294827186,
+   "latency_ms_per_query_batched": 0.12630680999998278,
+   "single_p50_ms": 0.45749999981126166,
+   "single_p99_ms": 0.8754999998927815,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.807
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 4096,
+    "nprobe": 64
+   },
+   "build_s": 21.130863299999874,
+   "mem_mb": 590.8203125,
+   "recall@10": 0.86597,
+   "qps": 4465.869901885839,
+   "latency_ms_per_query_batched": 0.22392053999999462,
+   "single_p50_ms": 0.8705999998710467,
+   "single_p99_ms": 1.604299999826253,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.866
+   ]
+  },
+  {
+   "dataset": "glove-100-angular",
+   "index": "ivf_flat",
+   "params": {
+    "nlist": 4096,
+    "nprobe": 128
+   },
+   "build_s": 21.130863299999874,
+   "mem_mb": 590.8203125,
+   "recall@10": 0.91409,
+   "qps": 2359.952790560351,
+   "latency_ms_per_query_batched": 0.4237372900000082,
+   "single_p50_ms": 1.4842000000498956,
+   "single_p99_ms": 2.2514999998293206,
+   "single_n": 500,
+   "reported_from_attempts": {
+    "qps": "3",
+    "latency_ms_per_query_batched": "3",
+    "single_p50_ms": "3",
+    "single_p99_ms": "3",
+    "build_s": "3"
+   },
+   "recall_across_attempts": [
+    0.914
+   ]
   }
  ]
 }

@@ -33,8 +33,10 @@ Shared tooling in `papers/`:
 | `schematics.py` | The method diagrams (`figures/fig0_*.png`, Figure 1 in each paper). |
 | `build_paper.py` | Typesets `paper.md` as an A4 preprint PDF, or IEEE-style two-column with `--two-column`. |
 
-Logs named `run_first_attempt_*.log` are kept on purpose: they are the failed first runs described in each paper's
-revision record.
+Logs named `run_first_attempt_*.log` (and the later `run_*_attempt_*` files in P4) are kept on purpose: they are the
+failed or discarded runs described in each paper's revision record. P4's `compare_attempts.py` and
+`merge_glove_attempts.py` show how its GloVe timings were taken from three attempts, and `benchmark.py --resume` keeps
+completed datasets when a run is interrupted.
 
 ## Books
 

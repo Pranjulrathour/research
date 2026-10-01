@@ -60,15 +60,21 @@ Two families dominate.[^3]
 
 The companion study (paper P4, described in Appendix A) built exact, IVF and HNSW indexes, the last in two independent implementations, over two standard public datasets: one million 128-dimensional SIFT image descriptors, and 1.18 million 100-dimensional GloVe word vectors. For each configuration it measured recall@10 against the ground truth shipped with the data, batched throughput, single-query latency on one thread (the number an online service actually sees), build time and memory.
 
-<!-- P4 numbers: fill from papers/p4-ann-frontiers/results.json after the run -->
+On SIFT, the textbook case, the graph index won at every level of recall. Exact search over the million vectors ran at about 380 queries a second with all eight cores. The HNSW graph reached 91 per cent recall at 28,500 queries a second, 74 times faster, and still managed 8,500 a second at 99 per cent, 22 times faster, with a single-query p99 of 1.25 ms. The inverted-file index reached the same recall levels at a third to a fifth of that throughput. But look at the shape rather than the ranking: for the graph, going from 91 to 99 per cent recall cost a factor of 3.4 in throughput, and going from 99 to 99.9 cost another 4.3. The last point of recall was as expensive as the eight before it.
 
-Whatever the exact numbers, three features of the frontiers are worth carrying away.
+GloVe, the hard case, overturned the ranking entirely. No index reached 99 per cent recall at all. At 90 per cent the approximate indexes were three times faster than brute force. At 95 per cent they were slower: the best inverted-file setting ran at about 690 queries a second and the best graph at about 630, while exact search over the whole collection ran at 750, because a dense matrix product on eight cores is a very efficient way to compare a million vectors, and an approximate index has to beat it with a chain of dependent memory accesses. The approximate indexes still answered a single query five to six times faster than exact search. But the thing the leaderboards are built to show, the gap in batched throughput, had closed.
+
+And the number a service actually pays, single-query latency on one thread, was two and a half to fifteen times what the batched figures implied, with a median of about six on SIFT and four on GloVe. Batching amortises the fixed cost of a search call and uses every core. A request arriving alone gets neither.
+
+Three features of the frontiers are worth carrying away.
 
 The frontier is steep near the top. Getting from 90 to 95 per cent recall is cheap, getting from 99 to 99.9 is expensive, and exact search at 100 per cent is a different regime altogether. So you have to decide how much recall the application really needs, and that's a product question before it's an engineering one. Would a user notice if one of ten results were the eleventh-nearest instead of the tenth?
 
 Batched throughput and single-query latency are different numbers for the same index. A batch of thousands of queries spreads the overheads and uses every core. A service answering one query at a time on one thread sees a per-query latency that can be an order of magnitude worse. Quoting one number when your workload looks like the other is the most common mistake in planning capacity for vector search.
 
-Build time and memory are part of the trade. The index that searches fastest may take longest to build and the most memory to hold, which matters if it has to be rebuilt as the data changes or has to fit on a particular machine. Chapter 11's cost lens applies here.
+Build time and memory are part of the trade. The index that searches fastest may take longest to build and the most memory to hold, which matters if it has to be rebuilt as the data changes or has to fit on a particular machine. In the study the graph took three minutes to build on SIFT where the inverted file took five seconds, and the denser graph added more than half again to the memory the raw vectors needed. Chapter 11's cost lens applies here.
+
+One more thing the study taught, which I didn't set out to measure. The GloVe half had to be run three times, for reasons that had nothing to do with the code: a process got killed, an antivirus scan woke up, and by the third attempt the laptop had been running benchmarks for eleven hours and had quietly throttled itself. Recall was identical across all three runs to three decimal places. Throughput differed by up to a factor of six. The same program, the same data, the same machine, three hours apart. If you take one habit from this chapter into any benchmark you ever run, make it this: record what else the machine was doing, repeat, and report the best timing as what the hardware can do while keeping the rest. A number without its environment is a number about the afternoon.
 
 ## The question you will be asked
 

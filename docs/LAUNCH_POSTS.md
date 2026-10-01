@@ -96,7 +96,24 @@ Preprint: <DOI> · Code: github.com/Pranjulrathour/research/tree/main/papers/p3-
 
 ## 6. Paper P4 — Recall–latency frontiers of ANN indexes
 
-<!-- fill after results: lead with the single-query vs batched gap and the recall knee -->
+**LinkedIn**
+New preprint: *Recall–Latency Frontiers of Approximate Nearest-Neighbour Indexes on Public Datasets*.
+
+Every retrieval-augmented AI system has a vector index in it, usually chosen from a leaderboard. I measured 70 configurations of exact, inverted-file and graph (HNSW) indexes on two standard datasets, recording not just recall and batched throughput but the numbers a service actually pays: single-query latency on one thread, build time and memory.
+
+Three things I'd want every team to know:
+
+1. The frontier is steep at the top. On SIFT the graph index reached 99% recall at 22× the throughput of brute force, but the last point of recall cost as much as the previous eight. Decide the recall your product needs before you choose anything.
+
+2. Sometimes approximate isn't faster. On GloVe, nothing reached 99% recall, and at 95% the approximate indexes were slower than exact search on eight cores (though still 5–6× faster for a single query). Brute force is the baseline every index must beat at your recall target.
+
+3. Batched throughput overstates serving capacity by 4–6×. Single-query latency was 2.5–15× the batched per-query cost. Size a service from the former.
+
+And one lesson from the lab bench: repeating the GloVe measurements three times on one laptop changed recall by nothing and throughput by up to 6×. The paper reports the best timing per configuration, keeps every attempt, and argues that machine state is part of the measurement.
+
+Preprint: <DOI> · Code: github.com/Pranjulrathour/research/tree/main/papers/p4-ann-frontiers
+
+**Blogger (long)**: abstract, Figure 1 (how the two index families work), Figure 2 and Figure 3 side by side (batched vs single-query), Tables 2 and 3, the GloVe discussion, Appendix B's cross-attempt table, and the reproduction command.
 
 ## 7. Paper P5 — Card-fraud detection under extreme imbalance
 
