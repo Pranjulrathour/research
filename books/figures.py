@@ -809,7 +809,7 @@ def agi_forecasts():
         ax.annotate(text, xy=(yr, (lo + hi) / 2), xytext=(tx, ty), fontsize=7.6, color=INK, va="center", ha="left",
                     arrowprops=dict(arrowstyle="-", color=LIGHT, lw=0.6, shrinkA=2, shrinkB=3))
     ax.set_xlim(1950, 2030); ax.set_ylim(1945, 2045); ax.set_xticks(range(1950, 2031, 10)); ax.set_yticks(range(1950, 2041, 10))
-    ax.set_xlabel("year the forecast was made", color=MID, fontsize=8.5); ax.set_ylabel("year it said machines would match people", color=MID, fontsize=8.5)
+    ax.set_xlabel("year the forecast was made", color=MID, fontsize=8.5); ax.set_ylabel("year it said the change would arrive", color=MID, fontsize=8.5)
     ax.grid(color=RULE, lw=0.5); ax.set_axisbelow(True)
     save(fig, "agi", "fig21_forecasts")
 

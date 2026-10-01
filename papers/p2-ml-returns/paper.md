@@ -132,11 +132,11 @@ The portfolio that buys the six stocks with the highest forecast and sells the s
 
 ### 4.5 Validation asked for the simplest model every time
 
-The hyperparameters chosen on the validation blocks are a result in themselves. On the raw target, ridge took its strongest penalty (α = 100) in all 15 test years, lasso its strongest (α = 0.01) in 13, the neural network its strongest weight decay in all 15, the random forest its shallowest trees (depth 3) in 12 and gradient boosting its shallowest (depth 2) in 14. Year after year, the data asked for the least flexible model on offer. The nonlinear models' flexibility had nothing to fit except noise.
+The hyperparameters chosen on the validation blocks are a result in themselves. On the raw target, ridge took its strongest penalty (α = 100) in all 15 test years, lasso its strongest (α = 0.01) in 13, the neural network its strongest weight decay in all 15, the random forest its shallowest trees (depth 3) in 12 and gradient boosting its shallowest (depth 2) in 14. Year after year, the data asked for the least flexible model on offer (Appendix A lists every choice). The nonlinear models' flexibility had nothing to fit except noise.
 
 ### 4.6 Year to year
 
-Figure 3 shows how unstable skill is. OLS had an R² of 12.8 per cent in 2017 and −7.5 per cent in 2018; the linear models and the historical mean were positive in 11 of the 15 years, and the nonlinear models in only 7 or 8. The worst year for most models was 2018, which ended with a sharp sell-off in the fourth quarter; for the random forest it was 2020.
+Figure 3 shows how unstable skill is. OLS had an R² of 12.8 per cent in 2017 and −7.5 per cent in 2018; the linear models and the historical mean were positive in 11 of the 15 years, and the nonlinear models in only 7 or 8. The worst year for most models was 2018, which ended with a sharp sell-off in the fourth quarter; for the random forest it was 2020. Appendix B gives the full table.
 
 ![Figure 3. Out-of-sample R² against a zero forecast within each test year, for OLS and the three nonlinear models (seed 0).](figures/fig3_yearly_r2.png)
 

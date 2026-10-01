@@ -96,7 +96,7 @@ Table 1 describes the two test sets. The chronological test set is the evening o
 
 ### 4.2 Model comparison
 
-Table 2 gives the time-aware results. The weighted random forest had the highest PR-AUC, 0.811 ± 0.003, followed by the unweighted forest (0.792), weighted gradient boosting (0.752) and weighted logistic regression (0.748). Plain logistic regression, the simplest model in the study, reached 0.712. The rule that flags the largest amounts did no better than chance on PR-AUC (0.0014, against a base rate of 0.0013), and its ROC-AUC of 0.38 is below one half, because in these data frauds tend to be smaller than ordinary transactions. The dummy classifier is 99.87 per cent accurate and catches nothing.
+Table 2 gives the time-aware results (every recorded metric for both protocols is in Appendix A). The weighted random forest had the highest PR-AUC, 0.811 ± 0.003, followed by the unweighted forest (0.792), weighted gradient boosting (0.752) and weighted logistic regression (0.748). Plain logistic regression, the simplest model in the study, reached 0.712. The rule that flags the largest amounts did no better than chance on PR-AUC (0.0014, against a base rate of 0.0013), and its ROC-AUC of 0.38 is below one half, because in these data frauds tend to be smaller than ordinary transactions. The dummy classifier is 99.87 per cent accurate and catches nothing.
 
 **Table 2. Time-aware test set, 56,962 transactions with 75 frauds.** Forests and boosting are mean ± standard deviation over five seeds; the other models are deterministic. Recall@P0.9 is the recall achievable at 90 per cent precision; Precision@R0.8 is the precision at 80 per cent recall. Savings and alerts are at the threshold chosen on the validation block.
 
