@@ -94,6 +94,26 @@ Write this on one page. Revisit it every quarter.
 
 The plan is deliberately short because long plans are not followed. It is deliberately specific because vague plans cannot be checked, and the whole argument of this book is that checkable beats plausible.
 
+## A worked example: one plan, filled in
+
+Abstract plans are easy to agree with and hard to start, so here is the one-page plan filled in for a composite student: a second-year MCA student at a good Indian institute, comfortable with Python and Java, aiming at a software or quantitative role at a large firm, with no particular domain yet. Nothing about this plan is prescriptive; its purpose is to show what "specific" looks like.
+
+**1. Domain.** Financial systems: payments, risk and market data. Reason: the firms I am aiming at run on them; the domain has public data I can work with (exchange prices, central-bank statistics, open payment-system data); and the problems (correctness under failure, latency, measurement) are the problems I find interesting. If I lose interest in six months, I will know by whether I have kept reading about it unprompted.
+
+**2. Judgment skills this year.** Verification and framing. Weekly practice: every Saturday, take one claim I read that week (a benchmark result, a product announcement, a "study shows") and write a half-page on what it actually measured and what it did not. Monthly: take one vague problem (a friend's startup idea, a college process that annoys everyone) and write it as a one-page problem statement with success criteria and constraints before thinking about solutions.
+
+**3. Systems knowledge this year.** The three fundamentals I understand least: consistency models in distributed data stores, how operating systems schedule threads and why that matters for tail latency, and the statistics of backtesting (what out-of-sample actually means). One textbook chapter and one hands-on measurement for each, by the end of each term.
+
+**4. What I am stopping.** Competitive-programming drill beyond the level needed to pass screening rounds; I am at that level. Collecting cloud-vendor certifications; I have one, which is enough. Watching tutorials on frameworks I am not using for a real project.
+
+**5. This quarter's verifiable work.** A small, fully reproducible empirical study: download public daily index data, test whether a simple risk model's predictions hold out of sample, publish the code, the data snapshot, the results and a short write-up with its limitations under my name, in a public repository, by 30 November. Who checks it: anyone who runs the script; I will ask two people to do so and record what broke. The next quarter's piece will be a working service with a measured latency budget.
+
+**6. How I use the tools.** Delegate freely: boilerplate, first drafts of documentation, test scaffolding, syntax I would otherwise look up. Delegate and check: analysis code (I read every line and re-derive one result by hand), literature summaries (I read the paper the summary cites before I cite it). Do myself: the problem statement, the design decision, the interpretation of any result, and anything I am trying to learn rather than produce.
+
+**7. What would change this plan.** If, by next summer, the firms I am aiming at have visibly stopped hiring for the quantitative and systems roles I am preparing for, I revisit the domain. If a tool appears that makes reproducible empirical work trivial to generate, the value of my quarterly pieces falls and I move toward work with more direct contact with real users. I will check both at the end of each term by reading the firms' actual postings and by asking two people in the roles what has changed.
+
+The plan is about three hundred words. Its value is not in the choices (a different student would make different ones) but in the fact that every line can be checked at the end of the quarter: either the study was published by 30 November or it was not; either the Saturday write-ups exist or they do not. A plan that can be checked is a plan that can be improved, which is the only kind worth having in a decade that will revise it for you.
+
 ## A note on the entry-level reader
 
 If you are a student or in your first job, the chapter above may read as advice for someone further along, so here is the version for you.

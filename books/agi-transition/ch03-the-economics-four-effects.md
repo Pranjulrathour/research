@@ -102,3 +102,11 @@ Decompose your own job, or the job you are training for, into tasks. Write down 
 [^8]: Brynjolfsson, E., Rock, D. & Syverson, C. (2021), "The Productivity J-Curve: How Intangibles Complement General Purpose Technologies", *American Economic Journal: Macroeconomics* 13(1).
 [^9]: Brynjolfsson, E., Li, D. & Raymond, L. (2025), "Generative AI at Work", *Quarterly Journal of Economics* 140(2), 889–942; first circulated as NBER Working Paper 31161 (2023).
 [^10]: Dell'Acqua, F. et al. (2023), "Navigating the Jagged Technological Frontier: Field Experimental Evidence of the Effects of AI on Knowledge Worker Productivity and Quality", Harvard Business School Working Paper 24-013.
+
+### Sources for this chapter
+- Acemoglu & Restrepo (2018, 2019) — the task framework and its four channels.
+- Autor, Chin, Salomons & Seegmiller (2024), *QJE* 139(3) — new work since 1940.
+- Bessen (2015), *Learning by Doing* — the ATM and bank-teller case.
+- Eloundou et al. (2023); Gmyrek, Berg & Bescond (2023), ILO WP 96; Cazzaniga et al. (2024), IMF SDN/2024/001 — exposure estimates and their interpretation.
+- Brynjolfsson, Li & Raymond (2025), *QJE* 140(2); Dell'Acqua et al. (2023), HBS WP 24-013 — the two field experiments in the worked case.
+- David (1990), *AER* 80(2); Solow (1987); Brynjolfsson, Rock & Syverson (2021), *AEJ: Macro* 13(1) — diffusion lags and the productivity J-curve.

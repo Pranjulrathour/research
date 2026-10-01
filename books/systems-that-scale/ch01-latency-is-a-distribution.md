@@ -52,7 +52,7 @@ Two further habits. Measure at the right place: the service's own view of its la
 
 ## What this looks like when measured
 
-The companion study to this book (Appendix A, paper P3 in the research repository) built three minimal HTTP servers that differ only in their concurrency model, ran identical workloads against them at rising concurrency, and recorded every request's latency. Chapter 2 is about *why* the designs differ; here the point is only what a latency distribution looks like when you actually measure one.
+The companion study to this book (Appendix A, paper P3 in the research repository) built four minimal HTTP servers that differ only in their concurrency model, ran identical workloads against them at rising concurrency, and recorded every request's latency. Chapter 2 is about *why* the designs differ; here the point is only what a latency distribution looks like when you actually measure one.
 
 <!-- P3 numbers: fill from papers/p3-tail-latency/results.json after the run -->
 
@@ -76,7 +76,7 @@ Measuring percentiles costs more than measuring means: histograms instead of cou
 
 ## Run this yourself
 
-The harness from the research repository (`papers/p3-tail-latency/harness.py`) is a single Python file: three servers, three workloads, a load generator, and a results file. Run it on an idle machine; it takes under half an hour. Then open the results and, for one server and one workload, plot the full latency histogram at the highest concurrency rather than the percentiles. Look at its shape: the floor, the body, the tail. Compute the mean and mark it on the plot; notice how few requests are near it. Then change one thing (halve the simulated IO wait, or double the CPU work) and run again; watch which part of the distribution moves. One afternoon with the actual distribution in front of you will do more for your intuition than any number of percentile tables, including the ones in this book.
+The harness from the research repository (`papers/p3-tail-latency/harness.py`) is a single Python file: four servers, three workloads, a load generator, and a results file. Run it on an idle machine; it takes under half an hour. Then open the results and, for one server and one workload, plot the full latency histogram at the highest concurrency rather than the percentiles. Look at its shape: the floor, the body, the tail. Compute the mean and mark it on the plot; notice how few requests are near it. Then change one thing (halve the simulated IO wait, or double the CPU work) and run again; watch which part of the distribution moves. One afternoon with the actual distribution in front of you will do more for your intuition than any number of percentile tables, including the ones in this book.
 
 ---
 

@@ -6,7 +6,7 @@ The measurements in chapters 1, 2 and 4 come from two small, fully published ben
 
 **Question.** How do p50, p95 and p99 latency diverge across threaded, event-loop (async) and hybrid server designs as concurrency rises, on IO-bound, CPU-bound and mixed workloads?
 
-**Servers.** Three minimal HTTP servers in Python, identical in protocol and response, differing only in concurrency model: (a) a thread-per-connection server; (b) a single event loop; (c) a hybrid that runs the event loop for IO and hands CPU-bound work to a pool of worker processes. No framework; the point is the model, not the library.
+**Servers.** Four minimal HTTP servers in Python, identical in protocol and response, differing only in concurrency model: (a) a thread-per-connection server; (b) a single event loop with CPU-bound work run inline (the classic mistake); (c) an event loop that hands CPU-bound work to a thread pool (responsive, but still serialised by the interpreter lock); (d) an event loop that hands CPU-bound work to a process pool (the pattern that uses the cores). No framework; the point is the model, not the library. Whether the interpreter had its global lock enabled is recorded with the results.
 
 **Workloads.** *IO-bound*: each request awaits a simulated 20 ms downstream call. *CPU-bound*: each request performs a fixed amount of pure computation (a few milliseconds on one core). *Mixed*: a 10 ms simulated IO wait followed by a smaller computation.
 
