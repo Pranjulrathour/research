@@ -1,0 +1,14 @@
+# Large raw data: re-downloadable from the sources recorded in each papers/*/data/SNAPSHOT.json
+papers/*/data/*.hdf5
+papers/*/data/*.csv
+papers/*/data/*.parquet
+papers/*/data/*.arff
+!papers/*/data/SNAPSHOT.json
+
+# Build outputs
+books/*/build/
+*.epub
+*.pdf
+__pycache__/
+*.pyc
+.ipynb_checkpoints/

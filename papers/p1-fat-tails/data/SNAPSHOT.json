@@ -1,0 +1,20 @@
+{
+ "source": "Yahoo Finance via yfinance 1.7.0",
+ "snapshot_utc": "2026-10-01T06:26",
+ "fields": "unadjusted daily Close (index levels, no dividends)",
+ "series": {
+  "NIFTY50": {
+   "ticker": "^NSEI",
+   "rows": 4671,
+   "first": "2007-09-17",
+   "last": "2026-09-30"
+  },
+  "SP500": {
+   "ticker": "^GSPC",
+   "rows": 4790,
+   "first": "2007-09-17",
+   "last": "2026-09-30"
+  }
+ },
+ "note": "NIFTY 50 history on Yahoo begins 2007-09-17; analysis window 2010-01-01 to 2026-09-30"
+}

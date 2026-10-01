@@ -1,0 +1,494 @@
+{
+ "meta": {
+  "source": "Yahoo Finance via yfinance 1.7.0",
+  "snapshot_utc": "2026-10-01T06:26",
+  "fields": "unadjusted daily Close (index levels, no dividends)",
+  "series": {
+   "NIFTY50": {
+    "ticker": "^NSEI",
+    "rows": 4671,
+    "first": "2007-09-17",
+    "last": "2026-09-30"
+   },
+   "SP500": {
+    "ticker": "^GSPC",
+    "rows": 4790,
+    "first": "2007-09-17",
+    "last": "2026-09-30"
+   }
+  },
+  "note": "NIFTY 50 history on Yahoo begins 2007-09-17; analysis window 2010-01-01 to 2026-09-30"
+ },
+ "window": 500,
+ "lambda": 0.94,
+ "distribution": {
+  "NIFTY50": {
+   "n_days": 4113,
+   "first": "2010-01-04",
+   "last": "2026-09-30",
+   "mean_daily": 0.0003574018573119121,
+   "std_daily": 0.01038913302869162,
+   "ann_vol": 0.16492237398891177,
+   "skew": -0.8780968313792331,
+   "excess_kurtosis": 13.339257037460314,
+   "jarque_bera_stat": 31022.301556160328,
+   "jarque_bera_p": 0.0,
+   "min_day": {
+    "date": "2020-03-23",
+    "ret": -0.1390375646105113
+   },
+   "max_day": {
+    "date": "2020-04-07",
+    "ret": 0.08400295216282139
+   },
+   "student_t_fit_full_sample": {
+    "df": 4.059968650040725,
+    "loc": 0.0005837914920894982,
+    "scale": 0.007330656435422345
+   },
+   "exceedances": {
+    "2sigma": {
+     "empirical_freq": 0.046194991490396305,
+     "gaussian_freq": 0.04550026389635839,
+     "ratio": 1.015268649773557,
+     "empirical_count": 190,
+     "gaussian_expected_count": 187.14258540572206
+    },
+    "3sigma": {
+     "empirical_freq": 0.011913445173839047,
+     "gaussian_freq": 0.0026997960632601866,
+     "ratio": 4.412720403574763,
+     "empirical_count": 49,
+     "gaussian_expected_count": 11.104261208189147
+    },
+    "4sigma": {
+     "empirical_freq": 0.004133236080719669,
+     "gaussian_freq": 6.334248366623973e-05,
+     "ratio": 65.25219475918026,
+     "empirical_count": 17,
+     "gaussian_expected_count": 0.260527635319244
+    },
+    "5sigma": {
+     "empirical_freq": 0.0024313153415998056,
+     "gaussian_freq": 5.733031437583866e-07,
+     "ratio": 4240.889602769144,
+     "empirical_count": 10,
+     "gaussian_expected_count": 0.002357995830278244
+    }
+   }
+  },
+  "SP500": {
+   "n_days": 4211,
+   "first": "2010-01-04",
+   "last": "2026-09-30",
+   "mean_daily": 0.0004573647292278492,
+   "std_daily": 0.01083868108678706,
+   "ann_vol": 0.17205872817346707,
+   "skew": -0.6053265560670269,
+   "excess_kurtosis": 13.49116752716057,
+   "jarque_bera_stat": 32192.618140013976,
+   "jarque_bera_p": 0.0,
+   "min_day": {
+    "date": "2020-03-16",
+    "ret": -0.12765219747281709
+   },
+   "max_day": {
+    "date": "2025-04-09",
+    "ret": 0.09089487983303712
+   },
+   "student_t_fit_full_sample": {
+    "df": 2.779772166405268,
+    "loc": 0.0008650131274906814,
+    "scale": 0.006390124475425505
+   },
+   "exceedances": {
+    "2sigma": {
+     "empirical_freq": 0.047019710282593205,
+     "gaussian_freq": 0.04550026389635839,
+     "ratio": 1.0333942323872196,
+     "empirical_count": 198,
+     "gaussian_expected_count": 191.60161126756518
+    },
+    "3sigma": {
+     "empirical_freq": 0.014723343623842318,
+     "gaussian_freq": 0.0026997960632601866,
+     "ratio": 5.453502145663137,
+     "empirical_count": 62,
+     "gaussian_expected_count": 11.368841222388646
+    },
+    "4sigma": {
+     "empirical_freq": 0.006649251959154595,
+     "gaussian_freq": 6.334248366623973e-05,
+     "ratio": 104.97302243768053,
+     "empirical_count": 28,
+     "gaussian_expected_count": 0.2667351987185355
+    },
+    "5sigma": {
+     "empirical_freq": 0.002849679411066255,
+     "gaussian_freq": 5.733031437583866e-07,
+     "ratio": 4970.632800623935,
+     "empirical_count": 12,
+     "gaussian_expected_count": 0.002414179538366566
+    }
+   }
+  }
+ },
+ "backtests": {
+  "NIFTY50": {
+   "0.95": {
+    "window": 500,
+    "alpha": 0.95,
+    "first_forecast": "2012-01-13",
+    "last_forecast": "2026-09-30",
+    "models": {
+     "gaussian": {
+      "n_obs": 3613,
+      "violations": 161,
+      "expected_violations": 180.65000000000015,
+      "violation_rate": 0.04456130639357874,
+      "kupiec_lr": 2.3316971998943927,
+      "kupiec_p": 0.12676360063348,
+      "lr_ind": 5.692811481543458,
+      "p_ind": 0.01703454201607991,
+      "lr_cc": 8.024508681437851,
+      "p_cc": 0.018092562428370616,
+      "transitions": {
+       "n00": 3304,
+       "n01": 147,
+       "n10": 147,
+       "n11": 14
+      },
+      "mean_excess_loss_on_violation": 0.008171225206935152,
+      "mean_var": 0.01630249895929203
+     },
+     "historical": {
+      "n_obs": 3613,
+      "violations": 178,
+      "expected_violations": 180.65000000000015,
+      "violation_rate": 0.04926653750345973,
+      "kupiec_lr": 0.041110448636118235,
+      "kupiec_p": 0.8393248770684952,
+      "lr_ind": 6.87443097992832,
+      "p_ind": 0.008743759198418357,
+      "lr_cc": 6.915541428564438,
+      "p_cc": 0.03149990609449239,
+      "transitions": {
+       "n00": 3273,
+       "n01": 161,
+       "n10": 161,
+       "n11": 17
+      },
+      "mean_excess_loss_on_violation": 0.008301129134372524,
+      "mean_var": 0.015488944643369109
+     },
+     "student_t": {
+      "n_obs": 3613,
+      "violations": 192,
+      "expected_violations": 180.65000000000015,
+      "violation_rate": 0.05314143371159701,
+      "kupiec_lr": 0.7361964469444047,
+      "kupiec_p": 0.3908820226625681,
+      "lr_ind": 6.916352358742415,
+      "p_ind": 0.008541102186042883,
+      "lr_cc": 7.65254880568682,
+      "p_cc": 0.02179064776492817,
+      "transitions": {
+       "n00": 3247,
+       "n01": 173,
+       "n10": 173,
+       "n11": 19
+      },
+      "mean_excess_loss_on_violation": 0.008119308743288632,
+      "mean_var": 0.014893664350277194
+     },
+     "ewma_gaussian": {
+      "n_obs": 3613,
+      "violations": 207,
+      "expected_violations": 180.65000000000015,
+      "violation_rate": 0.057293108220315525,
+      "kupiec_lr": 3.8719444069408837,
+      "kupiec_p": 0.04909960781857138,
+      "lr_ind": 0.11933885186181215,
+      "p_ind": 0.7297526670553858,
+      "lr_cc": 3.991283258802696,
+      "p_cc": 0.13592641179897816,
+      "transitions": {
+       "n00": 3211,
+       "n01": 194,
+       "n10": 194,
+       "n11": 13
+      },
+      "mean_excess_loss_on_violation": 0.00605118589898795,
+      "mean_var": 0.015124782446674551
+     }
+    }
+   },
+   "0.99": {
+    "window": 500,
+    "alpha": 0.99,
+    "first_forecast": "2012-01-13",
+    "last_forecast": "2026-09-30",
+    "models": {
+     "gaussian": {
+      "n_obs": 3613,
+      "violations": 57,
+      "expected_violations": 36.13000000000003,
+      "violation_rate": 0.015776363133130362,
+      "kupiec_lr": 10.357768312586643,
+      "kupiec_p": 0.001289309742874161,
+      "lr_ind": 13.535425650046022,
+      "p_ind": 0.00023410228321115071,
+      "lr_cc": 23.893193962632665,
+      "p_cc": 6.481251190296201e-06,
+      "transitions": {
+       "n00": 3504,
+       "n01": 51,
+       "n10": 51,
+       "n11": 6
+      },
+      "mean_excess_loss_on_violation": 0.011525728920446093,
+      "mean_var": 0.023230469402992032
+     },
+     "historical": {
+      "n_obs": 3613,
+      "violations": 42,
+      "expected_violations": 36.13000000000003,
+      "violation_rate": 0.011624688624411846,
+      "kupiec_lr": 0.9155086712128764,
+      "kupiec_p": 0.3386570185594259,
+      "lr_ind": 10.41563815921927,
+      "p_ind": 0.001249526693035523,
+      "lr_cc": 11.331146830432147,
+      "p_cc": 0.0034631613738312812,
+      "transitions": {
+       "n00": 3532,
+       "n01": 38,
+       "n10": 38,
+       "n11": 4
+      },
+      "mean_excess_loss_on_violation": 0.01375596028796265,
+      "mean_var": 0.026513035189380457
+     },
+     "student_t": {
+      "n_obs": 3613,
+      "violations": 37,
+      "expected_violations": 36.13000000000003,
+      "violation_rate": 0.010240797121505675,
+      "kupiec_lr": 0.020994820615953813,
+      "kupiec_p": 0.8847930669269618,
+      "lr_ind": 3.5577519268264837,
+      "p_ind": 0.05926795544425461,
+      "lr_cc": 3.5787467474424375,
+      "p_cc": 0.167064824083043,
+      "transitions": {
+       "n00": 3540,
+       "n01": 35,
+       "n10": 35,
+       "n11": 2
+      },
+      "mean_excess_loss_on_violation": 0.01512139108012487,
+      "mean_var": 0.02622302961692317
+     },
+     "ewma_gaussian": {
+      "n_obs": 3613,
+      "violations": 69,
+      "expected_violations": 36.13000000000003,
+      "violation_rate": 0.019097702740105176,
+      "kupiec_lr": 23.84664006414721,
+      "kupiec_p": 1.0432381322746566e-06,
+      "lr_ind": 0.0868350922838772,
+      "p_ind": 0.7682399114655173,
+      "lr_cc": 23.933475156431086,
+      "p_cc": 6.352020680900015e-06,
+      "transitions": {
+       "n00": 3475,
+       "n01": 68,
+       "n10": 68,
+       "n11": 1
+      },
+      "mean_excess_loss_on_violation": 0.0075317059070415604,
+      "mean_var": 0.02139126844700671
+     }
+    }
+   }
+  },
+  "SP500": {
+   "0.95": {
+    "window": 500,
+    "alpha": 0.95,
+    "first_forecast": "2011-12-27",
+    "last_forecast": "2026-09-30",
+    "models": {
+     "gaussian": {
+      "n_obs": 3711,
+      "violations": 181,
+      "expected_violations": 185.55000000000015,
+      "violation_rate": 0.048773915386688224,
+      "kupiec_lr": 0.11836681616296119,
+      "kupiec_p": 0.730812603753526,
+      "lr_ind": 30.830643181803225,
+      "p_ind": 2.815565720949974e-08,
+      "lr_cc": 30.949009997966186,
+      "p_cc": 1.9033027222227052e-07,
+      "transitions": {
+       "n00": 3376,
+       "n01": 153,
+       "n10": 153,
+       "n11": 28
+      },
+      "mean_excess_loss_on_violation": 0.0097750025818311,
+      "mean_var": 0.016779968218728285
+     },
+     "historical": {
+      "n_obs": 3711,
+      "violations": 176,
+      "expected_violations": 185.55000000000015,
+      "violation_rate": 0.047426569657774184,
+      "kupiec_lr": 0.5260282705205555,
+      "kupiec_p": 0.46828146010722005,
+      "lr_ind": 22.47070273821896,
+      "p_ind": 2.1337327563014156e-06,
+      "lr_cc": 22.996731008739516,
+      "p_cc": 1.0146664731384395e-05,
+      "transitions": {
+       "n00": 3382,
+       "n01": 152,
+       "n10": 152,
+       "n11": 24
+      },
+      "mean_excess_loss_on_violation": 0.009848133205793226,
+      "mean_var": 0.016684865494682555
+     },
+     "student_t": {
+      "n_obs": 3711,
+      "violations": 215,
+      "expected_violations": 185.55000000000015,
+      "violation_rate": 0.057935866343303694,
+      "kupiec_lr": 4.691565222887903,
+      "kupiec_p": 0.030311024249372317,
+      "lr_ind": 25.300542481025104,
+      "p_ind": 4.905707564392228e-07,
+      "lr_cc": 29.992107703913007,
+      "p_cc": 3.071118412497789e-07,
+      "transitions": {
+       "n00": 3312,
+       "n01": 183,
+       "n10": 183,
+       "n11": 32
+      },
+      "mean_excess_loss_on_violation": 0.009947377383901175,
+      "mean_var": 0.014681413458836086
+     },
+     "ewma_gaussian": {
+      "n_obs": 3711,
+      "violations": 206,
+      "expected_violations": 185.55000000000015,
+      "violation_rate": 0.055510644031258424,
+      "kupiec_lr": 2.2941877860462228,
+      "kupiec_p": 0.12985912540119132,
+      "lr_ind": 1.1441401593249338,
+      "p_ind": 0.2847791877516838,
+      "lr_cc": 3.4383279453711566,
+      "p_cc": 0.17921591469807452,
+      "transitions": {
+       "n00": 3313,
+       "n01": 191,
+       "n10": 191,
+       "n11": 15
+      },
+      "mean_excess_loss_on_violation": 0.007103754011628836,
+      "mean_var": 0.015065753389282462
+     }
+    }
+   },
+   "0.99": {
+    "window": 500,
+    "alpha": 0.99,
+    "first_forecast": "2011-12-27",
+    "last_forecast": "2026-09-30",
+    "models": {
+     "gaussian": {
+      "n_obs": 3711,
+      "violations": 89,
+      "expected_violations": 37.110000000000035,
+      "violation_rate": 0.0239827539746699,
+      "kupiec_lr": 52.661850332900826,
+      "kupiec_p": 3.9621301056612817e-13,
+      "lr_ind": 24.062350525243346,
+      "p_ind": 9.326612470174594e-07,
+      "lr_cc": 76.72420085814417,
+      "p_cc": 2.1855033143251847e-17,
+      "transitions": {
+       "n00": 3544,
+       "n01": 77,
+       "n10": 77,
+       "n11": 12
+      },
+      "mean_excess_loss_on_violation": 0.011001189677919562,
+      "mean_var": 0.023921273543762684
+     },
+     "historical": {
+      "n_obs": 3711,
+      "violations": 46,
+      "expected_violations": 37.110000000000035,
+      "violation_rate": 0.012395580706009162,
+      "kupiec_lr": 1.9989819734222465,
+      "kupiec_p": 0.15740489501111105,
+      "lr_ind": 18.740926257271838,
+      "p_ind": 1.4973411837894048e-05,
+      "lr_cc": 20.739908230694084,
+      "p_cc": 3.136072903862841e-05,
+      "transitions": {
+       "n00": 3624,
+       "n01": 40,
+       "n10": 40,
+       "n11": 6
+      },
+      "mean_excess_loss_on_violation": 0.013194340371033989,
+      "mean_var": 0.029989490267529766
+     },
+     "student_t": {
+      "n_obs": 3711,
+      "violations": 55,
+      "expected_violations": 37.110000000000035,
+      "violation_rate": 0.014820803018054433,
+      "kupiec_lr": 7.58639518469414,
+      "kupiec_p": 0.005881043039429622,
+      "lr_ind": 19.210614702754583,
+      "p_ind": 1.1706066884824386e-05,
+      "lr_cc": 26.797009887448723,
+      "p_cc": 1.51741103202075e-06,
+      "transitions": {
+       "n00": 3607,
+       "n01": 48,
+       "n10": 48,
+       "n11": 7
+      },
+      "mean_excess_loss_on_violation": 0.011811172474026976,
+      "mean_var": 0.029826373817654708
+     },
+     "ewma_gaussian": {
+      "n_obs": 3711,
+      "violations": 85,
+      "expected_violations": 37.110000000000035,
+      "violation_rate": 0.02290487739153867,
+      "kupiec_lr": 45.737000254069585,
+      "kupiec_p": 1.3524390592181266e-11,
+      "lr_ind": 3.5539261595794187,
+      "p_ind": 0.059404733694978,
+      "lr_cc": 49.290926413649004,
+      "p_cc": 1.9797544386076766e-11,
+      "transitions": {
+       "n00": 3545,
+       "n01": 80,
+       "n10": 80,
+       "n11": 5
+      },
+      "mean_excess_loss_on_violation": 0.007823481840183596,
+      "mean_var": 0.021307782524660396
+     }
+    }
+   }
+  }
+ }
+}

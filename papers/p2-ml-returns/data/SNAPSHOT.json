@@ -1,0 +1,9 @@
+{
+ "source": "Yahoo Finance via yfinance 1.7.0 (adjusted close)",
+ "snapshot_utc": "2026-10-01T06:41+00:00",
+ "universe": "Dow Jones Industrial Average constituents as listed on 2026-10-01 (30 tickers)",
+ "survivorship": "current constituents; recorded as a limitation",
+ "rows": 5722,
+ "first": "2004-01-02",
+ "last": "2026-09-30"
+}
