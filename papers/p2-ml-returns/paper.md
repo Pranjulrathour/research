@@ -1,5 +1,6 @@
 ---
 title: "Do Machine-Learning Return Predictors Beat Linear Baselines Out of Sample? A Small-Scale Walk-Forward Replication on Public Equity Data"
+short: "ML versus linear return prediction, walk-forward"
 author: "Pranjul Rathour"
 affiliation: "Independent researcher, Kanpur, India · pranjulrathour41@gmail.com · https://pranjulrathour.scult.in"
 date: "October 2026"
@@ -13,7 +14,7 @@ A widely cited result in empirical asset pricing is that tree ensembles and neur
 
 <!-- RESULTS SUMMARY: fill from results.json -->
 
-Code, data snapshots and every number are public and reproduce with one command.
+The code, the data provenance and every number are public, and the analysis reproduces with one command.
 
 ## 1. Introduction
 
@@ -25,7 +26,7 @@ This paper answers both on data anyone can download. Its ambition is deliberatel
 
 ## 2. Data
 
-Daily adjusted closing prices for the 30 current constituents of the Dow Jones Industrial Average and daily closes of the S&P 500 index were downloaded on 1 October 2026 via `yfinance` (version 1.7.0) for 2 January 2004 to 30 September 2026. One constituent lacked a full history over the window and was dropped by a 95 per cent completeness rule, leaving 29 stocks; the dropped ticker is recorded in `results.json`. Provenance is in `data/SNAPSHOT.json`.
+Daily adjusted closing prices for the 30 current constituents of the Dow Jones Industrial Average and daily closes of the S&P 500 index were downloaded on 1 October 2026 via `yfinance` (version 1.7.0) for 2 January 2004 to 30 September 2026. One constituent lacked a full history over the window and was dropped by a 95 per cent completeness rule, leaving 29 stocks; the dropped ticker is recorded in `results.json`. The download date, row counts and SHA-256 hashes of both files are recorded in `data/SNAPSHOT.json`. The files themselves are not redistributed, because the price data are licensed; `fetch_data.py p2` downloads them again. A second download on the same day reproduced the S&P 500 file exactly and the Dow 30 adjusted closes to within 1.5 parts per million, which is rounding in Yahoo's adjustment.
 
 **Survivorship.** The universe is the *current* Dow, so stocks that were removed (and the firms that failed) are absent, and the sample's average return is biased upward relative to an investable strategy. The paper's object is the *relative ranking of forecasting methods*, not the level of returns, and survivorship affects every model's target identically. It is nonetheless a limitation and is stated as one in Section 6; the long-short portfolio results in particular should be read as comparisons between models, not as achievable performance.
 
@@ -56,19 +57,25 @@ OLS; ridge (α ∈ {0.1, 1, 10, 100}); lasso (α ∈ {10⁻⁴, 10⁻³, 10⁻²
 
 ### 3.3 Protocol
 
-Walk-forward by calendar year. For test year *Y* (2012 to 2026), the training window is every stock-month with a target month before January of *Y*. Hyperparameters are chosen by mean squared error on the last 24 months of the training window (the validation block), with the model fitted on the earlier part; the chosen model is then refitted on the whole training window and applied to year *Y*. The window expands each year. Stochastic models are run with seeds 0–4.
+Walk-forward by calendar year. For test year *Y* (2012 to 2026), the training window is every stock-month with a target month before January of *Y*. Hyperparameters are chosen by mean squared error on the last 24 months of the training window (the validation block), with the model fitted on the earlier part; the chosen model is then refitted on the whole training window and applied to year *Y*. The window expands each year. Stochastic models are run with seeds 0–4. Figure 1 shows the protocol, and the shuffled cross-validation of Section 3.5 that it is compared with.
+
+![Figure 1. The walk-forward protocol for five of the fifteen test years, and one fold of the shuffled five-fold cross-validation used as the leaky comparison. In the walk-forward design every test year lies after all the data used to fit and tune the model; in shuffled cross-validation the test months are scattered through the whole sample. Schematic.](figures/fig0_protocol.png)
 
 ### 3.4 Metrics
 
-Pooled out-of-sample R² in the Gu–Kelly–Xiu form, 1 − Σ(*y* − *ŷ*)² / Σ *y*², against a zero forecast (and, additionally, against the historical mean); directional accuracy; a Diebold–Mariano test of each model's squared-error loss against OLS (HAC variance with lag 0, since forecasts are one step ahead), with positive statistics meaning the model beat OLS; and a monthly long-short portfolio that goes long the six stocks with the highest forecast and short the six lowest, equally weighted, reported as mean monthly return and annualised Sharpe ratio with a 90 per cent block-bootstrap interval (block length 6, 2,000 resamples).
+Pooled out-of-sample R² in the Gu–Kelly–Xiu form, 1 − Σ(*y* − *ŷ*)² / Σ *y*², against a zero forecast (and, additionally, against the historical mean); directional accuracy; a Diebold–Mariano test of each model's squared-error loss against OLS (HAC variance with lag 0, since forecasts are one step ahead), with positive statistics meaning the model beat OLS; and a monthly long-short portfolio that goes long the six stocks with the highest forecast and short the six lowest, equally weighted, reported as mean monthly return and annualised Sharpe ratio with a 90 per cent circular block-bootstrap interval (Politis and Romano 1992; block length 6 months, 2,000 resamples).
 
 ### 3.5 The wrong way, measured
 
 The same models with the middle hyperparameter of each grid are evaluated with shuffled five-fold cross-validation over all stock-months, pooling predictions and computing the same out-of-sample R². This protocol lets a model trained on 2020 predict 2015; it is the most common error in casual replications and its inflation is reported alongside the honest results.
 
-### 3.6 Reproducibility
+### 3.6 Revision record
 
-`python analysis.py` reproduces every number and figure from the committed data snapshots in about an hour on a 12-core laptop. Python 3.13, scikit-learn 1.9, pandas 2.2, SciPy 1.18.
+The design as first written rank-normalised every feature within each month. For the two market features that would have been a mistake: they take the same value for every stock in a month, so their within-month rank is a constant and the information disappears. Before any result had been produced, they were changed to be scaled by their own expanding standard deviation, using only past months. The completeness rule that drops tickers without a full price history was also added at that stage, and the dropped ticker is recorded in `results.json`. Nothing was changed after results were seen.
+
+### 3.7 Reproducibility
+
+`python analysis.py` reproduces every number and figure from the two snapshot files, and `python analysis.py --plots-only` redraws the figures from a completed run. The software is Python 3.13 with scikit-learn 1.9, pandas 2.2 and SciPy 1.18.
 
 ## 4. Results
 
@@ -76,7 +83,7 @@ The same models with the middle hyperparameter of each grid are evaluated with s
   Table 1: panel and protocol summary
   Table 2: raw target — per model: R2 vs zero (mean±sd), R2 vs histmean, dir acc, DM vs OLS (stat, p), LS Sharpe (CI), leaky-CV R2
   Table 3: demeaned target — same
-  Figure 1: honest vs leaky R2; Figure 2: long-short cumulative; Figure 3: yearly R2
+  Figure 2: honest vs leaky R2; Figure 3: long-short cumulative; Figure 4: yearly R2
   Text: ranking; whether any model beats OLS significantly; the size of the leak; year-to-year instability
 -->
 
@@ -112,12 +119,14 @@ The same models with the middle hyperparameter of each grid are evaluated with s
 - Bali, T. G., Cakici, N. & Whitelaw, R. F. (2011). Maxing out: Stocks as lotteries and the cross-section of expected returns. *Journal of Financial Economics*, 99(2), 427–446.
 - Bailey, D. H., Borwein, J., López de Prado, M. & Zhu, Q. J. (2014). Pseudo-mathematics and financial charlatanism: The effects of backtest overfitting on out-of-sample performance. *Notices of the AMS*, 61(5), 458–471.
 - López de Prado, M. (2018). *Advances in Financial Machine Learning*. Wiley. (Chapter 7, on cross-validation leakage in finance.)
-- Politis, D. N. & Romano, J. P. (1994). The stationary bootstrap. *Journal of the American Statistical Association*, 89(428), 1303–1313.
+- Politis, D. N. & Romano, J. P. (1992). A circular block-resampling procedure for stationary data. In R. LePage & L. Billard (eds.), *Exploring the Limits of Bootstrap*, 263–270. Wiley.
 
 ## Data and code availability
 
-Code, `results.json`, figures and `data/SNAPSHOT.json` are at https://github.com/Pranjulrathour/research under `papers/p2-ml-returns/`. Price data are from Yahoo Finance via `yfinance` and are redistributed only as dated snapshots for reproducibility.
+Code, `results.json`, the figures and `data/SNAPSHOT.json` are at https://github.com/Pranjulrathour/research under `papers/p2-ml-returns/`. The code is MIT-licensed. Price data come from Yahoo Finance via `yfinance` and are not redistributed; `python fetch_data.py p2` in the `papers/` folder downloads them and checks them against the recorded hashes.
 
-## Declaration
+## Declarations
 
-The author has no competing interests and received no funding for this work.
+*Competing interests and funding.* The author has no competing interests and received no funding for this work.
+
+*Use of AI tools.* Generative AI tools were used to help draft parts of the text and code. All results were produced by the published scripts from the snapshot data, and the author reviewed the analysis and takes full responsibility for the content.

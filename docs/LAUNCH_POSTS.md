@@ -46,7 +46,7 @@ Three findings from 16.75 years of daily data, all out of sample, all reproducib
 
 One more thing I kept in the paper on purpose: a model specification of mine that failed, and why. The raw-return Student-t degrees of freedom (2.8 for the S&P) mostly measure volatility clustering, not tail thickness; reuse them inside a volatility model and you double-count.
 
-Preprint: <DOI> · Code and data: github.com/Pranjulrathour/research/tree/main/papers/p1-fat-tails
+Preprint: <DOI> · Code: github.com/Pranjulrathour/research/tree/main/papers/p1-fat-tails
 
 **Blogger (long)**: abstract, Figures 2, 3 and 5 with captions, the Table 3 summary for 99%, the discarded-variant section, and the reproduction command.
 
@@ -64,17 +64,35 @@ Preprint: <DOI> · Code and data: github.com/Pranjulrathour/research/tree/main/p
 
 ## 7. Paper P5 — Card-fraud detection under extreme imbalance
 
-<!-- fill after results: lead with the leak inflation (random vs time-aware split) and the dummy's 99.83% accuracy -->
+**LinkedIn**
+New preprint: *Card-Fraud Detection Under Extreme Class Imbalance: A Time-Aware, Cost-Sensitive Benchmark on Public Data*.
+
+On the public ULB credit-card data (284,807 transactions, 492 frauds), a model that flags nothing is 99.87% accurate. So I ranked seven models by precision–recall area instead, trained on the past and tested on the future, and chose every decision threshold on held-out data under a cost model.
+
+What I found:
+
+1. A random forest with balanced class weights won (PR-AUC 0.811) and recovered 68% of the largest possible saving. ROC-AUC would have picked a different, weaker model.
+
+2. Class weighting improved every model's ranking and wrecked the calibration of two of them. Weighted scores aren't probabilities until you recalibrate them.
+
+3. Plain gradient boosting was a lottery across seeds (PR-AUC 0.50 ± 0.12). The cause was a library default: early stopping on a random holdout of about 38 frauds. With it off, every seed gives the same model.
+
+4. The result I expected didn't happen. A random train/test split didn't inflate performance here, because two days of data barely drift. I reported that rather than hiding it, and I still split by time, because you can't know the drift in advance.
+
+Preprint: <DOI> · Code: github.com/Pranjulrathour/research/tree/main/papers/p5-fraud-imbalance
+
+**Blogger (long)**: abstract, Figure 1 (the split drawn on the real data), Table 2, Figure 2, the early-stopping table (Table 3), the section "The leak that didn't appear", and the reproduction command.
 
 ## Carousel material (Instagram / Threads / Facebook, via brand-engine)
 
 - From Book 1, chapter 12: "Ten habits for the decade" — one habit per slide.
 - From Book 1, Appendix A: "Ten questions to ask of any AI capability claim" — one per slide.
 - From Book 2, chapter 12: "Twelve questions to ask of any system design" — one per slide.
-- From P1: "Why your risk model is right at 95% and wrong at 99%" — Figure 2 and Figure 3 as slides.
+- From P1: "Why your risk model is right at 95% and wrong at 99%" — Figures 3 and 4 (the exceedance ratios and the 99% violation counts) as slides.
+- From P5: "99.87% accurate and useless" — the accuracy paradox, then Figure 2 and the early-stopping table.
 
 ## Wording rules (apply to every post)
 - "preprint", "working paper", "self-published": yes. "Peer-reviewed", "published in": no.
 - Name the venue (Preprints.org / SSRN / TechRxiv / Kindle / Leanpub / Google Play) rather than implying one.
 - Link the code with every paper post; the reproducibility is the point.
-- No AI-tool attribution in any post, matching the books and papers.
+- Don't name tools in posts. Each paper's Declarations carries the AI-use disclosure the venues require, so never claim in a post that the work was done without AI help.

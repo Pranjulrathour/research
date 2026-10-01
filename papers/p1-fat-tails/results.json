@@ -17,7 +17,17 @@
     "last": "2026-09-30"
    }
   },
-  "note": "NIFTY 50 history on Yahoo begins 2007-09-17; analysis window 2010-01-01 to 2026-09-30"
+  "note": "NIFTY 50 history on Yahoo begins 2007-09-17; analysis window 2010-01-01 to 2026-09-30",
+  "sha256": {
+   "NIFTY50_daily_close.csv": {
+    "sha256": "77027af91ea7b12d609b6e4ed7259e9d2a3cd4311900e18af77cec4824223405",
+    "bytes": 123680
+   },
+   "SP500_daily_close.csv": {
+    "sha256": "d62f31fdf59d605c11577b2674542be012786e53451eb1eed95c293812eb3c7a",
+    "bytes": 138502
+   }
+  }
  },
  "window": 500,
  "lambda": 0.94,

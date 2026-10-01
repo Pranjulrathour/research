@@ -213,7 +213,7 @@ def plots(returns: dict[str, pd.Series], fits: dict[str, pd.DataFrame], fc: dict
     idx_c = {"NIFTY50": ps.INK, "SP500": ps.ACCENT}
     label = {"gaussian": "Gaussian", "historical": "Historical", "student_t": "Student-t", "ewma_gaussian": "EWMA-\nGaussian",
              "ewma_student_t": "Filtered\nStudent-t", "filtered_historical": "FHS"}
-    pct = FuncFormatter(lambda v, _: f"{v * 100:.0f}%")
+    pct = FuncFormatter(lambda v, _: f"{v * 100:.0f}%".replace("-", "\u2212"))
 
     def panel_title(ax, text):
         ax.set_title(text, loc="left", fontsize=9.5, fontweight="bold", pad=6)
@@ -228,7 +228,7 @@ def plots(returns: dict[str, pd.Series], fits: dict[str, pd.DataFrame], fc: dict
         ax.plot([lo, hi], [icpt + slope * lo, icpt + slope * hi], color=ps.ACCENT, lw=0.8, zorder=2)
         ax.axhline(0, color=ps.RULE, lw=0.5, zorder=0); ax.axvline(0, color=ps.RULE, lw=0.5, zorder=0)
         worst = z.idxmin()
-        ax.annotate(f"{worst.day} {worst:%b %Y}\n({z.min():.1f} sd)", xy=(osm.min(), osr.min()), xytext=(-1.6, osr.min() + 0.6),
+        ax.annotate(f"{worst.day} {worst:%b %Y}\n({z.min():.1f} sd)".replace("-", "\u2212"), xy=(osm.min(), osr.min()), xytext=(-1.6, osr.min() + 0.6),
                     fontsize=7.5, color=ps.MID, va="center", ha="left",
                     arrowprops=dict(arrowstyle="-", color=ps.LIGHT, lw=0.6, shrinkA=2, shrinkB=3))
         panel_title(ax, names[name]); ax.set_xlabel("normal quantile")
@@ -249,29 +249,32 @@ def plots(returns: dict[str, pd.Series], fits: dict[str, pd.DataFrame], fc: dict
             ax.text(x, v * 1.25, f"{v:,.0f}" if v >= 10 else f"{v:.1f}", ha="center", va="bottom", fontsize=7, color=ps.MID)
     ax.set_xticks(range(len(SIGMAS))); ax.set_xticklabels([f"|z| > {k}" for k in SIGMAS]); ax.set_yscale("log")
     ax.set_ylim(0.5, 3e4)
-    ax.axhline(1, color=ps.MID, lw=0.6, ls=(0, (3, 2)), zorder=1)
-    ax.text(-0.62, 1.12, "normal distribution", fontsize=7, color=ps.MID, va="bottom")
+    ax.axhline(1, color=ps.MID, lw=0.6, ls=(0, (3, 2)), zorder=1, label="normal distribution (ratio 1)")
     ax.set_ylabel("observed ÷ expected under normal")
-    ax.legend(loc="upper left", handlelength=1.0, handleheight=0.8)
+    ax.legend(loc="upper left", handlelength=1.4, handleheight=0.8)
     ax.tick_params(axis="x", length=0)
     fig.tight_layout(); fig.savefig(FIG / "fig2_exceedance_ratio.png"); plt.close(fig)
 
-    # 3. 99% VaR violations by model
-    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.6), sharey=True)
-    bar_c = {m: ps.LIGHT for m in MODELS}; bar_c["gaussian"] = ps.INK; bar_c["filtered_historical"] = ps.ACCENT
-    for ax, name in zip(axes, returns):
+    # 3. 99% VaR violations by model: one panel, the two indices side by side within each model
+    fig, ax = plt.subplots(figsize=(6.3, 2.6))
+    width = 0.36
+    flat_label = {m: v.replace("\n", " ") for m, v in label.items()}
+    for i, name in enumerate(returns):
         bt = results["backtests"][name]["0.99"]["models"]
         viol = [bt[m]["violations"] for m in MODELS]; exp = bt[MODELS[0]]["expected_violations"]
-        ax.bar(range(len(MODELS)), viol, 0.68, color=[bar_c[m] for m in MODELS], zorder=2)
-        for k, v in enumerate(viol):
-            ax.text(k, v + 1.5, str(v), ha="center", va="bottom", fontsize=7, color=ps.MID)
-        ax.axhline(exp, color=ps.INK, ls=(0, (3, 2)), lw=0.6, zorder=3)
-        ax.text(len(MODELS) - 0.45, exp + 1.5, f"expected {exp:.0f}", va="bottom", ha="right", fontsize=7, color=ps.INK)
-        ax.set_xticks(range(len(MODELS))); ax.set_xticklabels([label[m] for m in MODELS], fontsize=7.2)
-        ax.tick_params(axis="x", length=0)
-        panel_title(ax, f"{names[name]}, {bt[MODELS[0]]['n_obs']:,} days")
-    axes[0].set_ylabel("violations of 99% VaR"); axes[0].set_ylim(0, 100)
-    fig.tight_layout(w_pad=1.5); fig.savefig(FIG / "fig3_var99_violations.png"); plt.close(fig)
+        xs = np.arange(len(MODELS)) + (i - 0.5) * width
+        ax.bar(xs, viol, width * 0.92, color=idx_c[name], label=f"{names[name]} ({bt[MODELS[0]]['n_obs']:,} days)", zorder=2)
+        for x, v in zip(xs, viol):
+            ax.text(x, v + 1.2, str(v), ha="center", va="bottom", fontsize=6.8, color=ps.MID)
+        ax.plot([-0.55, len(MODELS) - 0.45], [exp, exp], color=idx_c[name], lw=0.6, ls=(0, (3, 2)), zorder=3)
+    ax.text(len(MODELS) - 0.4, 36.6, "expected\nunder correct\ncoverage", fontsize=6.8, color=ps.MID, va="center", ha="left",
+            linespacing=1.0)
+    ax.set_xlim(-0.6, len(MODELS) + 0.45)
+    ax.set_xticks(range(len(MODELS))); ax.set_xticklabels([label[m] for m in MODELS], fontsize=7.6)
+    ax.tick_params(axis="x", length=0)
+    ax.set_ylabel("violations of 99% VaR"); ax.set_ylim(0, 105)
+    ax.legend(loc="upper right", ncol=1, handlelength=1.0, handleheight=0.8, borderaxespad=0.1)
+    fig.tight_layout(); fig.savefig(FIG / "fig3_var99_violations.png"); plt.close(fig)
 
     # 4. S&P 500 returns against three 99% VaR paths
     r = returns["SP500"]; var = fc["SP500"][0.99]
@@ -280,11 +283,13 @@ def plots(returns: dict[str, pd.Series], fits: dict[str, pd.DataFrame], fc: dict
     ax.plot(var.index, -var["gaussian"], color=ps.INK, lw=0.9, label="Gaussian", zorder=3)
     ax.plot(var.index, -var["student_t"], color=ps.ACCENT2, lw=0.9, label="Student-t", zorder=3)
     ax.plot(var.index, -var["filtered_historical"], color=ps.ACCENT, lw=0.7, label="FHS", zorder=2)
-    ax.yaxis.set_major_formatter(pct); ax.set_ylabel("one-day return / −VaR")
-    ax.set_ylim(-0.14, 0.10)
-    ax.legend(loc="lower left", ncol=4, handlelength=1.4, columnspacing=1.2, borderaxespad=0.2)
-    ax.annotate("March 2020", xy=(pd.Timestamp("2020-03-16"), -0.125), xytext=(pd.Timestamp("2021-06-01"), -0.118),
-                fontsize=7.5, color=ps.MID, va="center", arrowprops=dict(arrowstyle="-", color=ps.LIGHT, lw=0.6))
+    ax.yaxis.set_major_formatter(pct); ax.set_ylabel("one-day return and −VaR")
+    lo = min(float(r.loc[var.index].min()), float((-var[["gaussian", "student_t", "filtered_historical"]]).min().min()))
+    ax.set_ylim(lo * 1.08, 0.16)
+    ax.legend(loc="upper left", ncol=4, handlelength=1.4, columnspacing=1.2, borderaxespad=0.2)
+    t_lo = (-var["filtered_historical"]).idxmin()
+    ax.annotate("March 2020", xy=(t_lo, float(-var["filtered_historical"].loc[t_lo])), xytext=(pd.Timestamp("2021-04-01"), lo * 0.92),
+                fontsize=7.5, color=ps.MID, va="center", arrowprops=dict(arrowstyle="-", color=ps.LIGHT, lw=0.6, shrinkB=2))
     ax.margins(x=0.01)
     fig.tight_layout(); fig.savefig(FIG / "fig4_sp500_var_paths.png"); plt.close(fig)
 
@@ -294,10 +299,10 @@ def plots(returns: dict[str, pd.Series], fits: dict[str, pd.DataFrame], fc: dict
         for name, f in fits.items():
             ax.plot(f.index, f[col].clip(upper=20), lw=0.75, color=idx_c[name], label=names[name])
         ax.axhline(4, color=ps.MID, lw=0.6, ls=(0, (3, 2)))
-        ax.text(f.index[-1], 4.4, "df = 4", fontsize=7, color=ps.MID, ha="right", va="bottom")
         panel_title(ax, title); ax.margins(x=0.01)
+    axes[0].text(0.02, 4.3, "df = 4", transform=axes[0].get_yaxis_transform(), fontsize=7, color=ps.MID, ha="left", va="bottom")
     axes[0].set_ylabel("Student-t df (capped at 20)"); axes[0].set_ylim(0, 21)
-    axes[1].legend(loc="upper right", handlelength=1.4)
+    axes[0].legend(loc="upper right", handlelength=1.4)
     fig.tight_layout(w_pad=1.5); fig.savefig(FIG / "fig5_rolling_df.png"); plt.close(fig)
 
 

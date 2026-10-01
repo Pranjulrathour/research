@@ -5,3 +5,12 @@ time-aware split: {'train': 199364, 'val': 28481, 'test': 56962, 'train_frauds':
 [time_aware] random_forest            PR-AUC 0.792+-0.002  ROC 0.956  R@P.9 0.73  savings 5090  alerts 76
 [time_aware] random_forest_balanced   PR-AUC 0.811+-0.003  ROC 0.947  R@P.9 0.76  savings 5168  alerts 81
 [time_aware] hist_gb                  PR-AUC 0.502+-0.124  ROC 0.755  R@P.9 0.24  savings 3929  alerts 148
+[time_aware] hist_gb_balanced         PR-AUC 0.752+-0.008  ROC 0.952  R@P.9 0.70  savings 3901  alerts 70
+[random_stratified] dummy_majority           PR-AUC 0.002+-0.000  ROC 0.500  R@P.9 0.00  savings 0  alerts 0
+[random_stratified] logreg                   PR-AUC 0.715+-0.000  ROC 0.967  R@P.9 0.14  savings 5911  alerts 217
+[random_stratified] logreg_balanced          PR-AUC 0.702+-0.000  ROC 0.975  R@P.9 0.00  savings 6081  alerts 124
+[random_stratified] random_forest            PR-AUC 0.796+-0.002  ROC 0.946  R@P.9 0.69  savings 6032  alerts 104
+[random_stratified] random_forest_balanced   PR-AUC 0.822+-0.002  ROC 0.952  R@P.9 0.78  savings 5905  alerts 92
+[random_stratified] hist_gb                  PR-AUC 0.597+-0.050  ROC 0.828  R@P.9 0.11  savings 4920  alerts 100
+[random_stratified] hist_gb_balanced         PR-AUC 0.691+-0.006  ROC 0.945  R@P.9 0.00  savings 5533  alerts 155
+wrote results.json

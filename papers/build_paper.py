@@ -108,12 +108,12 @@ def build(pid: str, two_column: bool) -> Path:
     body_md = re.sub(r"!\[(.*?)\]\((figures/[^)]+)\)", fig, body_md)
     html = markdown.markdown(body_md, extensions=["footnotes", "tables", "smarty", "sane_lists", "attr_list"])
     # abstract block
-    html = re.sub(r'<h2>Abstract</h2>\s*(<p>.*?</p>)', r'<div class="abstract"><h2>Abstract</h2>\1</div>', html, count=1, flags=re.S)
+    html = re.sub(r'<h2>Abstract</h2>\s*(.*?)(?=<h2)', r'<div class="abstract"><h2>Abstract</h2>\1</div>', html, count=1, flags=re.S)
     # section numbers: "1. Introduction" -> numbered span
     html = re.sub(r"<h2>(\d+)\.\s+", r'<h2><span class="n">\1</span>', html)
     html = re.sub(r"<h3>(\d+\.\d+)\s+", r'<h3><span class="n">\1</span>', html)
     # table captions and sub-captions
-    html = re.sub(r"<p><strong>(Table \d+\.)(.*?)</strong></p>", r'<p class="tcap"><b>\1</b>\2</p>', html, flags=re.S)
+    html = re.sub(r"<p><strong>(Table \d+\.)(.*?)</strong>(.*?)</p>", r'<p class="tcap"><b>\1</b>\2\3</p>', html, flags=re.S)
     html = re.sub(r"<p><em>([^<]{3,160})</em></p>(\s*<table>)", r'<p class="tsub">\1</p>\2', html)
     # references block
     html = re.sub(r'(<h2>(?:<span class="n">\d+</span>)?References</h2>)(.*?)(?=<h2|$)', r'\1<div class="refs">\2</div>', html, flags=re.S)

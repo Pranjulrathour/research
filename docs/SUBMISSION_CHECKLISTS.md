@@ -32,7 +32,7 @@ Free; Crossref DOI; screening in under 24 hours in practice; indexed by Google S
 | Title | Fat Tails and the Failure of Gaussian Risk Models: Out-of-Sample Value-at-Risk Evidence from NIFTY 50 and S&P 500, 2010–2026 | Do Machine-Learning Return Predictors Beat Linear Baselines Out of Sample? A Small-Scale Walk-Forward Replication on Public Equity Data | Recall–Latency Frontiers of Approximate Nearest-Neighbour Indexes on Public Datasets | Card-Fraud Detection Under Extreme Class Imbalance: A Time-Aware, Cost-Sensitive Benchmark on Public Data |
 | Subject area | Business, Economics & Management → Finance | Business, Economics & Management → Finance (or Computer Science → AI) | Computer Science & Mathematics → Data Structures / Information Retrieval | Computer Science & Mathematics → Artificial Intelligence / Machine Learning |
 | Keywords | from the paper's front matter (5–8) | same | same | same |
-| Abstract | paste from paper.md | same | same | same |
+| Abstract | paste from paper.md (each abstract is one paragraph of at most 250 words) | same | same | same |
 | File | PDF (built from paper.md, single column) | same | same | same |
 | Supplementary | link to GitHub folder + Zenodo DOI | same | same | same |
 | Funding | None | None | None | None |

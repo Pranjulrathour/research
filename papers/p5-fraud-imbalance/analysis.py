@@ -138,18 +138,24 @@ def reliability_plot(tr, te, scaler_cols):
     def prep(X):
         Z = X.copy(); Z[scaler_cols] = sc.transform(X[scaler_cols]); return Z.values
     fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.8))
-    for mname, color in (("logreg", ps.INK), ("hist_gb", ps.ACCENT), ("random_forest", ps.ACCENT2)):
-        m = models(0)[mname].fit(prep(Xtr), ytr); p = m.predict_proba(prep(Xte))[:, 1]
-        prec, rec, _ = precision_recall_curve(yte, p)
-        axes[0].plot(rec, prec, color=color, lw=0.9, label=f"{LABEL[mname]} ({average_precision_score(yte, p):.2f})")
-        fr, mp = calibration_curve(yte, p, n_bins=10, strategy="quantile")
-        axes[1].plot(mp, fr, "o-", ms=2.6, lw=0.8, color=color, label=LABEL[mname])
+    # left: the best variant of each family (seed 0); right: what class weighting does to calibration
+    scores = {}
+    for mname in ("logreg", "logreg_balanced", "random_forest_balanced", "hist_gb_balanced"):
+        m = models(0)[mname].fit(prep(Xtr), ytr); scores[mname] = m.predict_proba(prep(Xte))[:, 1]
+    for mname, color in (("logreg_balanced", ps.INK), ("random_forest_balanced", ps.ACCENT), ("hist_gb_balanced", ps.ACCENT2)):
+        prec, rec, _ = precision_recall_curve(yte, scores[mname])
+        short = {"logreg_balanced": "Logistic, weighted", "random_forest_balanced": "Forest, weighted", "hist_gb_balanced": "Boosting, weighted"}[mname]
+        axes[0].plot(rec, prec, color=color, lw=0.9, label=f"{short} ({average_precision_score(yte, scores[mname]):.2f})")
+    for mname, color, ls in (("logreg", "#9a9aa2", "-"), ("logreg_balanced", ps.INK, "-"), ("random_forest_balanced", ps.ACCENT, "-")):
+        fr, mp = calibration_curve(yte, scores[mname], n_bins=10, strategy="quantile")
+        axes[1].plot(mp, fr, marker="o", ms=2.6, lw=0.8, color=color, ls=ls, label=LABEL[mname])
+    axes[1].legend(loc="upper left", fontsize=7.0, handlelength=1.2)
     base = yte.mean()
     axes[0].axhline(base, color=ps.MID, lw=0.5, ls=(0, (3, 2)))
     axes[0].text(0.02, base + 0.02, f"fraud base rate {base * 100:.2f}%", fontsize=7, color=ps.MID, va="bottom")
     axes[0].set_xlabel("recall"); axes[0].set_ylabel("precision"); axes[0].set_xlim(0, 1); axes[0].set_ylim(0, 1.02)
     axes[0].set_title("Precision against recall", loc="left", fontsize=9.5, fontweight="bold", pad=6)
-    axes[0].legend(loc="lower left", fontsize=7.2, handlelength=1.2, title="average precision", title_fontsize=7.2)
+    axes[0].legend(loc="center left", fontsize=7.0, handlelength=1.2, title="average precision", title_fontsize=7.0)
     axes[1].plot([0, 1], [0, 1], color=ps.MID, lw=0.5, ls=(0, (3, 2)))
     axes[1].set_xscale("symlog", linthresh=1e-3); axes[1].set_yscale("symlog", linthresh=1e-3)
     axes[1].set_xlim(0, 1); axes[1].set_ylim(0, 1)
@@ -177,7 +183,7 @@ def split_plot(out):
     ax.set_yticks(ys); ax.set_yticklabels([LABEL[n] for n in names], fontsize=7.8); ax.tick_params(axis="y", length=0)
     ax.set_xlim(0.3, 1.0); ax.set_xlabel("PR-AUC on the test split (mean ± sd over seeds)")
     ax.grid(axis="x", color=ps.RULE, lw=0.5); ax.set_axisbelow(True)
-    ax.legend(loc="lower left", handlelength=1.0)
+    ax.legend(loc="upper left", handlelength=1.0)
     fig.tight_layout(); fig.savefig(FIG / "fig2_split_comparison.png"); plt.close(fig)
 
 
@@ -189,6 +195,11 @@ def main():
     if "--plots-only" in sys.argv:
         reliability_plot(tr, te, scaler_cols); split_plot(json.load(open(HERE / "results.json")))
         print("redrew figures"); return
+    if "--post-hoc" in sys.argv:
+        res = json.load(open(HERE / "results.json"))
+        res["post_hoc"] = post_hoc(X, y, tr, te, scaler_cols)
+        json.dump(res, open(HERE / "results.json", "w"), indent=1)
+        print(json.dumps(res["post_hoc"], indent=1)); return
     out = {"meta": json.load(open(HERE / "data" / "SNAPSHOT.json")), "review_cost": REVIEW_COST, "seeds": SEEDS,
            "splits": {"time_aware": {"train": int(len(tr[1])), "val": int(len(va[1])), "test": int(len(te[1])),
                                      "train_frauds": int(tr[1].sum()), "val_frauds": int(va[1].sum()), "test_frauds": int(te[1].sum())}}}
@@ -199,9 +210,38 @@ def main():
     Xtr_r, Xva_r, ytr_r, yva_r = train_test_split(Xtv, ytv, test_size=0.125, stratify=ytv, random_state=0)
     out["splits"]["random_stratified"] = {"train": int(len(ytr_r)), "val": int(len(yva_r)), "test": int(len(yte_r)), "test_frauds": int(yte_r.sum())}
     run_split("random_stratified", (Xtr_r, ytr_r), (Xva_r, yva_r), (Xte_r, yte_r), out, scaler_cols)
+    out["post_hoc"] = post_hoc(X, y, tr, te, scaler_cols)
     json.dump(out, open(HERE / "results.json", "w"), indent=1)
     reliability_plot(tr, te, scaler_cols); split_plot(out)
     print("wrote results.json")
+
+
+def post_hoc(X, y, tr, te, scaler_cols) -> dict:
+    """Added after the first complete run, to give context and to explain one observation; changes no reported result.
+    (1) What the test sets contain: fraud count, fraud amount, and the most any model could save under the cost model
+        (flag exactly the frauds). (2) Why plain gradient boosting is unstable across seeds on the time-aware split:
+        scikit-learn's HistGradientBoosting turns on early stopping by default above 10,000 rows, holding out a random
+        10% of the training data (about 38 frauds here), so the stopping point depends on the seed."""
+    Xtv, Xte_r, ytv, yte_r = train_test_split(X, y, test_size=0.2, stratify=y, random_state=0)
+    ctx = {}
+    for name, (Xt, yt) in (("time_aware", te), ("random_stratified", (Xte_r, yte_r))):
+        amt = Xt["Amount"].values[yt == 1]
+        ctx[name] = {"test_frauds": int(yt.sum()), "test_fraud_amount": float(amt.sum()),
+                     "max_possible_savings": float(amt.sum() - REVIEW_COST * yt.sum()), "base_rate": float(yt.mean())}
+    (Xtr, ytr), (Xte, yte) = tr, te
+    sc = StandardScaler().fit(Xtr[scaler_cols])
+    def prep(Z):
+        Z = Z.copy(); Z[scaler_cols] = sc.transform(Z[scaler_cols]); return Z.values
+    Ztr, Zte = prep(Xtr), prep(Xte)
+    runs = []
+    for s in SEEDS:
+        for es in (True, False):
+            m = HistGradientBoostingClassifier(max_iter=300, learning_rate=0.05, random_state=s,
+                                               early_stopping="auto" if es else False).fit(Ztr, ytr)
+            runs.append({"seed": s, "early_stopping": "auto (on)" if es else "off", "n_iter": int(m.n_iter_),
+                         "pr_auc": float(average_precision_score(yte, m.predict_proba(Zte)[:, 1]))})
+            print("  post-hoc hist_gb", runs[-1], flush=True)
+    return {"test_set_context": ctx, "hist_gb_early_stopping": runs}
 
 
 if __name__ == "__main__":
