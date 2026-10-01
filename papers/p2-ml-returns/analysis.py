@@ -231,40 +231,64 @@ def leaky_cv(df: pd.DataFrame, target: str) -> dict:
 
 
 def plots(res: dict, preds_raw: pd.DataFrame) -> None:
+    import sys
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
-    plt.rcParams.update({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
+    sys.path.insert(0, str(HERE.parent))
+    import plotstyle as ps
+    ps.apply(9.0)
     names = list(GRIDS)
+    label = {"ols": "OLS", "ridge": "Ridge", "lasso": "Lasso", "rf": "Random\nforest", "hgb": "Gradient\nboosting", "mlp": "MLP"}
+    flat = {k: v.replace("\n", " ") for k, v in label.items()}
+    line_c = {"ols": ps.INK, "ridge": "#7a7880", "hgb": ps.ACCENT, "rf": ps.ACCENT2, "mlp": "#c9a227"}
     # 1. OOS R^2 walk-forward vs leaky CV
-    fig, ax = plt.subplots(figsize=(8, 3.8))
+    fig, ax = plt.subplots(figsize=(6.3, 2.7))
     wf = [res["walk_forward"]["raw"]["models"][n]["r2_vs_zero"]["mean"] * 100 for n in names]
     lk = [res["leaky_cv"]["raw"][n]["r2_vs_zero_shuffled_cv"] * 100 for n in names]
-    xs = np.arange(len(names)); w = 0.38
-    ax.bar(xs - w / 2, wf, w, color="#1c1b22", label="walk-forward (honest)")
-    ax.bar(xs + w / 2, lk, w, color="#ff4d2e", label="shuffled 5-fold CV (look-ahead)")
-    ax.axhline(0, color="grey", lw=0.8); ax.set_xticks(xs); ax.set_xticklabels([n.upper() for n in names])
-    ax.set_ylabel("out-of-sample R² vs zero forecast (%)"); ax.legend(frameon=False)
-    ax.set_title("Monthly return prediction, Dow 30, test years 2012–2026")
-    fig.tight_layout(); fig.savefig(FIG / "fig1_r2_honest_vs_leaky.png", dpi=160); plt.close(fig)
-    # 2. Long-short cumulative returns (seed 0) for OLS, HGB, RF, MLP
-    fig, ax = plt.subplots(figsize=(9, 3.8))
-    for n, c in (("ols", "#1c1b22"), ("ridge", "#5b5a66"), ("hgb", "#ff4d2e"), ("rf", "#b8321a"), ("mlp", "#8a8f9c")):
+    xs = np.arange(len(names)); w = 0.36
+    ax.bar(xs - w / 2, wf, w * 0.92, color=ps.INK, label="walk-forward by year (honest)", zorder=2)
+    ax.bar(xs + w / 2, lk, w * 0.92, color=ps.ACCENT, label="shuffled 5-fold CV (look-ahead)", zorder=2)
+    span = max(max(wf), max(lk)) - min(min(wf), min(lk), 0)
+    for x, v in list(zip(xs - w / 2, wf)) + list(zip(xs + w / 2, lk)):
+        ax.text(x, v + (0.02 * span if v >= 0 else -0.02 * span), f"{v:.1f}", ha="center", va="bottom" if v >= 0 else "top",
+                fontsize=6.8, color=ps.MID)
+    ax.axhline(0, color=ps.INK, lw=0.6); ax.set_xticks(xs); ax.set_xticklabels([label[n] for n in names], fontsize=7.6)
+    ax.tick_params(axis="x", length=0)
+    ax.set_ylabel("out-of-sample R² (%)")
+    ax.legend(loc="upper left", handlelength=1.0, handleheight=0.8)
+    ax.margins(y=0.15)
+    fig.tight_layout(); fig.savefig(FIG / "fig1_r2_honest_vs_leaky.png"); plt.close(fig)
+    # 2. Long-short cumulative returns (seed 0)
+    fig, ax = plt.subplots(figsize=(6.3, 2.6))
+    for n in ("ols", "ridge", "hgb", "rf", "mlp"):
         ls = long_short(preds_raw, f"{n}_s0").cumsum()
-        ax.plot(ls.index, ls.values, lw=1.0, color=c, label=n.upper())
-    ax.axhline(0, color="grey", lw=0.8); ax.set_ylabel("cumulative log return, top-6 minus bottom-6"); ax.legend(frameon=False, ncol=5, fontsize=8)
-    ax.set_title("Long-short portfolio from each model's monthly forecasts (out of sample)")
-    fig.tight_layout(); fig.savefig(FIG / "fig2_long_short_cumulative.png", dpi=160); plt.close(fig)
+        ax.plot(ls.index, ls.values * 100, lw=0.9 if n in ("ols", "hgb") else 0.7, color=line_c[n], label=flat[n])
+    ax.axhline(0, color=ps.MID, lw=0.5)
+    ax.set_ylabel("cumulative log return (%)")
+    ax.legend(loc="upper left", ncol=5, handlelength=1.4, columnspacing=1.2)
+    ax.margins(x=0.01)
+    fig.tight_layout(); fig.savefig(FIG / "fig2_long_short_cumulative.png"); plt.close(fig)
     # 3. Yearly R^2 by model (raw target)
-    fig, ax = plt.subplots(figsize=(9, 3.6))
-    for n, c in (("ols", "#1c1b22"), ("hgb", "#ff4d2e"), ("rf", "#b8321a"), ("mlp", "#8a8f9c")):
+    fig, ax = plt.subplots(figsize=(6.3, 2.5))
+    for n in ("ols", "hgb", "rf", "mlp"):
         yr = {}
         for Y, g in preds_raw.groupby("year"):
             yr[Y] = r2_oos(g["target"].values, g[f"{n}_s0"].values, 0.0) * 100
-        ax.plot(list(yr), list(yr.values()), marker="o", ms=3, lw=1.0, color=c, label=n.upper())
-    ax.axhline(0, color="grey", lw=0.8); ax.set_ylabel("yearly OOS R² (%)"); ax.legend(frameon=False, ncol=4, fontsize=8)
-    ax.set_title("Skill is unstable year to year"); fig.tight_layout(); fig.savefig(FIG / "fig3_yearly_r2.png", dpi=160); plt.close(fig)
+        ax.plot(list(yr), list(yr.values()), marker="o", ms=2.6, lw=0.8, color=line_c[n], label=flat[n])
+    ax.axhline(0, color=ps.MID, lw=0.5)
+    ax.set_ylabel("out-of-sample R² in the year (%)")
+    ax.set_xticks(range(FIRST_TEST_YEAR, LAST_TEST_YEAR + 1, 2))
+    ax.legend(loc="lower left", ncol=4, handlelength=1.4, columnspacing=1.2)
+    fig.tight_layout(); fig.savefig(FIG / "fig3_yearly_r2.png"); plt.close(fig)
+
+
+PRED_CACHE = HERE / "build" / "preds_raw.pkl"
 
 
 def main():
+    import sys
+    if "--plots-only" in sys.argv and PRED_CACHE.exists():
+        plots(json.load(open(HERE / "results.json")), pd.read_pickle(PRED_CACHE))
+        print("redrew figures from cache"); return
     df = build_panel()
     print(f"panel: {len(df)} stock-months, {df.ticker.nunique()} tickers, {df.date.min().date()} .. {df.date.max().date()}", flush=True)
     res = {"meta": json.load(open(HERE / "data" / "SNAPSHOT.json")), "features": FEATURES, "seeds": list(SEEDS),
@@ -280,7 +304,11 @@ def main():
         res["leaky_cv"][key] = leaky_cv(df, target)
         if key == "raw": preds_raw = preds
     json.dump(res, open(HERE / "results.json", "w"), indent=1, default=str)
-    plots(res, preds_raw)
+    PRED_CACHE.parent.mkdir(exist_ok=True); preds_raw.to_pickle(PRED_CACHE)
+    try:
+        plots(res, preds_raw)
+    except Exception as e:  # never lose a finished run to a plotting error; re-draw with --plots-only
+        print("plotting failed:", repr(e))
     for key in ("raw", "demeaned"):
         print(f"\n== {key} target ==  histmean R2 vs zero: {res['walk_forward'][key]['benchmarks']['histmean']['r2_vs_zero']*100:.2f}%")
         for n, m in res["walk_forward"][key]["models"].items():

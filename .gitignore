@@ -5,8 +5,10 @@ papers/*/data/*.parquet
 papers/*/data/*.arff
 !papers/*/data/SNAPSHOT.json
 
-# Build outputs
+# Build outputs (paper build/ also holds the plotting caches written by --plots-only runs)
 books/*/build/
+papers/*/build/
+*.pkl
 *.epub
 *.pdf
 __pycache__/

@@ -1,88 +1,90 @@
 # Chapter 11 — Cost is a design constraint
 
-Every design decision in this book has had a price, and so far the price has been paid in latency, consistency, complexity or risk. This chapter pays it in money, because money is the constraint that decides which of the technically correct designs actually gets built, and because the engineers who can reason about cost with the same rigour they bring to latency are rare enough to be valuable for that reason alone.
+Every design decision in this book has had a price, and so far that price has been paid in latency, consistency, complexity or risk. This chapter pays it in money, for two reasons. Money is the constraint that decides which of the technically correct designs actually gets built. And engineers who can reason about cost as rigorously as they reason about latency are rare enough to be valuable for that alone.
 
-The chapter is written for the engineer, not the accountant: how to see where money goes in a system, which design choices move it, when the slower or simpler design is the right one because it is cheaper, and how to decide between building, buying and renting with numbers rather than preferences.
+It's written for engineers, not accountants: how to see where the money in a system goes, which design choices move it, when the slower or simpler design is right because it's cheaper, and how to decide between building, buying and renting using numbers instead of preferences.
 
 ## The principle
 
-**Cost is a first-class output of a design, like latency and availability. Model it before you build, measure it after, and treat the system's bill per unit of useful work as a metric with a target.**
+*Cost is a first-class output of a design, like latency and availability. Model it before you build, measure it afterwards, and treat the system's cost per unit of useful work as a metric with a target.*
 
 ## Where the money goes
 
-The bill for a system on cloud infrastructure, which is where most new systems live, has a small number of large lines.
+The bill for a system running in the cloud, which is where most new systems live, has a small number of big lines.
 
-**Compute.** Virtual machines, containers, serverless invocations, managed service instances. Priced by time and size, with large discounts for commitment (reserved or savings-plan pricing, typically 30–60% below on-demand for one- to three-year terms) and for interruptible capacity (spot or preemptible instances, often 60–90% below on-demand, with the catch that they can be reclaimed at short notice). Compute is usually the largest line and the one most sensitive to the design choices in chapters 2, 3 and 10.
+Compute is usually the biggest: virtual machines, containers, serverless invocations, managed service instances. It's priced by time and size, with large discounts for commitment (reserved or savings-plan pricing, typically 30 to 60 per cent below on-demand for one- to three-year terms) and for interruptible capacity (spot or preemptible instances, often 60 to 90 per cent cheaper, with the catch that they can be taken back at short notice). It's also the line most sensitive to the design choices in chapters 2, 3 and 10.
 
-**Storage.** Block volumes, object storage, databases, backups, logs. Priced by volume stored per month, by tier (hot, warm, cold, archive, with retrieval costs rising as storage costs fall), and by operations. Storage is cheap per gigabyte and expensive in aggregate because it accumulates: nothing deletes itself, and a system that has run for three years is often paying for data nobody has read in two.
+Storage covers block volumes, object storage, databases, backups and logs, priced by volume per month, by tier (hot, warm, cold and archive, with retrieval getting dearer as storage gets cheaper) and by number of operations. It's cheap per gigabyte and expensive in aggregate because it accumulates. Nothing deletes itself, and a system that's been running for three years is often paying to keep data nobody has read for two.
 
-**Data transfer.** Moving bytes out of a cloud region to the internet (egress), between regions, and sometimes between availability zones. Egress is the line that surprises people: it is priced per gigabyte at rates that make serving large files or media directly from compute far more expensive than serving them through a content-delivery network, and it is the reason multi-region and multi-cloud designs cost more than their compute suggests.
+Data transfer means moving bytes out of a cloud region to the internet (egress), between regions, and sometimes between availability zones. Egress is the line that catches people out. It's priced per gigabyte at rates that make serving large files or media straight from compute far more expensive than serving them through a CDN, and it's why multi-region and multi-cloud designs cost more than their compute alone suggests.
 
-**Managed services.** Databases, queues, caches, search, monitoring, AI model APIs. Priced by instance, by request, by capacity unit or by token, each with its own curve. Managed services trade money for engineering time and operational risk, and the trade is usually good at small scale and increasingly worth re-examining as scale grows.
+Managed services (databases, queues, caches, search, monitoring, AI model APIs) are priced per instance, per request, per capacity unit or per token, each with its own curve. They trade money for engineering time and operational risk. That trade is usually a good one at small scale and increasingly worth re-examining as scale grows.
 
-**People.** The line that is not on the cloud bill and usually dwarfs it. An engineer's time is the most expensive resource in most systems, and a design that saves a hundred dollars a month of compute by costing a week of engineering has lost money for years. Any cost analysis that omits the people is incomplete, and most do.
+And then there are people, the line that isn't on the cloud bill and usually dwarfs everything on it. Engineering time is the most expensive resource in most systems, and a design that saves ₹10,000 a month in compute by costing a week of engineering has lost money for years to come. Any cost analysis that leaves out the people is incomplete, and most do leave them out.
 
 ## Where the money leaks
 
-Across systems and organisations the same leaks recur, and finding them is more valuable than any optimisation.
+Across systems and organisations the same leaks keep recurring, and finding them is worth more than any clever optimisation.
 
-**Idle capacity.** Instances running at 5% utilisation, development environments left on overnight and at weekends, databases sized for a peak that happened once. The fix is measurement (chapter 9's utilisation metrics, read for cost rather than latency) and then scheduling, right-sizing or autoscaling. This is almost always the largest leak and the easiest to close.
+Idle capacity is almost always the largest and the easiest to fix: instances running at 5 per cent utilisation, development environments left on overnight and over weekends, databases sized for a peak that happened once. The fix is measurement (chapter 9's utilisation metrics, read with cost in mind rather than latency) followed by scheduling, right-sizing or autoscaling.
 
-**Over-provisioning from fear.** Chapter 10 argued for headroom below the knee; the leak is headroom far beyond it, bought because nobody measured the knee and everybody feared the incident. The fix is the measurement.
+Over-provisioning out of fear is a close relative. Chapter 10 argued for headroom below the knee; the leak is headroom far beyond it, bought because nobody measured the knee and everybody was afraid of the incident. The fix, again, is the measurement.
 
-**Chatty services.** Architectures that make many small network calls per user request pay for each in latency (chapter 1) and, across zones or regions, in transfer charges. A design that fetches a hundred rows in a hundred calls costs more than one that fetches them in one, in every currency.
+Chatty services make many small network calls per user request and pay for each one in latency (chapter 1) and, across zones or regions, in transfer charges. Fetching a hundred rows in a hundred calls costs more than fetching them in one, in every currency.
 
-**Logs and metrics nobody reads.** Chapter 9's warning. Debug logging left on in production, metrics with exploding cardinality, traces sampled at 100%. Telemetry is valuable in proportion to its use, and the unused part is a pure leak.
+Logs and metrics nobody reads are chapter 9's warning: debug logging left on in production, metrics with exploding cardinality, traces sampled at 100 per cent. Telemetry is valuable in proportion to how much it's used, and the unused part is a pure leak.
 
-**Data that should have been deleted or tiered.** Backups of backups, logs retained for years by default, old object versions, orphaned volumes. A retention policy and a lifecycle rule (hot to cold to archive to deleted, on a schedule) usually cut storage cost by more than half.
+Data that should have been deleted or moved to a cheaper tier piles up as backups of backups, logs kept for years by default, old object versions and orphaned volumes. A retention policy plus a lifecycle rule (hot to cold to archive to deleted, on a schedule) usually cuts storage costs by more than half.
 
-**Egress by accident.** Serving static assets from compute instead of a CDN; replicating data across regions that did not need it; pulling large datasets out of the cloud for processing elsewhere.
+Accidental egress comes from serving static assets from compute instead of a CDN, replicating data to regions that didn't need it, or pulling large datasets out of the cloud to process them somewhere else.
 
-**The model-API line.** New since 2023 and growing fast: calls to large language models priced per token. The leaks are the familiar ones in new clothes: long prompts repeated on every call (a caching problem, chapter 3), a large model used where a small one would do (a right-sizing problem), retries without budgets (chapter 7), and no measurement of cost per useful outcome. Teams that treat model calls as free in development are routinely surprised by the first production bill.
+And then there's the model-API line, new since 2023 and growing fast: calls to large language models, priced per token. Its leaks are the familiar ones in new clothes. Long prompts repeated on every call are a caching problem (chapter 3); a large model used where a small one would do is a right-sizing problem; retries without budgets are chapter 7's problem; and nobody measuring cost per useful outcome is this chapter's problem. Teams that treat model calls as free during development are routinely shocked by the first production bill.
 
 ## Performance per rupee
 
-The cost lens changes some of the earlier chapters' conclusions, and it is worth being explicit.
+Looking through the lens of cost changes some of the earlier chapters' conclusions, so it's worth being explicit about how.
 
-**The slower design can be the right one.** A batch job that runs nightly on cheap interruptible capacity may be better than a real-time pipeline running on reserved instances around the clock, if nobody needs the result in under a day. A single-region deployment with a tested backup-and-restore may be better than an active-active multi-region one, if the business can tolerate an hour of downtime a year and cannot tolerate tripling the bill. The engineering instinct is toward the faster, more available design; the cost lens asks what the latency and availability are *for*, and chapter 9's SLO is the place that question gets answered.
+The slower design can be the right one. A nightly batch job on cheap interruptible capacity may be better than a real-time pipeline on reserved instances running around the clock, if nobody needs the result within a day. A single-region deployment with a tested backup and restore may be better than active-active across regions, if the business can live with an hour of downtime a year but can't live with tripling the bill. Engineers instinctively reach for the faster, more available design. The cost lens asks what that latency and availability are actually for, and chapter 9's SLO is where that question gets answered.
 
-**The simpler design is usually cheaper in people.** Every component is a thing to operate, patch, monitor and understand at 3 a.m. A system with fewer moving parts costs less in the line that is not on the bill.
+The simpler design is usually cheaper in people. Every component is something to operate, patch, monitor and understand at three in the morning, so a system with fewer moving parts costs less on the line that isn't on the bill.
 
-**Scale changes the answer.** Managed services and serverless pricing are excellent at low volume (you pay nothing when idle) and expensive at high steady volume (you pay a premium on every unit). The crossover, where running your own becomes cheaper, exists for almost every service and is worth computing rather than assuming. The reverse is also true: a self-managed system that was cheaper at scale may be more expensive than the managed one once the engineering time to run it is counted.
+Scale changes the answer. Managed and serverless pricing is excellent at low volume, because you pay nothing while idle, and expensive at high steady volume, because you pay a premium on every unit. For almost every service there's a crossover point where running your own becomes cheaper, and it's worth calculating rather than assuming. The reverse also holds: a self-managed system that looked cheaper at scale can turn out more expensive than the managed one once you count the engineering time needed to run it.
 
-**Free tiers have cliffs.** Many services offer a free or near-free tier that covers development and small production use, with pricing that steps up sharply at a threshold. Designs that depend on staying under the threshold should know exactly where it is and what happens when a traffic spike crosses it, because the first bill after the cliff is a common and avoidable surprise.
+![Managed pricing against self-hosting as steady volume grows. Counting the engineers who run the self-hosted version moves the crossover to the right. Schematic.](figures/fig11_cost_crossover.png)
+
+And free tiers have cliffs. Plenty of services offer a free or nearly free tier that covers development and small production use, with prices that jump sharply past some threshold. If a design depends on staying under that threshold, you should know exactly where it is and what happens when a traffic spike crosses it, because the first bill after the cliff is a common and entirely avoidable surprise.
 
 ## Build, buy or rent
 
-The recurring decision is whether to build a capability, buy a product, or rent a managed service, and it should be made with a short model rather than a long debate.
+The decision that keeps coming up is whether to build a capability, buy a product or rent a managed service, and it should be settled with a short model rather than a long debate.
 
-Estimate, over a horizon (three years is common), the total cost of each option: engineering time to build and to operate (at a loaded cost per engineer-month), infrastructure, licence or subscription fees, and the cost of the capability being unavailable or wrong. Then weigh three non-monetary factors: how central the capability is to what makes the product different (build what differentiates, rent what does not), how much the requirements are likely to change (rent while they are unstable), and what the exit costs are (how hard is it to leave the vendor or to replace the home-grown system later).
+Over some horizon (three years is common), estimate the total cost of each option: engineering time to build it and to run it, at a loaded cost per engineer-month; infrastructure; licence or subscription fees; and the cost of the capability being unavailable or wrong. Then weigh three things that aren't money. How central is this capability to what makes your product different? Build what differentiates you and rent what doesn't. How much are the requirements likely to change? Rent while they're still unstable. And what does it cost to get out later, whether that means leaving a vendor or replacing the home-grown system?
 
-The common error is to count only the first month's infrastructure and forget the engineer-months, in both directions: underestimating the cost of building and operating something home-grown, and underestimating the integration and workaround cost of a product that almost fits.
+The common mistake is counting only the first month's infrastructure and forgetting the engineer-months, and it cuts both ways: people underestimate what it costs to build and run something themselves, and they underestimate the integration and workaround costs of a product that almost fits.
 
 ## Cost as a metric
 
-The practice that makes cost tractable is to treat it like latency: measure it continuously, attribute it to the thing that causes it, and set a target.
+What makes cost manageable is treating it the way you treat latency: measure it continuously, attribute it to whatever causes it, and set a target.
 
-*Attribute.* Tag every resource with the service, team and environment that owns it, so the bill can be broken down. Unattributed spend is spend nobody will reduce.
+Attribute it by tagging every resource with the service, team and environment that owns it, so the bill can be broken down. Spend nobody owns is spend nobody will reduce.
 
-*Normalise.* The raw bill grows with the business and tells you little. Cost per unit of useful work (per thousand requests, per active user, per gigabyte processed, per model call that produced a used answer) separates growth from waste, and it is the number to put on the dashboard next to p99.
+Normalise it. The raw bill grows with the business and tells you very little. Cost per unit of useful work (per thousand requests, per active user, per gigabyte processed, per model call that produced an answer someone used) separates growth from waste, and it's the number to put on the dashboard next to the p99.
 
-*Set a target and review it.* Like an SLO: a cost-per-unit target, a review when it is exceeded, and an explicit decision when a design change will move it. A design document that states the expected cost per unit, and is checked against the measured one after launch, is a document that produces engineers who can reason about cost.
+Then set a target and review it, much as you would an SLO: a target cost per unit, a review whenever it's exceeded, and an explicit decision whenever a design change is going to move it. A design document that states the expected cost per unit, and gets checked against the measured cost after launch, produces engineers who can reason about cost.
 
 ## The question you will be asked
 
-*"Cut this system's bill by 40% without changing its SLO."*
+*"Cut this system's bill by 40 per cent without changing its SLO."*
 
-Start with the breakdown: which lines dominate (compute, storage, transfer, managed services, model calls)? Then the leaks, in order of likely size: idle and over-provisioned compute (right-size from utilisation data, schedule non-production environments, add autoscaling below the knee); commitment pricing for the steady baseline and interruptible capacity for batch and stateless work; storage lifecycle rules and deletion of what nobody reads; telemetry volume and cardinality; egress moved behind a CDN; the model-API line attacked with prompt caching, a smaller model for the easy cases and retry budgets. Say what you would measure before and after each change and how you would confirm the SLO held (chapter 9's burn rate, during and after). Then the honest part: 40% is usually available from idle capacity and storage alone in a system that has never been cost-reviewed, and it is not available at all in one that has, where the next 10% costs a redesign. Say which case you think this is and why.
+Start with the breakdown: which lines dominate, compute, storage, transfer, managed services or model calls? Then go after the leaks in order of likely size. Idle and over-provisioned compute comes first (right-size from utilisation data, schedule non-production environments, autoscale below the knee), then commitment pricing for the steady baseline and interruptible capacity for batch and stateless work, then storage lifecycle rules and deleting what nobody reads, then telemetry volume and cardinality, then egress moved behind a CDN, and finally the model-API line, attacked with prompt caching, a smaller model for the easy cases and retry budgets. Say what you'd measure before and after each change, and how you'd confirm the SLO held, using chapter 9's burn rate during and after. Then give the honest part: in a system that has never been cost-reviewed, 40 per cent is usually available from idle capacity and storage alone, and in one that has been reviewed it usually isn't available at all, because the next 10 per cent costs a redesign. Say which case you think this is, and why.
 
 ## The trade-off, stated
 
-Cost optimisation costs engineering time and sometimes latency, availability or flexibility; it buys money, which buys everything else, including the engineering time. The failure modes are symmetric: systems that were never cost-reviewed and leak half their bill, and systems optimised so aggressively that an engineer-week was spent to save a month of a small instance. The skill is in the model: know the lines, know the leaks, measure per unit, and spend the engineering time where the numbers say.
+Cost optimisation costs engineering time, and sometimes latency, availability or flexibility. It buys money, which buys everything else, engineering time included. The failure modes mirror each other: systems that were never cost-reviewed and leak half their bill, and systems optimised so aggressively that an engineer-week went into saving a month's rent on a small instance. The skill is in the model. Know the lines, know the leaks, measure per unit, and spend engineering time where the numbers say it'll pay back.
 
 ## Run this yourself
 
-Take any system you have access to, including a personal project on a free tier, and produce a one-page cost model: every resource, its unit price from the provider's published rates, its measured or estimated utilisation, and its monthly cost, with the total broken down by line. Then compute cost per unit of useful work for one meaningful unit. Then list the three largest leaks you can see and estimate what closing each would save. If the system is on a free tier, find the cliff: the exact threshold at which the first bill arrives and what it would be at twice the current usage. The whole exercise takes an evening, and the ability to do it from a cold start, for a system you did not build, is a skill few engineers have and every employer values.
+Take any system you can get access to, even a personal project on a free tier, and write a one-page cost model: every resource, its unit price from the provider's published rates, its measured or estimated utilisation, and its monthly cost, with the total broken down by line. Work out the cost per unit of useful work for one meaningful unit. List the three biggest leaks you can see and estimate what closing each would save. If the system is on a free tier, find the cliff: the exact threshold where the first bill arrives, and what that bill would be at twice your current usage. It takes an evening, and being able to do it from scratch for a system you didn't build is a skill few engineers have and every employer values.
 
 ---
 
@@ -91,5 +93,5 @@ Take any system you have access to, including a personal project on a free tier,
 - FinOps Foundation (2023–2025), *FinOps Framework* and the *State of FinOps* reports — the vocabulary of cloud cost management (attribution, unit economics, commitment management).
 - Beyer et al. (2016), *Site Reliability Engineering*, chapter 18 — capacity and cost in planning.
 - Gregg, B. (2020), *Systems Performance*, 2nd ed. — utilisation measurement, the input to right-sizing.
-- a16z (Wang, S. & Casado, M., 2021), "The Cost of Cloud, a Trillion Dollar Paradox" — the argument that cloud costs can dominate at scale and the counter-arguments it provoked; read with its critics.
+- Wang, S. & Casado, M. (2021), "The Cost of Cloud, a Trillion Dollar Paradox", Andreessen Horowitz — the argument that cloud costs can dominate at scale, and the counter-arguments it provoked; read it with its critics.
 - Provider documentation on prompt caching and model pricing tiers (2024–2026) — the model-API cost line.

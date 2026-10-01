@@ -413,7 +413,7 @@ def sys_memory_hierarchy():
         ax.text(3e-10 * 0.9, i, name, va="center", ha="right", fontsize=8.4, color=INK)
     ax.set_xscale("log"); ax.set_xlim(3e-10, 3); ax.set_yticks([]); ax.spines["left"].set_visible(False)
     ax.set_xticks([1e-9, 1e-6, 1e-3, 1]); ax.set_xticklabels(["1 ns", "1 µs", "1 ms", "1 s"])
-    ax.text(3, 6.6, "approximate, 2020s hardware; each step is roughly 100× the last", ha="right", fontsize=7.5, color=MID)
+    ax.text(3, 6.6, "approximate, 2020s hardware; log scale", ha="right", fontsize=7.5, color=MID)
     fig.subplots_adjust(left=0.36)
     save(fig, "systems", "fig04_memory_hierarchy")
 

@@ -121,28 +121,74 @@ def run_split(name, tr, va, te, out, scaler_cols):
               f"R@P.9 {agg['recall_at_precision_0.9']['mean']:.2f}  savings {agg['test_savings_at_threshold']['mean']:.0f}  alerts {agg['test_alerts_at_threshold']['mean']:.0f}")
 
 
+LABEL = {"dummy_majority": "Majority dummy", "logreg": "Logistic regression", "logreg_balanced": "Logistic regression, weighted",
+         "random_forest": "Random forest", "random_forest_balanced": "Random forest, weighted",
+         "hist_gb": "Gradient boosting", "hist_gb_balanced": "Gradient boosting, weighted"}
+
+
 def reliability_plot(tr, te, scaler_cols):
+    import sys
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
     from sklearn.calibration import calibration_curve
+    sys.path.insert(0, str(HERE.parent))
+    import plotstyle as ps
+    ps.apply(9.0)
     (Xtr, ytr), (Xte, yte) = tr, te
     sc = StandardScaler().fit(Xtr[scaler_cols])
     def prep(X):
         Z = X.copy(); Z[scaler_cols] = sc.transform(X[scaler_cols]); return Z.values
-    plt.rcParams.update({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
-    fig, axes = plt.subplots(1, 2, figsize=(9, 3.8))
-    for mname, color in (("logreg", "#1c1b22"), ("hist_gb", "#ff4d2e"), ("random_forest", "#5b5a66")):
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.8))
+    for mname, color in (("logreg", ps.INK), ("hist_gb", ps.ACCENT), ("random_forest", ps.ACCENT2)):
         m = models(0)[mname].fit(prep(Xtr), ytr); p = m.predict_proba(prep(Xte))[:, 1]
-        prec, rec, _ = precision_recall_curve(yte, p); axes[0].plot(rec, prec, color=color, lw=1.2, label=f"{mname} (AP={average_precision_score(yte, p):.3f})")
-        fr, mp = calibration_curve(yte, p, n_bins=10, strategy="quantile"); axes[1].plot(mp, fr, "o-", ms=3, color=color, label=mname)
-    axes[0].set_xlabel("recall"); axes[0].set_ylabel("precision"); axes[0].set_title("Precision-recall, time-aware test split"); axes[0].legend(frameon=False, fontsize=8)
-    axes[1].plot([0, 1], [0, 1], "--", color="grey", lw=0.8); axes[1].set_xlabel("predicted probability"); axes[1].set_ylabel("observed fraud rate"); axes[1].set_title("Reliability (quantile bins)"); axes[1].legend(frameon=False, fontsize=8)
-    fig.tight_layout(); fig.savefig(FIG / "fig1_pr_and_calibration.png", dpi=160); plt.close(fig)
+        prec, rec, _ = precision_recall_curve(yte, p)
+        axes[0].plot(rec, prec, color=color, lw=0.9, label=f"{LABEL[mname]} ({average_precision_score(yte, p):.2f})")
+        fr, mp = calibration_curve(yte, p, n_bins=10, strategy="quantile")
+        axes[1].plot(mp, fr, "o-", ms=2.6, lw=0.8, color=color, label=LABEL[mname])
+    base = yte.mean()
+    axes[0].axhline(base, color=ps.MID, lw=0.5, ls=(0, (3, 2)))
+    axes[0].text(0.02, base + 0.02, f"fraud base rate {base * 100:.2f}%", fontsize=7, color=ps.MID, va="bottom")
+    axes[0].set_xlabel("recall"); axes[0].set_ylabel("precision"); axes[0].set_xlim(0, 1); axes[0].set_ylim(0, 1.02)
+    axes[0].set_title("Precision against recall", loc="left", fontsize=9.5, fontweight="bold", pad=6)
+    axes[0].legend(loc="lower left", fontsize=7.2, handlelength=1.2, title="average precision", title_fontsize=7.2)
+    axes[1].plot([0, 1], [0, 1], color=ps.MID, lw=0.5, ls=(0, (3, 2)))
+    axes[1].set_xscale("symlog", linthresh=1e-3); axes[1].set_yscale("symlog", linthresh=1e-3)
+    axes[1].set_xlim(0, 1); axes[1].set_ylim(0, 1)
+    axes[1].set_xlabel("predicted probability"); axes[1].set_ylabel("observed fraud rate")
+    axes[1].set_title("Calibration", loc="left", fontsize=9.5, fontweight="bold", pad=6)
+    fig.tight_layout(w_pad=2.0); fig.savefig(FIG / "fig1_pr_and_calibration.png"); plt.close(fig)
+
+
+def split_plot(out):
+    """PR-AUC by model under the time-aware split and the (leaky) stratified random split, mean +- sd over seeds."""
+    import sys
+    import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
+    sys.path.insert(0, str(HERE.parent))
+    import plotstyle as ps
+    ps.apply(9.0)
+    names = [m for m in out["time_aware"]["models"] if m != "dummy_majority"]
+    fig, ax = plt.subplots(figsize=(6.3, 2.7))
+    ys = np.arange(len(names))[::-1]
+    for k, (split, color, lab) in enumerate((("time_aware", ps.INK, "time-aware split (train on the past)"),
+                                             ("random_stratified", ps.ACCENT, "stratified random split (look-ahead)"))):
+        mu = [out[split]["models"][n]["agg"]["pr_auc"]["mean"] for n in names]
+        sd = [out[split]["models"][n]["agg"]["pr_auc"]["sd"] for n in names]
+        off = 0.17 if k == 0 else -0.17
+        ax.errorbar(mu, ys + off, xerr=sd, fmt="o", ms=3.6, color=color, ecolor=color, elinewidth=0.8, capsize=0, label=lab)
+    ax.set_yticks(ys); ax.set_yticklabels([LABEL[n] for n in names], fontsize=7.8); ax.tick_params(axis="y", length=0)
+    ax.set_xlim(0.3, 1.0); ax.set_xlabel("PR-AUC on the test split (mean ± sd over seeds)")
+    ax.grid(axis="x", color=ps.RULE, lw=0.5); ax.set_axisbelow(True)
+    ax.legend(loc="lower left", handlelength=1.0)
+    fig.tight_layout(); fig.savefig(FIG / "fig2_split_comparison.png"); plt.close(fig)
 
 
 def main():
+    import sys
     df, X, y = load()
     scaler_cols = ["Time", "Amount"]
     tr, va, te = time_split(df, X, y)
+    if "--plots-only" in sys.argv:
+        reliability_plot(tr, te, scaler_cols); split_plot(json.load(open(HERE / "results.json")))
+        print("redrew figures"); return
     out = {"meta": json.load(open(HERE / "data" / "SNAPSHOT.json")), "review_cost": REVIEW_COST, "seeds": SEEDS,
            "splits": {"time_aware": {"train": int(len(tr[1])), "val": int(len(va[1])), "test": int(len(te[1])),
                                      "train_frauds": int(tr[1].sum()), "val_frauds": int(va[1].sum()), "test_frauds": int(te[1].sum())}}}
@@ -153,8 +199,8 @@ def main():
     Xtr_r, Xva_r, ytr_r, yva_r = train_test_split(Xtv, ytv, test_size=0.125, stratify=ytv, random_state=0)
     out["splits"]["random_stratified"] = {"train": int(len(ytr_r)), "val": int(len(yva_r)), "test": int(len(yte_r)), "test_frauds": int(yte_r.sum())}
     run_split("random_stratified", (Xtr_r, ytr_r), (Xva_r, yva_r), (Xte_r, yte_r), out, scaler_cols)
-    reliability_plot(tr, te, scaler_cols)
     json.dump(out, open(HERE / "results.json", "w"), indent=1)
+    reliability_plot(tr, te, scaler_cols); split_plot(out)
     print("wrote results.json")
 
 

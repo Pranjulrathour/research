@@ -14,6 +14,9 @@ for f in files:
     words = len(t.split()); total += words
     issues = []
     for m in re.finditer(r"[Cc]hapters? (\d+)", t):
+        line = t[t.rfind("\n", 0, m.start()) + 1: t.find("\n", m.end())]
+        if "Site Reliability Engineering" in line:  # citing another book's chapter, not this one's
+            continue
         if not 1 <= int(m.group(1)) <= 12: issues.append(f"bad chapter ref {m.group(0)}")
     refs = set(re.findall(r"\[\^(\w+)\](?!:)", t)); defs = set(re.findall(r"^\[\^(\w+)\]:", t, re.M))
     if refs - defs: issues.append(f"undefined footnotes {sorted(refs - defs)}")

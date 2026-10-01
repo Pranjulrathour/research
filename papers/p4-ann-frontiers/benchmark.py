@@ -156,43 +156,76 @@ def run_dataset(name: str) -> list[dict]:
 
 def plots(rows: list[dict]) -> None:
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
-    plt.rcParams.update({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
-    colors = {"flat": "#1c1b22", "ivf_flat": "#5b5a66", "hnsw_faiss": "#ff4d2e", "hnsw_usearch": "#c9602e"}
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4))
-    for ax, ds in zip(axes, DATASETS):
+    import plotstyle as ps
+    ps.apply(9.0)
+    fam_c = {"ivf_flat": ps.ACCENT2, "hnsw_faiss": ps.ACCENT, "hnsw_usearch": "#c9a227"}
+    fam_l = {"flat": "Flat (exact)", "ivf_flat": "IVF-Flat (FAISS)", "hnsw_faiss": "HNSW (FAISS)", "hnsw_usearch": "HNSW (USearch)"}
+    ds_l = {"sift-128-euclidean": "SIFT-128, Euclidean", "glove-100-angular": "GloVe-100, angular"}
+    build_keys = ("nlist", "M", "connectivity")
+
+    def bkey(r):
+        return json.dumps({k: v for k, v in r["params"].items() if k in build_keys}, sort_keys=True)
+
+    def frontier(ax, ds, ykey):
+        sub = [r for r in rows if r["dataset"] == ds and ykey in r]
         for family in ("ivf_flat", "hnsw_faiss", "hnsw_usearch"):
-            pts = sorted([(r["recall@10"], r["qps"]) for r in rows if r["dataset"] == ds and r["index"] == family])
-            if pts: ax.plot([p[0] for p in pts], [p[1] for p in pts], "o-", ms=3, lw=1, color=colors[family], label=family)
-        flat = [r for r in rows if r["dataset"] == ds and r["index"] == "flat"]
-        if flat: ax.axhline(flat[0]["qps"], color=colors["flat"], ls="--", lw=0.9, label="flat (exact)")
-        ax.set_yscale("log"); ax.set_xlabel("recall@10"); ax.set_ylabel("queries / second (batched, log)"); ax.set_title(ds); ax.legend(frameon=False, fontsize=8)
-    fig.tight_layout(); fig.savefig(FIG / "fig1_recall_qps_frontiers.png", dpi=160); plt.close(fig)
-    # 2. serving-style single-query p99 vs recall
-    fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+            keys = sorted({bkey(r) for r in sub if r["index"] == family})
+            for j, k in enumerate(keys):
+                pts = sorted((r["recall@10"], r[ykey]) for r in sub if r["index"] == family and bkey(r) == k)
+                lab = fam_l[family] if j == 0 else None
+                ax.plot([q[0] for q in pts], [q[1] for q in pts], marker="o", ms=2.4, lw=0.8, color=fam_c[family], label=lab,
+                        alpha=1.0 if j == 0 else 0.55, ls="-" if j == 0 else (0, (3, 1.5)))
+        flat = [r for r in sub if r["index"] == "flat"]
+        if flat:
+            ax.axhline(flat[0][ykey], color=ps.INK, ls=(0, (3, 2)), lw=0.6)
+            ax.text(0.02, flat[0][ykey], "exact search", transform=ax.get_yaxis_transform(), fontsize=7, color=ps.INK,
+                    va="bottom" if ykey == "qps" else "top")
+        ax.set_yscale("log"); ax.set_xlabel("recall@10")
+        ax.set_title(ds_l.get(ds, ds), loc="left", fontsize=9.5, fontweight="bold", pad=6)
+
+    # 1. recall vs batched throughput
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.8))
     for ax, ds in zip(axes, DATASETS):
-        for family in ("ivf_flat", "hnsw_faiss", "hnsw_usearch"):
-            pts = sorted([(r["recall@10"], r["single_p99_ms"]) for r in rows if r["dataset"] == ds and r["index"] == family and "single_p99_ms" in r])
-            if pts: ax.plot([p[0] for p in pts], [p[1] for p in pts], "o-", ms=3, lw=1, color=colors[family], label=family)
-        flat = [r for r in rows if r["dataset"] == ds and r["index"] == "flat" and "single_p99_ms" in r]
-        if flat: ax.axhline(flat[0]["single_p99_ms"], color=colors["flat"], ls="--", lw=0.9, label="flat (exact)")
-        ax.set_yscale("log"); ax.set_xlabel("recall@10"); ax.set_ylabel("single-query p99 latency (ms, 1 thread, log)"); ax.set_title(ds); ax.legend(frameon=False, fontsize=8)
-    fig.tight_layout(); fig.savefig(FIG / "fig2_recall_vs_single_query_p99.png", dpi=160); plt.close(fig)
-    # 3. build time and memory per index family (one bar per built index)
-    built = []
-    seen = set()
+        frontier(ax, ds, "qps")
+    axes[0].set_ylabel("queries per second (batched)")
+    h, l = axes[0].get_legend_handles_labels()
+    fig.legend(h, l, loc="upper center", ncol=3, bbox_to_anchor=(0.5, 1.07), handlelength=1.4, columnspacing=1.4)
+    fig.tight_layout(w_pad=1.8); fig.savefig(FIG / "fig1_recall_qps_frontiers.png"); plt.close(fig)
+    # 2. recall vs single-query p99 latency
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.8))
+    for ax, ds in zip(axes, DATASETS):
+        frontier(ax, ds, "single_p99_ms")
+    axes[0].set_ylabel("single-query p99 (ms, one thread)")
+    h, l = axes[0].get_legend_handles_labels()
+    fig.legend(h, l, loc="upper center", ncol=3, bbox_to_anchor=(0.5, 1.07), handlelength=1.4, columnspacing=1.4)
+    fig.tight_layout(w_pad=1.8); fig.savefig(FIG / "fig2_recall_vs_single_query_p99.png"); plt.close(fig)
+    # 3. build time and memory, one bar per built index
+    built, seen = [], set()
     for r in rows:
-        key = (r["dataset"], r["index"], json.dumps({k: v for k, v in r["params"].items() if k in ("nlist", "M", "connectivity")}, sort_keys=True))
-        if key not in seen:
-            seen.add(key); built.append((f"{r['dataset'].split('-')[0]}\n{r['index']}\n{key[2].strip('{}')}", r["build_s"], r["mem_mb"]))
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-    axes[0].bar(range(len(built)), [b[1] for b in built], color="#5b5a66"); axes[0].set_ylabel("build time (s)"); axes[0].set_title("Index build time")
-    axes[1].bar(range(len(built)), [b[2] for b in built], color="#ff4d2e"); axes[1].set_ylabel("resident memory added (MB)"); axes[1].set_title("Index memory")
-    for ax in axes:
-        ax.set_xticks(range(len(built))); ax.set_xticklabels([b[0] for b in built], fontsize=6)
-    fig.tight_layout(); fig.savefig(FIG / "fig3_build_time_memory.png", dpi=160); plt.close(fig)
+        key = (r["dataset"], r["index"], bkey(r))
+        if key in seen:
+            continue
+        seen.add(key)
+        par = ", ".join(f"{k} {v}" for k, v in r["params"].items() if k in build_keys)
+        built.append((f"{ds_l.get(r['dataset'], r['dataset']).split(',')[0]} · {fam_l[r['index']]}" + (f", {par}" if par else ""),
+                      r["build_s"], r["mem_mb"], r["index"]))
+    h = 0.24 * len(built) + 0.7
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, h), sharey=True)
+    ys = np.arange(len(built))[::-1]
+    cols = [fam_c.get(b[3], ps.INK) for b in built]
+    axes[0].barh(ys, [b[1] for b in built], 0.62, color=cols); axes[0].set_xlabel("build time (s)")
+    axes[1].barh(ys, [b[2] for b in built], 0.62, color=cols); axes[1].set_xlabel("memory added (MB)")
+    for ax, k in zip(axes, (1, 2)):
+        for y, b in zip(ys, built):
+            ax.text(b[k], y, f" {b[k]:,.0f}" if b[k] >= 10 else f" {b[k]:.1f}", va="center", fontsize=6.8, color=ps.MID)
+        ax.margins(x=0.18); ax.tick_params(axis="y", length=0)
+    axes[0].set_yticks(ys); axes[0].set_yticklabels([b[0] for b in built], fontsize=7.2)
+    fig.tight_layout(w_pad=1.2); fig.savefig(FIG / "fig3_build_time_memory.png"); plt.close(fig)
 
 
 def main() -> None:
+    if "--plots-only" in sys.argv:
+        plots(json.load(open(HERE / "results.json"))["rows"]); print("redrew figures"); return
     start_env = benchenv.wait_for_quiet()
     meta = {"machine": platform.machine(), "processor": platform.processor(), "cpu_count": os.cpu_count(),
             "physical_cores": psutil.cpu_count(logical=False), "threads_used": THREADS, "background_at_start": start_env,
@@ -205,7 +238,10 @@ def main() -> None:
         rows += run_dataset(ds)
         meta["background_after_dataset"][ds] = benchenv.sample_load()
         json.dump({"meta": meta, "rows": rows}, open(HERE / "results.json", "w"), indent=1)
-    plots(rows)
+    try:
+        plots(rows)
+    except Exception as e:  # results.json is already written; re-draw with --plots-only
+        print("plotting failed:", repr(e))
     print("done:", len(rows), "configurations")
 
 

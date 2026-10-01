@@ -8,13 +8,13 @@ The measurements in chapters 1, 2 and 4 come from two small, fully published ben
 
 **Servers.** Four minimal HTTP servers in Python, identical in protocol and response, differing only in concurrency model: (a) a thread-per-connection server; (b) a single event loop with CPU-bound work run inline (the classic mistake); (c) an event loop that hands CPU-bound work to a thread pool (responsive, but still serialised by the interpreter lock); (d) an event loop that hands CPU-bound work to a process pool (the pattern that uses the cores). No framework; the point is the model, not the library. Whether the interpreter had its global lock enabled is recorded with the results.
 
-**Workloads.** *IO-bound*: each request awaits a simulated 20 ms downstream call. *CPU-bound*: each request performs a fixed amount of pure computation (a few milliseconds on one core). *Mixed*: a 10 ms simulated IO wait followed by a smaller computation.
+**Workloads.** *IO-bound*: each request awaits a simulated 20 ms downstream call. *CPU-bound*: each request performs a fixed hashing loop calibrated to about 3 ms on one core (the measured value is recorded with the results). *Mixed*: the 20 ms wait followed by the same computation.
 
-**Load.** A closed-loop asynchronous load generator with *N* concurrent clients, *N* ∈ {1, 8, 32, 128, 256}, each sending a request, awaiting the response and immediately sending the next. A warm-up period is discarded; each cell is run several times and the spread reported. The closed-loop choice is deliberate and chapter 10 explains what it does and does not measure: it answers "with *N* concurrent clients, what latency does each experience?" and it is not an open-loop capacity test.
+**Load.** A closed-loop asynchronous load generator with *N* concurrent keep-alive clients, *N* ∈ {1, 8, 32, 128, 256}, each sending 40 requests one after another. Every path is warmed up first; each cell is run three times, the repeat with the median p99 is kept, and all three p99s are recorded. The closed-loop choice is deliberate, and chapter 10 explains what it does and doesn't measure: it answers "with *N* concurrent clients, what latency does each one see?" and isn't a fixed-rate capacity test.
 
-**Metrics.** p50, p95, p99 and maximum latency, throughput, and the ratio p99/p50 as a single tail-heaviness number.
+**Metrics.** p50, p95, p99 and maximum latency, throughput, and the ratio p99/p50 as a one-number measure of tail heaviness.
 
-**Reproduce.** `cd papers/p3-tail-latency && python harness.py`. Writes `results.json` (with `meta` recording CPU model, core count, Python version and OS) and figures. Run on an otherwise idle machine; background load inflates tails unevenly across designs.
+**Reproduce.** `cd papers/p3-tail-latency && python harness.py`. It writes `results.json` (whose `meta` records the processor, core count, Python version, whether the interpreter lock was enabled, and the background load on the machine at the start and after each server) and three figures. The harness waits for a quiet machine before it starts, because background programs inflate tails unevenly across designs; on the first attempt, an emulator running in the background was enough to distort the results.
 
 ## A.2 Recall–latency frontiers of approximate nearest-neighbour indexes (papers/p4-ann-frontiers)
 
@@ -24,19 +24,19 @@ The measurements in chapters 1, 2 and 4 come from two small, fully published ben
 
 **Indexes.** Flat (exact, brute force) as the recall-1.0 reference; IVF-Flat with a range of cluster counts and probe counts; HNSW in two implementations (FAISS and usearch) with a range of graph and search parameters. Each configuration is built once (build time and memory recorded) and queried at several search-effort settings to trace its frontier.
 
-**Metrics.** Recall@10 against the ground truth, queries per second (single-threaded, batched), build time and index memory. The frontier for each index family is the set of (recall, QPS) points not dominated by another point of the same family.
+**Metrics.** Recall@10 against the ground truth; batched queries per second over all 10,000 queries, using one thread per physical core; single-query latency (p50 and p99 over 500 queries, one at a time, on one thread), which is what an online service actually experiences; build time; and index memory. The frontier for each index family is the set of (recall, speed) points not beaten on both axes by another point of the same family.
 
-**Reproduce.** `cd papers/p4-ann-frontiers && python benchmark.py`. Downloads the two HDF5 files if absent (about 1.3 GB), builds every configuration, writes `results.json` and the frontier figures. Expect an hour or more on a laptop.
+**Reproduce.** Download the two HDF5 files from ann-benchmarks.com into `papers/p4-ann-frontiers/data/` (about 1 GB; the URLs are in `data/SNAPSHOT.json`), then `cd papers/p4-ann-frontiers && python benchmark.py`. It builds every configuration and writes `results.json` and the figures. Like P3, it waits for a quiet machine and records the background load. Expect an hour or two on a laptop.
 
 ## A.3 Reading the numbers
 
-Three cautions apply to both studies and to any benchmark you read.
+Three cautions apply to both studies, and to any benchmark you read.
 
-*Single machine.* The author's laptop, specified in each `results.json`. A server-class machine, a different Python build or a different operating system will move every absolute number. The comparisons within a study are the finding.
+The first is that each study ran on a single machine, my laptop, which is specified in each `results.json`. A server-class machine, a different Python build or a different operating system will move every absolute number. The comparisons within each study are the finding.
 
-*Synthetic workloads.* The IO wait is a sleep, the computation is a loop, the vectors are a public dataset. Real workloads are messier and their tails heavier. The studies show the shape of the trade-offs, not their size in your system.
+The second is that the workloads are synthetic. The IO wait is a sleep, the computation is a loop, the vectors are a public dataset. Real workloads are messier and their tails heavier, so the studies show the shape of the trade-offs rather than their size in your system.
 
-*Pre-specified designs.* Both studies fixed their design before running and report every configuration that was run. Where something was changed after seeing results, the script's docstring says so. Hold other benchmarks to the same standard.
+The third is that both designs were fixed before running, and every configuration that was run is reported. Where something was changed along the way (a socket default that made one server refuse connections, a thread count that made results hostage to background load), the script's docstring and comments say so. Hold other people's benchmarks to the same standard.
 
 ---
 

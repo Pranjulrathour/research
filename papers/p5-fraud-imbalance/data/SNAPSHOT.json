@@ -6,7 +6,7 @@
  "licence": "Public (as stated on OpenML); originally released on Kaggle under the Open Database License (ODbL)",
  "snapshot_utc": "2026-10-01T06:40",
  "file": "creditcard.csv",
- "bytes": 148701764,
+ "bytes": 151102405,
  "rows": 284807,
  "columns": [
   "Time",
@@ -23,5 +23,16 @@
  "time_range_seconds": [
   0.0,
   172792.0
- ]
+ ],
+ "sha256": {
+  "creditcard.arff": {
+   "sha256": "fdaf12730dc1fc426f318b71349f24f5c5fd00aa1152940be7e7509ae3d89d2a",
+   "bytes": 150829308
+  },
+  "creditcard.csv": {
+   "sha256": "895dc3dad2840ac9e05c12d6442bd739d879c2d405e9b065efc0f1973be46a84",
+   "bytes": 151102405
+  }
+ },
+ "built_by": "fetch_data.py p5: the ARFF's @data section read with pandas' default C parser and written with to_csv"
 }

@@ -5,8 +5,14 @@
   "sift-128-euclidean.hdf5": {
    "url": "http://ann-benchmarks.com/sift-128-euclidean.hdf5",
    "bytes": 525128288,
-   "train": [1000000, 128],
-   "test": [10000, 128],
+   "train": [
+    1000000,
+    128
+   ],
+   "test": [
+    10000,
+    128
+   ],
    "neighbors": "100 exact nearest neighbours per test query (ground truth shipped in file)",
    "distance": "euclidean",
    "origin": "SIFT1M descriptors, Jégou, Douze & Schmid (2011), TEXMEX corpus (INRIA)"
@@ -14,13 +20,29 @@
   "glove-100-angular.hdf5": {
    "url": "http://ann-benchmarks.com/glove-100-angular.hdf5",
    "bytes": 485413888,
-   "train": [1183514, 100],
-   "test": [10000, 100],
+   "train": [
+    1183514,
+    100
+   ],
+   "test": [
+    10000,
+    100
+   ],
    "neighbors": "100 exact nearest neighbours per test query (ground truth shipped in file)",
    "distance": "angular (cosine); vectors are L2-normalised in benchmark.py so inner product equals cosine",
    "origin": "GloVe word vectors, Pennington, Socher & Manning (2014), Stanford NLP; glove.twitter.27B 100d"
   }
  },
  "licence": "ann-benchmarks: MIT (tool); SIFT1M: free for research use (INRIA TEXMEX); GloVe: Public Domain Dedication and License v1.0 (ODC-PDDL)",
- "note": "Files are not committed (1 GB); benchmark.py expects them in this folder. Re-download from the URLs above."
+ "note": "Files are not committed (1 GB); benchmark.py expects them in this folder. `python fetch_data.py p4` in papers/ downloads them and checks the hashes.",
+ "sha256": {
+  "glove-100-angular.hdf5": {
+   "sha256": "544af1d5e84e112cd4749571dcfd8ca109818a572f850af75a3a09e093a953c4",
+   "bytes": 485413888
+  },
+  "sift-128-euclidean.hdf5": {
+   "sha256": "dd6f0a6ed6b7ebb8934680f861a33ed01ff33991eaee4fd60914d854a0ca5984",
+   "bytes": 525128288
+  }
+ }
 }

@@ -1,5 +1,6 @@
 ---
 title: "Fat Tails and the Failure of Gaussian Risk Models: Out-of-Sample Value-at-Risk Evidence from NIFTY 50 and S&P 500, 2010–2026"
+short: "Fat tails and Gaussian VaR: NIFTY 50 and S&P 500"
 author: "Pranjul Rathour"
 affiliation: "Independent researcher, Kanpur, India · pranjulrathour41@gmail.com · https://pranjulrathour.scult.in"
 date: "October 2026"
@@ -9,21 +10,21 @@ jel: "C58, G17, G32"
 
 ## Abstract
 
-Daily equity-index returns are known to have heavier tails than the normal distribution, yet Gaussian assumptions remain common in introductory risk practice. This paper measures, on 16.75 years of daily data for India's NIFTY 50 and the US S&P 500 (January 2010 to September 2026), how far the Gaussian model fails and which simple alternatives repair it. Both indices show excess kurtosis near 13 and negative skew; moves beyond four standard deviations occurred 65 times (NIFTY 50) and 105 times (S&P 500) more often than a normal distribution predicts. Six one-day Value-at-Risk (VaR) models were backtested strictly out of sample with a rolling 500-day estimation window: Gaussian, historical simulation, unconditional Student-t, EWMA-Gaussian, a filtered Student-t (EWMA volatility with a t fitted to standardised returns) and filtered historical simulation (FHS). At the 99% level the Gaussian model produced 57 violations against 36 expected on NIFTY 50 and 89 against 37 on S&P 500, failing the Kupiec coverage test at the 1% level on both. The two hypotheses "the tails are the problem" and "volatility clustering is the problem" were separable: unconditional Student-t fixed coverage but left violations clustered; EWMA-Gaussian removed clustering but under-covered; only FHS, which addresses both, passed the Christoffersen conditional-coverage test at 95% on both indices (p = 0.50 and 0.98) and at 99% on NIFTY 50 (p = 0.25). No model passed conditional coverage at 99% on the S&P 500, because of the March 2020 episode. A naive variant (EWMA volatility with a unit-variance t quantile using the raw-return degrees of freedom) failed badly and is reported as a cautionary result: unconditional tail estimates largely measure volatility clustering, and reusing them inside a volatility model double-counts it. All code and data snapshots are public and the full analysis reproduces with one command.
+It has been known for more than sixty years that daily equity returns have heavier tails than the normal distribution, yet Gaussian assumptions are still the default in much introductory risk practice. This paper measures how badly the Gaussian model fails on 16.75 years of daily data for India's NIFTY 50 and the US S&P 500 (January 2010 to September 2026), and which simple alternatives repair it. Both indices have excess kurtosis near 13 and negative skew, and moves beyond four standard deviations occurred 65 times (NIFTY 50) and 105 times (S&P 500) more often than a normal distribution predicts. Six one-day Value-at-Risk (VaR) models were backtested strictly out of sample on a rolling 500-day window: Gaussian, historical simulation, unconditional Student-t, EWMA-Gaussian, a filtered Student-t, and filtered historical simulation (FHS). At the 99% level the Gaussian model produced 57 violations where 36 were expected on NIFTY 50, and 89 where 37 were expected on the S&P 500, failing the Kupiec coverage test at the 1% level on both. Fat tails and volatility clustering turn out to be separable problems with separate fixes: the unconditional Student-t restores coverage but leaves violations clustered, while EWMA volatility removes the clustering but under-covers. Only FHS, which addresses both, passes the Christoffersen conditional-coverage test at 95% on both indices (p = 0.50 and 0.98) and at 99% on NIFTY 50 (p = 0.25). No model passes at 99% on the S&P 500, because of March 2020. A specification that reused the raw-return degrees of freedom inside a volatility model failed badly and is reported as a cautionary result. Code and data snapshots are public, and the analysis reproduces with one command.
 
 ## 1. Introduction
 
-The observation that financial returns have fat tails is at least six decades old (Mandelbrot 1963; Fama 1965), and the consequences for risk measurement were made plain by the 2008 crisis, when Gaussian-based Value-at-Risk (VaR) models at several institutions reported losses that were "25-standard-deviation events" on consecutive days. Nevertheless the Gaussian model remains the default in textbooks, spreadsheets and much introductory practice, because it is simple, closed-form and requires estimating only a mean and a variance.
+That financial returns have fat tails is an old observation (Mandelbrot 1963; Fama 1965), and the 2008 crisis made its consequences for risk measurement hard to ignore, when Gaussian-based VaR models at several institutions reported losses described as "25-standard-deviation events" on consecutive days. The Gaussian model has nevertheless survived as the default in textbooks, spreadsheets and much everyday practice, for understandable reasons: it is simple, it has a closed form, and it needs only a mean and a variance.
 
-This paper asks two concrete questions on recent public data. First, *how large* is the Gaussian error for a one-day VaR on two major equity indices, measured out of sample over a period that includes the 2020 pandemic crash, the 2022 rate shock and the 2025 tariff episode? Second, *which repair works*: a heavier-tailed distribution, a time-varying volatility, or both? The second question matters because the two repairs are routinely conflated. A fat-tailed unconditional distribution and a Gaussian distribution with clustered volatility produce the same unconditional histogram, but they imply different risk forecasts and different backtest failures.
+This paper asks two concrete questions of recent public data. The first is how large the Gaussian error actually is for a one-day VaR on two major equity indices, measured out of sample over a period that includes the 2020 pandemic crash, the 2022 rate shock and the 2025 tariff episode. The second is which repair works: a heavier-tailed distribution, a time-varying volatility, or both together. The second question deserves more attention than it usually gets, because the two repairs are often treated as interchangeable. A fat-tailed unconditional distribution and a Gaussian distribution with clustered volatility can produce the same histogram of returns, yet they imply different risk forecasts and fail backtests in different ways.
 
-The contribution is deliberately modest and fully reproducible: a clean out-of-sample comparison on two indices with a pre-specified design, standard backtests, and public code and data. The paper is also candid about a specification that failed during the study, because the failure is itself informative.
+The contribution is intentionally modest. It is a clean out-of-sample comparison on two indices with a design fixed in advance, standard backtests, and public code and data. The paper also reports a specification that failed during the study, because the reason it failed turns out to be informative about the whole question.
 
 ## 2. Data
 
-Daily closing levels of the NIFTY 50 (Yahoo Finance ticker `^NSEI`) and the S&P 500 (`^GSPC`) were downloaded on 1 October 2026 with the `yfinance` library (version 1.7.0). The series are unadjusted index levels; dividends are not included, which is immaterial for one-day log returns. NIFTY 50 history on Yahoo begins on 17 September 2007; both series were truncated to the common analysis window 1 January 2010 to 30 September 2026, giving 4,113 daily log returns for NIFTY 50 and 4,211 for the S&P 500, each on its own trading calendar. The snapshot (tickers, row counts, download time) is recorded in `data/SNAPSHOT.json`; the raw files are committed with the code.
+Daily closing levels of the NIFTY 50 (Yahoo Finance ticker `^NSEI`) and the S&P 500 (`^GSPC`) were downloaded on 1 October 2026 using the `yfinance` library, version 1.7.0. These are unadjusted index levels, so dividends are excluded, which does not matter for one-day log returns. NIFTY 50 history on Yahoo starts on 17 September 2007, and both series were cut to a common window from 1 January 2010 to 30 September 2026. That leaves 4,113 daily log returns for the NIFTY 50 and 4,211 for the S&P 500, each on its own trading calendar. The tickers, row counts, download time and SHA-256 hash of each file are recorded in `data/SNAPSHOT.json`. The price files themselves are not redistributed, because the index providers license their data. The repository's `fetch_data.py` downloads them again, and a second download on the same day reproduced both files byte for byte.
 
-Summary statistics (Table 1) are computed on the full window.
+Table 1 gives summary statistics over the full window.
 
 **Table 1. Daily log returns, 2010-01-04 to 2026-09-30.**
 
@@ -42,44 +43,50 @@ Summary statistics (Table 1) are computed on the full window.
 
 ## 3. Method
 
-The design was fixed before any result was examined, with one documented revision described in Section 3.4.
+The design was fixed before any result was examined. There was one revision, described in Section 3.4.
 
 ### 3.1 Distributional tests
 
-Returns were standardised by the full-sample mean and standard deviation. For thresholds *k* = 2, 3, 4, 5 the empirical frequency of |*z*| > *k* was compared with the two-sided normal tail probability 2Φ(−*k*), and the ratio reported. Jarque–Bera tests normality. A Student-t distribution (location, scale, degrees of freedom) was fitted by maximum likelihood to the full sample.
+Returns were standardised by their full-sample mean and standard deviation. For thresholds *k* = 2, 3, 4 and 5, the empirical frequency of |*z*| > *k* was compared with the two-sided normal tail probability 2Φ(−*k*), and the ratio of the two is reported. Normality is tested with Jarque–Bera, and a Student-t distribution (location, scale and degrees of freedom) is fitted to the full sample by maximum likelihood.
 
 ### 3.2 VaR models
 
-One-day VaR at confidence α ∈ {0.95, 0.99} was forecast for every day *t* from an estimation window of the *W* = 500 trading days ending at *t* − 1 (roughly two years). The window length and the EWMA decay are the textbook defaults (RiskMetrics 1996) and were not tuned. Six models:
+One-day VaR at confidence α ∈ {0.95, 0.99} was forecast for every day *t* from an estimation window of the *W* = 500 trading days ending at *t* − 1, roughly two years. Both the window length and the EWMA decay are textbook defaults (J.P. Morgan/Reuters 1996) and were not tuned. The six models can be placed on a simple grid, shown in Figure 1: whether they let volatility vary over time, and whether they allow for tails heavier than the normal.
 
-1. **Gaussian**: VaR = −(μ̂ + σ̂ z_{1−α}), with μ̂, σ̂ from the window.
-2. **Historical simulation**: the empirical (1−α) quantile of the window.
-3. **Student-t (unconditional)**: MLE fit of (df, loc, scale) to the window; VaR from the fitted t quantile.
-4. **EWMA-Gaussian**: σ²_t = λσ²_{t−1} + (1−λ)r²_{t−1}, λ = 0.94, zero mean; VaR = −σ_t z_{1−α}.
-5. **Filtered Student-t**: standardised returns z_s = r_s/σ_s for the window; MLE t fit (df, loc, scale) to the z's; VaR = −σ_t (loc + scale · t_{1−α}(df)).
-6. **Filtered historical simulation (FHS)**: VaR = −σ_t × (empirical (1−α) quantile of the window's standardised returns) (Barone-Adesi, Giannopoulos and Vosper 1999).
+![Figure 1. The six VaR models arranged by the two effects they address. Constant-volatility models estimate one distribution for the whole 500-day window; time-varying models rescale by an EWMA volatility estimate.](figures/fig0_model_grid.png)
 
-Models 1–3 assume constant volatility within the window and differ in tail shape; model 4 has time-varying volatility with Gaussian tails; models 5 and 6 have both. This structure is what allows the two hypotheses to be separated.
+1. *Gaussian*: VaR = −(μ̂ + σ̂ z<sub>1−α</sub>), with μ̂ and σ̂ estimated on the window.
+2. *Historical simulation*: the empirical (1 − α) quantile of the window.
+3. *Student-t (unconditional)*: a maximum-likelihood fit of (df, loc, scale) to the window, with VaR taken from the fitted t quantile.
+4. *EWMA-Gaussian*: σ<sup>2</sup><sub>t</sub> = λσ<sup>2</sup><sub>t−1</sub> + (1 − λ)r<sup>2</sup><sub>t−1</sub> with λ = 0.94 and zero mean; VaR = −σ<sub>t</sub> z<sub>1−α</sub>.
+5. *Filtered Student-t*: the window's returns are standardised, z<sub>s</sub> = r<sub>s</sub>/σ<sub>s</sub>, a t distribution is fitted to the standardised values, and VaR = −σ<sub>t</sub>(loc + scale · t<sub>1−α</sub>(df)).
+6. *Filtered historical simulation (FHS)*: VaR = −σ<sub>t</sub> times the empirical (1 − α) quantile of the window's standardised returns (Barone-Adesi, Giannopoulos and Vosper 1999).
+
+Models 1 to 3 hold volatility constant within the window and differ only in the shape of the tails. Model 4 lets volatility vary but keeps Gaussian tails. Models 5 and 6 do both. That arrangement is what makes it possible to separate the two effects.
 
 ### 3.3 Backtests
 
-For each model and α, a violation is a day with *r_t* < −VaR_t. The Kupiec (1995) likelihood-ratio test of unconditional coverage tests whether the violation rate equals 1−α; the Christoffersen (1998) independence test tests whether violations cluster (a first-order Markov alternative); the conditional-coverage test combines the two. Also reported: violations by calendar year, mean loss beyond VaR on violation days, and the mean VaR level (a measure of capital required).
+For each model and each α, a violation is a day on which *r*<sub>t</sub> < −VaR<sub>t</sub>. The Kupiec (1995) likelihood-ratio test checks unconditional coverage, that is, whether the violation rate equals 1 − α. The Christoffersen (1998) test checks independence against a first-order Markov alternative, in other words whether violations bunch together, and the conditional-coverage test combines the two. Also reported are violations by calendar year, the mean loss beyond VaR on violation days, and the mean VaR level, which is a rough measure of the capital each model would require.
 
 ### 3.4 Revision record
 
-The first run used models 1–4. A fifth model was then specified as "EWMA volatility times a unit-variance Student-t quantile, using the degrees of freedom from the raw-return window fit". It produced far more violations than the Gaussian (273 against 181 expected at 95% on NIFTY 50; 317 against 186 on S&P 500) and was replaced by models 5 and 6. The variant is still computed and its results reported in `results.json` under `discarded_variants`. Section 5.3 explains why it failed. No other change was made after seeing results.
+The first run used models 1 to 4. A fifth model was then added, defined as EWMA volatility multiplied by a unit-variance Student-t quantile whose degrees of freedom came from the raw-return window fit. It produced many more violations than even the Gaussian model (273 where 181 were expected at 95% on NIFTY 50, and 317 where 186 were expected on the S&P 500), so it was replaced by models 5 and 6 as defined above. The failed variant is still computed, and its results appear in `results.json` under `discarded_variants`. Section 5.3 explains why it failed. No other change was made after looking at results.
 
 ### 3.5 Reproducibility
 
-`python analysis.py` in the paper's directory reproduces every number and figure in this paper from the committed data files in about ten minutes on a 12-core laptop (the Student-t fits are parallelised). Python 3.13, NumPy, pandas, SciPy and Matplotlib; exact versions in the repository's `requirements.txt`.
+Running `python analysis.py` in the paper's directory reproduces every number and figure here from the two snapshot files, in about ten minutes on a 12-thread laptop with the Student-t fits parallelised. The software is Python 3.13 with NumPy, pandas, SciPy and Matplotlib, at the versions listed in the repository's `requirements.txt`.
 
 ## 4. Results
 
 ### 4.1 The tails
 
-Figure 1 shows normal quantile–quantile plots; Figure 2 shows the exceedance ratios. Table 2 gives the counts.
+Figure 2 shows normal quantile–quantile plots for both indices, and Figure 3 the exceedance ratios, with the counts in Table 2.
 
-**Table 2. Observed versus Gaussian-expected counts of |z| > k.**
+![Figure 2. Normal quantile–quantile plots of standardised daily log returns, 2010–2026. The S-shape is the signature of heavy tails: extreme observations lie far beyond the line a normal distribution predicts.](figures/fig1_qq.png)
+
+![Figure 3. Observed frequency of |z| > k relative to the normal expectation, on a log scale. Both indices exceed the Gaussian prediction by a factor of four to five at 3σ, 65 to 105 at 4σ and more than 4,000 at 5σ.](figures/fig2_exceedance_ratio.png)
+
+**Table 2. Observed and Gaussian-expected counts of |z| > k.**
 
 | Threshold | NIFTY 50 observed | expected | ratio | S&P 500 observed | expected | ratio |
 |---|---|---|---|---|---|---|
@@ -88,19 +95,15 @@ Figure 1 shows normal quantile–quantile plots; Figure 2 shows the exceedance r
 | 4σ | 17 | 0.26 | 65 | 28 | 0.27 | 105 |
 | 5σ | 10 | 0.0024 | 4,241 | 12 | 0.0024 | 4,971 |
 
-![Figure 1. Normal quantile–quantile plots of standardised daily log returns, 2010–2026. The S-shape is the signature of heavy tails: extreme observations lie far beyond the line a normal distribution predicts.](figures/fig1_qq.png)
+At two standard deviations the normal distribution is close to right. The gap opens at three and becomes extreme at four and five. A 5σ day ought to occur about once in 1,700 years of trading under a Gaussian model; each index had at least ten in under seventeen years. Both Jarque–Bera statistics reject normality at any conventional level.
 
-![Figure 2. Observed frequency of |z| > k relative to the normal expectation (log scale). Both indices exceed the Gaussian prediction by a factor of 4–5 at 3σ, 65–105 at 4σ and over 4,000 at 5σ.](figures/fig2_exceedance_ratio.png)
-
-At two standard deviations the normal distribution is approximately right; the discrepancy opens at three and becomes extreme at four and five. Under a Gaussian model a 5σ day should occur about once in 1,700 years of trading; each index had ten or more in under seventeen years. Both Jarque–Bera statistics reject normality at any conventional level.
-
-The full-sample Student-t fits give 4.06 degrees of freedom for NIFTY 50 and 2.78 for the S&P 500. A df below 4 implies an infinite fourth moment; a df below 3, an infinite third. These should be read as summaries of the unconditional histogram rather than as structural parameters, for the reason developed in Section 5.3.
+The full-sample Student-t fits give 4.06 degrees of freedom for NIFTY 50 and 2.78 for the S&P 500. Taken literally, a df below 4 implies an infinite fourth moment and a df below 3 an infinite third. These numbers are better read as summaries of the unconditional histogram than as structural parameters, for reasons that become clear in Section 5.3.
 
 ### 4.2 Value-at-Risk backtests
 
-Forecasts begin on 13 January 2012 (NIFTY 50; 3,613 forecast days) and 27 December 2011 (S&P 500; 3,711 days). Table 3 reports the backtests; Figure 3 plots the 99% violation counts; Figure 4 shows the S&P 500 return series against three of the 99% VaR paths.
+Forecasts begin on 13 January 2012 for NIFTY 50 (3,613 forecast days) and on 27 December 2011 for the S&P 500 (3,711 days). Table 3 reports the backtests, Figure 4 plots the 99% violation counts, and Figure 5 shows the S&P 500 return series against three of the 99% VaR paths.
 
-**Table 3. One-day VaR backtests, rolling 500-day window, out of sample. UC = Kupiec unconditional coverage; IND = Christoffersen independence; CC = conditional coverage. p-values; bold marks p ≥ 0.05 (not rejected).**
+**Table 3. One-day VaR backtests, rolling 500-day window, out of sample. UC = Kupiec unconditional coverage; IND = Christoffersen independence; CC = conditional coverage. Entries are p-values; values of 0.05 or more (not rejected) are in bold.**
 
 *NIFTY 50, 95% (expected violations 180.7)*
 
@@ -146,63 +149,64 @@ Forecasts begin on 13 January 2012 (NIFTY 50; 3,613 forecast days) and 27 Decemb
 | Filtered Student-t | 64 | 0.000 | 0.005 | 0.000 | 2.49% | 0.66% |
 | FHS | 46 | **0.157** | 0.002 | 0.004 | 2.88% | 0.62% |
 
-![Figure 3. Violations of one-day 99% VaR by model over 3,613 (NIFTY 50) and 3,711 (S&P 500) out-of-sample days; the dashed line is the expected count under correct coverage.](figures/fig3_var99_violations.png)
+![Figure 4. Violations of one-day 99% VaR by model over 3,613 (NIFTY 50) and 3,711 (S&P 500) out-of-sample days. The dashed line is the count expected under correct coverage.](figures/fig3_var99_violations.png)
 
-![Figure 4. S&P 500 daily log returns against three out-of-sample 99% VaR paths. The constant-volatility models move slowly and are breached in clusters; the filtered model rises with volatility and is breached less often but still in March 2020.](figures/fig4_sp500_var_paths.png)
+![Figure 5. S&P 500 daily log returns against three out-of-sample 99% VaR paths, plotted as −VaR. The two constant-volatility models (Gaussian and Student-t) move slowly and are breached in clusters; FHS rises and falls with volatility and is breached less often, though still in March 2020.](figures/fig4_sp500_var_paths.png)
 
 Four patterns stand out.
 
-**At 95%, the Gaussian model's coverage is fine; its independence is not.** On both indices the Gaussian violation count is within sampling error of expected (161 vs 181; 181 vs 186), yet the independence test rejects decisively (p = 0.017 and p < 0.001). The problem at 95% is not the tail shape but the clustering: violations arrive in bunches during volatile periods and are absent in calm ones. The three constant-volatility models (Gaussian, historical, Student-t) all fail independence on both indices; the three EWMA-based models all pass it at 95%.
+At 95%, the Gaussian model's coverage is fine but its independence is not. On both indices the Gaussian violation count is within sampling error of what is expected (161 against 181, and 181 against 186), yet the independence test rejects decisively (p = 0.017 and p < 0.001). At this level the problem is not the shape of the tails but clustering: violations arrive in bunches during volatile periods and hardly at all in calm ones. All three constant-volatility models fail the independence test on both indices, and all three EWMA-based models pass it at 95%.
 
-**At 99%, the Gaussian model fails coverage badly.** Fifty-seven violations against 36 expected on NIFTY 50 (1.6% rate) and 89 against 37 on S&P 500 (2.4% rate): the model under-estimated the 1% tail by 58% and 140% respectively. This is the fat-tail failure in its textbook form.
+At 99%, the Gaussian model fails coverage badly. It records 57 violations against 36 expected on NIFTY 50 (a rate of 1.6%) and 89 against 37 on the S&P 500 (2.4%), which means it underestimated the 1% tail by 58% and 140% respectively. This is the fat-tail failure in its textbook form.
 
-**The two repairs fix different things.** Unconditional Student-t restores 99% coverage on NIFTY 50 (37 violations, UC p = 0.89) but leaves clustering (IND p = 0.059, and p < 0.001 on S&P 500). EWMA-Gaussian removes clustering (IND p = 0.77 and 0.06) but under-covers at 99% (69 and 85 violations), because Gaussian tails scaled by a correct volatility are still too thin. Neither repair alone is sufficient at 99%.
+The two repairs fix different things. The unconditional Student-t restores 99% coverage on NIFTY 50 (37 violations, UC p = 0.89) but leaves clustering in place (IND p = 0.059, and below 0.001 on the S&P 500). EWMA-Gaussian removes the clustering (IND p = 0.77 and 0.06) but still under-covers at 99% (69 and 85 violations), because Gaussian tails scaled by a correct volatility are still too thin. Neither repair is enough on its own at 99%.
 
-**FHS is the only model that passes conditional coverage at 95% on both indices and at 99% on NIFTY 50.** Its 95% p-values (0.50 and 0.98) are the only ones in the table above 0.5. At 99% on the S&P 500 it has correct coverage (46 vs 37, UC p = 0.16) but fails independence (p = 0.002): the violations by year show why. Five of its 46 S&P 500 violations fall in 2020 and arrive within a few weeks, which a first-order Markov independence test penalises regardless of how well the rest of the sample is covered. No model passes independence at 99% on the S&P 500.
+FHS is the only model that passes conditional coverage at 95% on both indices and at 99% on NIFTY 50. Its 95% p-values, 0.50 and 0.98, are the only ones in the table above 0.5. At 99% on the S&P 500 its coverage is acceptable (46 against 37, UC p = 0.16) but it fails independence (p = 0.002), and the violations by year show why: five of its 46 S&P 500 violations fall in 2020, within a few weeks of each other, and a first-order Markov independence test penalises that regardless of how well the rest of the sample is covered. No model passes independence at 99% on the S&P 500.
 
-Two secondary observations. The EWMA-based models have markedly smaller losses beyond VaR on violation days (0.6–0.8% against 1.0–1.5% for the constant-volatility models): when they are wrong, they are less wrong, because their VaR has already risen with the volatility. And the models' mean VaR levels differ by up to 40% (2.13% to 3.00% at 99% on the S&P 500), which in practice is a 40% difference in required capital; the historical and Student-t models buy their coverage with permanently higher VaR, while FHS buys it with a VaR that is high only when volatility is high.
+Two further observations are worth recording. The EWMA-based models lose much less beyond VaR on the days they are breached (0.6–0.8%, against 1.0–1.5% for the constant-volatility models): when they are wrong, they are less wrong, because their VaR has already risen with volatility. And mean VaR levels differ by up to 40% between models (from 2.13% to 3.00% at 99% on the S&P 500), which in practice is a 40% difference in required capital. Historical simulation and the Student-t buy their coverage with VaR that is permanently higher, whereas FHS buys it with VaR that is high only when volatility is high.
 
 ### 4.3 Degrees of freedom over time
 
-![Figure 5. Student-t degrees of freedom fitted on each rolling 500-day window (capped at 20 for display): raw returns (left) and EWMA-standardised returns (right). The dashed line marks df = 4, below which the fourth moment is infinite.](figures/fig5_rolling_df.png)
+Figure 6 plots the fitted degrees of freedom across rolling windows. The raw-return fits (left) are low and unstable. For the S&P 500 the median across windows is 3.0, 62% of windows fall below 4 and 17% at or below 2, and the fit jumps between local optima in 2014–2016 and again in 2024–2025. Fits to EWMA-standardised returns (right) are higher and steadier: medians of 6.5 for NIFTY 50 and 4.7 for the S&P 500, no window at or below 2, and 3.6% and 38% of windows below 4 respectively. Once volatility clustering has been taken out, what remains is a heavy tail with finite variance, much less extreme than the unconditional histogram suggests.
 
-Figure 5 plots the rolling fitted degrees of freedom. The raw-return fits (left) are low and unstable: the S&P 500 median across windows is 3.0, 62% of windows are below 4 and 17% are at or below 2, with the fit jumping between local optima in 2014–2016 and 2024–2025. The fits on EWMA-standardised returns (right) are higher and smoother: medians of 6.5 (NIFTY 50) and 4.7 (S&P 500), no window at or below 2, and 3.6% and 38% of windows below 4. Once volatility clustering is removed, the remaining tail is heavy but finite-variance and far less extreme than the unconditional histogram suggests.
+![Figure 6. Student-t degrees of freedom fitted on each rolling 500-day window (capped at 20 for display), for raw returns (left) and EWMA-standardised returns (right). The dashed line marks df = 4, below which the fourth moment is infinite.](figures/fig5_rolling_df.png)
 
 ## 5. Discussion
 
-### 5.1 What fails and why
+### 5.1 What fails, and why
 
-Gaussian VaR is approximately right at 95% and badly wrong at 99%, on both indices, and the reason is the point at which the normal tail departs from the empirical one: between two and three standard deviations. A 95% one-day VaR sits at about 1.65σ, inside the region where the normal is adequate; a 99% VaR sits at 2.33σ, where it is not. Practitioners who validate a Gaussian model at 95% and then use it at 99% or 99.9%, as regulatory capital rules require, are validating in the region where the model works and applying it where it does not.
+Gaussian VaR is roughly right at 95% and badly wrong at 99% on both indices, and the reason is where the normal tail departs from the empirical one, which is somewhere between two and three standard deviations. A 95% one-day VaR sits at about 1.65σ, inside the region where the normal distribution is adequate; a 99% VaR sits at 2.33σ, outside it. Validating a Gaussian model at 95% and then using it at 99% or 99.9%, as capital rules require, therefore validates the model where it works and applies it where it does not.
 
 ### 5.2 Tails versus clustering
 
-The paper's central empirical point is that fat tails and volatility clustering are different problems with different fixes, and that the backtests distinguish them. The independence test is the diagnostic for clustering; the coverage test at a high confidence level is the diagnostic for tails. Of the six models, only the two that address both pass both diagnostics anywhere, and only FHS does so convincingly. This is consistent with the literature that has compared VaR models since the late 1990s (Kuester, Mittnik and Paolella 2006, in particular, found filtered approaches dominant), and the contribution here is to show it cleanly, on current data including the 2020 episode, with a design simple enough to be checked by a student.
+The central empirical point is that fat tails and volatility clustering are different problems, that they have different fixes, and that the standard backtests can tell them apart. The independence test diagnoses clustering, and the coverage test at a high confidence level diagnoses the tails. Of the six models, only the two that address both effects can pass both diagnostics, and only FHS does so convincingly. This agrees with the literature comparing VaR methods since the late 1990s (Kuester, Mittnik and Paolella 2006 found filtered approaches to dominate). What this paper adds is a clean demonstration on current data, including 2020, with a design simple enough for a student to check line by line.
 
-### 5.3 The discarded variant, and what it teaches
+### 5.3 The discarded variant, and what it shows
 
-The failed specification scaled EWMA volatility by a Student-t quantile standardised to unit variance, √((df−2)/df) · t_{1−α}(df), using the degrees of freedom from the raw-return fit. Two things went wrong at once. First, when df is near 2, the unit-variance standardisation collapses the quantile: at df = 2.5, the 99% unit-variance t quantile is about −2.0, *below* the Gaussian −2.33, because almost all of a near-2-df t distribution's variance lives in its extreme tail, so a unit-variance version has a narrow body. Second, and more fundamentally, the raw-return df is not a measure of conditional tail thickness; it is a measure of the mixture of volatility regimes in the window. Using it inside a model that already removes volatility regimes counts the same effect twice. The filtered Student-t (model 5), which fits the t to standardised returns, does not have this problem; its df is higher (Section 4.3) and its forecasts are sensible, although it still over-violates at 95%, for the reason that a t distribution's 95% quantile is inside the empirical one when the t is fitted to match the extreme tail. FHS, which uses the empirical quantile of standardised returns, has no parametric form to get wrong.
+The specification that failed scaled EWMA volatility by a Student-t quantile standardised to unit variance, √((df − 2)/df) · t<sub>1−α</sub>(df), using the degrees of freedom from the raw-return fit. Two things went wrong at once. First, when df is close to 2, the unit-variance standardisation shrinks the quantile dramatically. At df = 2.5 the 99% unit-variance t quantile is about −2.0, which is smaller in magnitude than the Gaussian −2.33, because almost all of the variance of a t distribution with df near 2 sits in its extreme tail, leaving a unit-variance version with a very narrow body. Second, and more fundamentally, the raw-return df does not measure conditional tail thickness at all. It measures how the window mixes high- and low-volatility regimes, so using it inside a model that already removes those regimes counts the same effect twice. The filtered Student-t (model 5), which fits its t to standardised returns, avoids this problem, and its degrees of freedom are higher, as Section 4.3 showed. It still over-violates at 95%, because a t fitted to match the extreme tail places its 95% quantile inside the empirical one. FHS, which takes the empirical quantile of standardised returns directly, has no parametric shape to get wrong.
 
 ### 5.4 Limitations
 
-*Two indices.* The pattern is consistent with the literature but the sample is two series; the paper claims nothing about individual stocks, other asset classes or other markets.
+The study covers two indices. The pattern is consistent with the literature, but nothing here is claimed about individual stocks, other asset classes or other markets.
 
-*Fixed, untuned parameters.* The 500-day window and λ = 0.94 are defaults. A tuned window or a GARCH volatility would likely improve the EWMA-based models further; the design chose not to tune anything so that the comparison could not be accused of in-sample fitting.
+The parameters are fixed and untuned. A 500-day window and λ = 0.94 are defaults. A tuned window or a GARCH volatility model would probably improve the EWMA-based models further; the design deliberately tuned nothing, so that the comparison could not be accused of fitting the sample.
 
-*Index levels, not investable returns.* Dividends, transaction costs and the impossibility of trading an index directly are ignored. For a one-day VaR on an index-tracking position these are second-order.
+The returns are index levels, not investable returns. Dividends, transaction costs and the impossibility of trading an index directly are all ignored, which is a second-order concern for a one-day VaR on an index-tracking position.
 
-*The independence test is a first-order Markov test.* It is the standard, and it is sensitive to a single cluster: the March 2020 run of violations alone is enough to reject independence for every model on the S&P 500 at 99%. A test over longer dependence (Engle and Manganelli 2004) might be more or less forgiving; it was not run because it was not pre-specified.
+The independence test is first-order Markov. It is the standard test, and it is very sensitive to a single cluster: the run of violations in March 2020 alone is enough to reject independence for every model on the S&P 500 at 99%. A test of longer-range dependence (Engle and Manganelli 2004) might be more or less forgiving, but it was not run because it was not specified in advance.
 
-*Expected Shortfall is not backtested.* ES is now the regulatory standard for market risk (Basel III); its backtesting is harder and was out of scope. The "mean excess loss" column is a descriptive stand-in.
+Expected Shortfall is not backtested. ES is now the regulatory standard for market risk under Basel III, but backtesting it is harder and was out of scope; the mean-excess-loss column is a descriptive stand-in.
 
-*Yahoo Finance data.* Free, widely used, and not an official source. The two indices' official closes are published by NSE and S&P Dow Jones Indices; discrepancies, if any, would be at the fourth decimal of a daily return and would not change any conclusion.
+Finally, the data come from Yahoo Finance, which is free and widely used but not an official source. The indices' official closes are published by NSE and S&P Dow Jones Indices, and any discrepancies would appear in the fourth decimal place of a daily return and would not change any conclusion.
 
 ## 6. Conclusion
 
-On sixteen and three-quarter years of daily data for the NIFTY 50 and the S&P 500, the Gaussian one-day VaR model is adequate at 95% and fails at 99%, where it under-predicts violations by 58% and 140% respectively. The failure has two separable causes, fat tails and volatility clustering, and a model must address both to pass standard backtests. Of six simple models tested strictly out of sample with untuned parameters, filtered historical simulation was the only one to pass conditional coverage at 95% on both indices and at 99% on NIFTY 50; no model passed independence at 99% on the S&P 500 because of the March 2020 cluster. A variant that reused an unconditional tail estimate inside a volatility model failed badly, illustrating that unconditional fat tails are, in large part, volatility clustering seen without a volatility model. The analysis reproduces from public data with one command.
+On sixteen and three-quarter years of daily NIFTY 50 and S&P 500 data, the Gaussian one-day VaR model is adequate at 95% and fails at 99%, where it underestimates violations by 58% and 140%. The failure has two separable causes, fat tails and volatility clustering, and a model has to address both to pass the standard backtests. Of six simple models tested strictly out of sample with untuned parameters, filtered historical simulation was the only one to pass conditional coverage at 95% on both indices and at 99% on NIFTY 50, and no model passed independence at 99% on the S&P 500 because of the March 2020 cluster. A variant that reused an unconditional tail estimate inside a volatility model failed badly, which illustrates that unconditional fat tails are to a large extent volatility clustering seen without a volatility model. The whole analysis reproduces from public data with a single command.
 
 ## References
 
 - Barone-Adesi, G., Giannopoulos, K. & Vosper, L. (1999). VaR without correlations for portfolios of derivative securities. *Journal of Futures Markets*, 19(5), 583–602.
+- Basel Committee on Banking Supervision (2019). *Minimum capital requirements for market risk*. Bank for International Settlements.
 - Christoffersen, P. F. (1998). Evaluating interval forecasts. *International Economic Review*, 39(4), 841–862.
 - Engle, R. F. & Manganelli, S. (2004). CAViaR: Conditional autoregressive value at risk by regression quantiles. *Journal of Business & Economic Statistics*, 22(4), 367–381.
 - Fama, E. F. (1965). The behavior of stock-market prices. *Journal of Business*, 38(1), 34–105.
@@ -210,12 +214,13 @@ On sixteen and three-quarter years of daily data for the NIFTY 50 and the S&P 50
 - Kuester, K., Mittnik, S. & Paolella, M. S. (2006). Value-at-risk prediction: A comparison of alternative strategies. *Journal of Financial Econometrics*, 4(1), 53–89.
 - Kupiec, P. H. (1995). Techniques for verifying the accuracy of risk measurement models. *Journal of Derivatives*, 3(2), 73–84.
 - Mandelbrot, B. (1963). The variation of certain speculative prices. *Journal of Business*, 36(4), 394–419.
-- Basel Committee on Banking Supervision (2019). *Minimum capital requirements for market risk*. Bank for International Settlements.
 
 ## Data and code availability
 
-All code, the committed data snapshots (`data/NIFTY50_daily_close.csv`, `data/SP500_daily_close.csv`, `data/SNAPSHOT.json`), `results.json` containing every number in this paper, and the figure-generation code are available at https://github.com/Pranjulrathour/research under `papers/p1-fat-tails/`. Code is MIT-licensed. Index data are from Yahoo Finance via `yfinance` and are redistributed here only as a dated snapshot for reproducibility.
+All code, `results.json` with every number in this paper, the figure code and `data/SNAPSHOT.json` (download date, row counts and SHA-256 hashes of the two price files) are available at https://github.com/Pranjulrathour/research under `papers/p1-fat-tails/`. The code is MIT-licensed. The index data come from Yahoo Finance via `yfinance` and are not redistributed; `python fetch_data.py p1` in the `papers/` folder downloads them and checks them against the recorded hashes.
 
-## Declaration
+## Declarations
 
-The author has no competing interests and received no funding for this work.
+*Competing interests and funding.* The author has no competing interests and received no funding for this work.
+
+*Use of AI tools.* Generative AI tools were used to help draft parts of the text and code. All results were produced by the published scripts from the committed data, and the author reviewed the analysis and takes full responsibility for the content.

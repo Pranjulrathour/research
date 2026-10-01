@@ -1,15 +1,18 @@
 # Research — Pranjul Rathour
 
-Code, data snapshots and manuscripts behind my papers and books. Every number in every paper is produced by a script in this
-repository from a dated snapshot of public data; `SNAPSHOT.json` in each paper's `data/` folder records the source, URL,
-licence and download date. Raw data files are not committed (they are large and re-downloadable); the scripts fetch or
-expect them as documented.
+Code, data provenance and manuscripts behind my papers and books. Every number in every paper is produced by a script in
+this repository from a dated snapshot of public data. `SNAPSHOT.json` in each paper's `data/` folder records the source,
+URL, licence, download date and the SHA-256 hash of every file used. The data files themselves are not committed: the
+market data are licensed by their index providers, and the benchmark datasets are large. `python papers/fetch_data.py all`
+downloads everything and reports, file by file, whether the download matches the hashed snapshot. On 1 October 2026 it
+reproduced the P1 and P5 files and the P2 S&P 500 file byte for byte; the P2 Dow 30 adjusted closes differed from the
+snapshot by at most 1.5 parts per million, which is Yahoo's own rounding.
 
 ## Papers
 
 | ID | Title | Data | Reproduce |
 |---|---|---|---|
-| P1 | Fat tails and the failure of Gaussian risk models: evidence from NIFTY 50 and S&P 500, 2010–2026 | Daily index closes (Yahoo Finance via `yfinance`) | `cd papers/p1-fat-tails && python analysis.py` |
+| P1 | Fat tails and the failure of Gaussian risk models: out-of-sample Value-at-Risk evidence from NIFTY 50 and S&P 500, 2010–2026 | Daily index closes (Yahoo Finance via `yfinance`) | `cd papers/p1-fat-tails && python analysis.py` |
 | P2 | Do machine-learning return predictors beat linear baselines out of sample? A small-scale replication on public equity data | Dow 30 adjusted closes + S&P 500 | `cd papers/p2-ml-returns && python analysis.py` |
 | P3 | Tail latency under load: an empirical comparison of threaded, async and hybrid API server designs | Own benchmark harness (no external data) | `cd papers/p3-tail-latency && python harness.py` |
 | P4 | Recall–latency frontiers of approximate nearest-neighbour indexes on public datasets | ann-benchmarks.com SIFT-128, GloVe-100 | `cd papers/p4-ann-frontiers && python benchmark.py` |
@@ -17,6 +20,21 @@ expect them as documented.
 
 Each paper folder contains the script, `results.json` (the exact numbers quoted in the paper), `figures/`, the manuscript
 (`paper.md`), and `defence.md` (the three findings, the method, the limitations, and the questions I expect to be asked).
+Every script accepts `--plots-only` to redraw its figures from a previous run's saved results without re-running the
+experiment.
+
+Shared tooling in `papers/`:
+
+| File | What it does |
+|---|---|
+| `fetch_data.py` | Downloads each paper's public data and checks it against the hashes in `SNAPSHOT.json`. |
+| `benchenv.py` | Quiet-machine gate for the timing benchmarks (P3, P4): waits until other processes use under 0.75 of a core and 4 GB of RAM is free, then records the background load in `results.json`. |
+| `plotstyle.py` | One figure style for all papers (STIX Two, ink plus one accent, hairlines). |
+| `schematics.py` | The method diagrams (`figures/fig0_*.png`, Figure 1 in each paper). |
+| `build_paper.py` | Typesets `paper.md` as an A4 preprint PDF, or IEEE-style two-column with `--two-column`. |
+
+Logs named `run_first_attempt_*.log` are kept on purpose: they are the failed first runs described in each paper's
+revision record.
 
 ## Books
 
@@ -35,8 +53,9 @@ Venue-by-venue field values, identity settings and the order of operations are i
 ## Environment
 Python 3.13; `pip install -r requirements.txt`. Machine specs for the benchmark papers (P3, P4) are recorded in their
 `results.json` under `meta`, because absolute latency numbers depend on them; the comparisons within a paper do not.
-PDFs are produced with headless Chrome or Edge; fonts (Inter, Source Serif 4, Instrument Serif, JetBrains Mono; all OFL)
-are in `books/assets/fonts/`.
+PDFs are produced with headless Chrome (Playwright's `chrome-headless-shell` if present). Fonts are in
+`books/assets/fonts/`, all under the SIL Open Font License: Source Serif 4, Inter, JetBrains Mono, Bodoni Moda and Archivo
+for the books and covers, and STIX Two Text for the papers.
 
 ## Licence
 Code: MIT. Manuscripts: © Pranjul Rathour, all rights reserved. Data: as per each source's licence (recorded per paper).

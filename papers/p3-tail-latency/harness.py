@@ -140,6 +140,8 @@ def _wait_up(timeout=30):
 
 def main():
     sys.path.insert(0, str(HERE.parent))
+    if "--plots-only" in sys.argv:
+        plots(json.load(open(HERE / "results.json"))["rows"]); print("redrew figures"); return
     import benchenv  # quiet-machine gate and background-load record, shared with P4
     start_env = benchenv.wait_for_quiet()
     cpu_work()  # warm
@@ -175,7 +177,10 @@ def main():
         meta["background_after_server"][server] = benchenv.sample_load()
         json.dump({"meta": meta, "rows": rows}, open(HERE / "results.json", "w"), indent=1)
         time.sleep(1)
-    plots(rows)
+    try:
+        plots(rows)
+    except Exception as e:  # results.json is already written; re-draw with --plots-only
+        print("plotting failed:", repr(e))
 
 
 def _stop_tree(proc):
@@ -194,34 +199,49 @@ def _stop_tree(proc):
 
 def plots(rows):
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
-    plt.rcParams.update({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
-    colors = {"threaded": "#1c1b22", "async": "#ff4d2e", "hybrid_thread": "#8a8f9c", "hybrid_proc": "#1f6feb"}
+    sys.path.insert(0, str(HERE.parent))
+    import plotstyle as ps
+    ps.apply(9.0)
+    colors = {"threaded": ps.INK, "async": ps.ACCENT, "hybrid_thread": "#9a9aa2", "hybrid_proc": ps.ACCENT2}
+    wl = {"io": "I/O-bound (20 ms wait)", "cpu": "CPU-bound", "mixed": "Mixed"}
+
     def series(s, w, key):
         return sorted([(r["concurrency"], r[key]) for r in rows if r["server"] == s and r["workload"] == w])
-    # 1. p99 vs concurrency
-    fig, axes = plt.subplots(1, 3, figsize=(12, 3.8))
-    for ax, w in zip(axes, WORKLOADS):
-        for s in SERVERS:
-            pts = series(s, w, "p99_ms"); ax.plot([p[0] for p in pts], [p[1] for p in pts], "o-", ms=4, color=colors[s], label=s)
-        ax.set_xscale("log", base=2); ax.set_yscale("log"); ax.set_title(f"{w}: p99 latency vs concurrency"); ax.set_xlabel("concurrent clients"); ax.set_ylabel("p99 (ms, log)")
-        ax.legend(frameon=False, fontsize=8)
-    fig.tight_layout(); fig.savefig(HERE / "figures" / "fig1_p99_vs_concurrency.png", dpi=160); plt.close(fig)
-    # 2. throughput vs concurrency
-    fig, axes = plt.subplots(1, 3, figsize=(12, 3.8))
-    for ax, w in zip(axes, WORKLOADS):
-        for s in SERVERS:
-            pts = series(s, w, "throughput_rps"); ax.plot([p[0] for p in pts], [p[1] for p in pts], "o-", ms=4, color=colors[s], label=s)
-        ax.set_xscale("log", base=2); ax.set_title(f"{w}: throughput vs concurrency"); ax.set_xlabel("concurrent clients"); ax.set_ylabel("requests / s")
-        ax.legend(frameon=False, fontsize=8)
-    fig.tight_layout(); fig.savefig(HERE / "figures" / "fig2_throughput_vs_concurrency.png", dpi=160); plt.close(fig)
+
+    def three(key, ylabel, fname, log_y):
+        fig, axes = plt.subplots(1, 3, figsize=(6.3, 2.5), sharey=log_y)
+        for ax, w in zip(axes, WORKLOADS):
+            for s in SERVERS:
+                pts = series(s, w, key)
+                ax.plot([q[0] for q in pts], [q[1] for q in pts], "o-", ms=2.6, lw=0.8, color=colors[s], label=s)
+            ax.set_xscale("log", base=2); ax.set_xticks(list(CONCURRENCY)); ax.set_xticklabels([str(c) for c in CONCURRENCY], fontsize=7)
+            ax.minorticks_off()
+            if log_y:
+                ax.set_yscale("log")
+            ax.set_xlabel("concurrent clients")
+            ax.set_title(wl.get(w, w), loc="left", fontsize=9, fontweight="bold", pad=6)
+        axes[0].set_ylabel(ylabel)
+        h, l = axes[0].get_legend_handles_labels()
+        fig.legend(h, l, loc="upper center", ncol=4, bbox_to_anchor=(0.5, 1.07), handlelength=1.4, columnspacing=1.4)
+        fig.tight_layout(w_pad=1.0); fig.savefig(HERE / "figures" / fname); plt.close(fig)
+
+    three("p99_ms", "p99 latency (ms)", "fig1_p99_vs_concurrency.png", True)
+    three("throughput_rps", "requests per second", "fig2_throughput_vs_concurrency.png", False)
     # 3. tail heaviness p99/p50 at the highest concurrency
-    fig, ax = plt.subplots(figsize=(8, 3.6))
-    cmax = max(CONCURRENCY); width = 0.2
+    fig, ax = plt.subplots(figsize=(4.6, 2.4))
+    cmax = max(CONCURRENCY); width = 0.19
     for i, s in enumerate(SERVERS):
         vals = [next(r["p99_ms"] / r["p50_ms"] for r in rows if r["server"] == s and r["workload"] == w and r["concurrency"] == cmax) for w in WORKLOADS]
-        ax.bar([j + (i - 1.5) * width for j in range(len(WORKLOADS))], vals, width, color=colors[s], label=s)
-    ax.set_xticks(range(len(WORKLOADS))); ax.set_xticklabels(WORKLOADS); ax.set_ylabel("p99 / p50"); ax.set_title(f"Tail heaviness at {cmax} concurrent clients"); ax.legend(frameon=False, fontsize=8)
-    fig.tight_layout(); fig.savefig(HERE / "figures" / "fig3_tail_ratio.png", dpi=160); plt.close(fig)
+        xs = [j + (i - 1.5) * width for j in range(len(WORKLOADS))]
+        ax.bar(xs, vals, width * 0.9, color=colors[s], label=s, zorder=2)
+        for x, v in zip(xs, vals):
+            ax.text(x, v, f"{v:.1f}", ha="center", va="bottom", fontsize=6.5, color=ps.MID)
+    ax.axhline(1, color=ps.MID, lw=0.5, ls=(0, (3, 2)))
+    ax.set_xticks(range(len(WORKLOADS))); ax.set_xticklabels([wl.get(w, w) for w in WORKLOADS], fontsize=7.6)
+    ax.tick_params(axis="x", length=0)
+    ax.set_ylabel(f"p99 ÷ p50 at {cmax} clients"); ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=4, fontsize=7, handlelength=1.0, columnspacing=1.0)
+    ax.margins(y=0.12)
+    fig.tight_layout(); fig.savefig(HERE / "figures" / "fig3_tail_ratio.png"); plt.close(fig)
 
 
 if __name__ == "__main__":

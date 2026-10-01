@@ -18,7 +18,7 @@ Identity to use everywhere (keep it byte-identical so Google and Scholar merge t
 1. **ORCID** (orcid.org): register; add employment "Independent researcher"; add website and GitHub links; set record public.
 2. **Google Scholar profile** (scholar.google.com/citations): create with the Gmail; name exactly "Pranjul Rathour"; affiliation "Independent researcher"; homepage pranjulrathour.scult.in; make profile public. Papers will attach automatically after indexing (Preprints.org and SSRN are indexed; typically 1–4 weeks).
 3. **Push the repo** to github.com/Pranjulrathour/research (public). Every paper's "Data and code availability" points there.
-4. **Zenodo** (zenodo.org, log in with GitHub): enable the research repo under "GitHub" so each GitHub release gets a DOI automatically. Make release `v1.0-p1` after the first paper is final, and so on. Zenodo DOIs are the permanent archive the papers cite for their data snapshots.
+4. **Zenodo** (zenodo.org, log in with GitHub): enable the research repo under "GitHub" so each GitHub release gets a DOI automatically. Make release `v1.0-p1` after the first paper is final, and so on. Zenodo DOIs are the permanent archive of each paper's code, results and data provenance (the data themselves are not redistributed; `papers/fetch_data.py` re-downloads them and checks the recorded hashes).
 5. **ISBN** (isbn.gov.in, Raja Rammohun Roy National Agency): register as an author-publisher, apply for ISBNs for both books (eBook format). Free; 7–15 working days typical. Needed for Google Play Books; not needed for Kindle or Leanpub, so publish those first.
 
 ## 1. Papers
@@ -37,9 +37,9 @@ Free; Crossref DOI; screening in under 24 hours in practice; indexed by Google S
 | Supplementary | link to GitHub folder + Zenodo DOI | same | same | same |
 | Funding | None | None | None | None |
 | Conflicts | None declared | None | None | None |
-| Data availability | "Code and data snapshots at https://github.com/Pranjulrathour/research/tree/main/papers/<folder>; archived at Zenodo DOI <…>" | same | same | same |
+| Data availability | "Code, results and data provenance at https://github.com/Pranjulrathour/research/tree/main/papers/<folder>; the public data are re-downloaded and hash-checked by papers/fetch_data.py; archived at Zenodo DOI <…>" | same | same | same |
 | Licence | CC BY 4.0 (default) | same | same | same |
-| AI-use statement (if asked) | answer per the venue's definition | same | same | same |
+| AI-use statement (if asked) | paste the "Use of AI tools" sentence from the paper's Declarations, and make sure it matches what you actually did; the venues (MDPI/Preprints.org, IEEE/TechRxiv, Elsevier/SSRN) require a disclosure of this kind | same | same | same |
 
 ### TechRxiv (secondary for P3, P4) — techrxiv.org (IEEE)
 
@@ -103,7 +103,7 @@ Free; requires an ISBN per book; India payments supported. Upload EPUB and cover
 2. **GitHub Pages SEO site**: a `/publications/` page with the same list and `ScholarlyArticle` / `Book` JSON-LD; add Scholar, ORCID and SSRN author URLs to the Person `sameAs`.
 3. **Resume block**:
 
-   > **Publications (preprints, 2026)**
+   > **Publications (2026; books self-published, papers are preprints)**
    > Rathour, P. (2026). *The AGI Transition: A Field Guide for the Next Decade.* Kindle/Leanpub/Google Play. ISBN ….
    > Rathour, P. (2026). *Systems That Scale: The Engineering Judgment Behind Reliable, Low-Latency Software.* Kindle/Leanpub/Google Play. ISBN ….
    > Rathour, P. (2026). Fat tails and the failure of Gaussian risk models: out-of-sample VaR evidence from NIFTY 50 and S&P 500, 2010–2026. *Preprints.org / SSRN*, doi:….

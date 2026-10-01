@@ -15,7 +15,7 @@ Bonus finding to volunteer if there is time: **the unconditional degrees of free
 
 ## The method in sixty seconds
 
-Daily log returns, 2010–2026, from Yahoo Finance via yfinance, snapshot committed. Rolling 500-day window, re-estimated every day, forecast strictly for the next day. Six models, nothing tuned (textbook window, textbook λ = 0.94). Kupiec and Christoffersen tests. Everything runs with one command in about ten minutes; every number in the paper is in `results.json`.
+Daily log returns, 2010–2026, from Yahoo Finance via yfinance; the snapshot is hashed in `SNAPSHOT.json` and `fetch_data.py p1` re-downloads it byte for byte (the data are licensed, so not committed). Rolling 500-day window, re-estimated every day, forecast strictly for the next day. Six models, nothing tuned (textbook window, textbook λ = 0.94). Kupiec and Christoffersen tests. Everything runs with one command in about ten minutes; every number in the paper is in `results.json`.
 
 ## Questions I expect, and answers
 
@@ -50,4 +50,4 @@ Daily log returns, 2010–2026, from Yahoo Finance via yfinance, snapshot commit
 
 ## Where everything is
 
-`papers/p1-fat-tails/analysis.py` (method, fixed design, revision record in the docstring), `results.json` (all numbers), `figures/fig1–fig5`, `data/SNAPSHOT.json` (provenance), `paper.md` (manuscript).
+`papers/p1-fat-tails/analysis.py` (method, fixed design, revision record in the docstring), `results.json` (all numbers), `figures/fig0–fig5` (fig0 is the model-grid diagram, Figure 1 in the paper; fig1–fig5 are Figures 2–6), `data/SNAPSHOT.json` (provenance and hashes), `paper.md` (manuscript). Redraw the figures without refitting: `python analysis.py --plots-only`.

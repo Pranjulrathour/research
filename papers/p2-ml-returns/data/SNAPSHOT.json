@@ -5,5 +5,15 @@
  "survivorship": "current constituents; recorded as a limitation",
  "rows": 5722,
  "first": "2004-01-02",
- "last": "2026-09-30"
+ "last": "2026-09-30",
+ "sha256": {
+  "dow30_adj_close.csv": {
+   "sha256": "384c8b24b9142f16e6e51f84262fe5884586fd1ddcbb6f80c1a4df57ce9d7fa0",
+   "bytes": 3195474
+  },
+  "sp500_close.csv": {
+   "sha256": "947e4c369f27c79e328d5cdf26f8559e85c2d572a220b9609429fc2a1849ea3a",
+   "bytes": 166249
+  }
+ }
 }

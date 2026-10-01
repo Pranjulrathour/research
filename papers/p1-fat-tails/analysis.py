@@ -32,6 +32,9 @@ every figure, and windows are fitted in parallel; this changes run time, not res
 """
 from __future__ import annotations
 import json
+import os
+import pickle
+import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
@@ -100,7 +103,7 @@ def window_fits(r: pd.Series) -> pd.DataFrame:
     # recursion; it is one point in the first window only)
     z = x / np.sqrt(ew_var)
     zwindows = [z[t - WINDOW:t] for t in idx]
-    with ProcessPoolExecutor() as ex:
+    with ProcessPoolExecutor(max_workers=int(os.environ.get("P1_WORKERS", "0")) or None) as ex:
         fits = list(ex.map(_fit_t, windows, chunksize=64))
         zfits = list(ex.map(_fit_t, zwindows, chunksize=64))
     out = pd.DataFrame(index=r.index[idx])
@@ -198,60 +201,121 @@ def backtest(r: pd.Series, var: pd.DataFrame, alpha: float) -> dict:
 
 
 def plots(returns: dict[str, pd.Series], fits: dict[str, pd.DataFrame], fc: dict, results: dict) -> None:
+    import sys
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    plt.rcParams.update({"font.size": 10, "axes.spines.top": False, "axes.spines.right": False})
-    # 1. QQ plots
-    fig, axes = plt.subplots(1, 2, figsize=(9, 4))
+    from matplotlib.ticker import FuncFormatter
+    sys.path.insert(0, str(HERE.parent))
+    import plotstyle as ps
+    ps.apply(9.0)
+    names = {"NIFTY50": "NIFTY 50", "SP500": "S&P 500"}
+    idx_c = {"NIFTY50": ps.INK, "SP500": ps.ACCENT}
+    label = {"gaussian": "Gaussian", "historical": "Historical", "student_t": "Student-t", "ewma_gaussian": "EWMA-\nGaussian",
+             "ewma_student_t": "Filtered\nStudent-t", "filtered_historical": "FHS"}
+    pct = FuncFormatter(lambda v, _: f"{v * 100:.0f}%")
+
+    def panel_title(ax, text):
+        ax.set_title(text, loc="left", fontsize=9.5, fontweight="bold", pad=6)
+
+    # 1. QQ plots, with the worst day marked
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.7))
     for ax, (name, r) in zip(axes, returns.items()):
-        z = ((r - r.mean()) / r.std(ddof=1)).values
-        stats.probplot(z, dist="norm", plot=ax)
-        ax.get_lines()[0].set(marker=".", markersize=3, color="#1c1b22"); ax.get_lines()[1].set(color="#ff4d2e")
-        ax.set_title(f"{name}: standardised returns vs normal", fontsize=10); ax.set_xlabel("theoretical quantiles"); ax.set_ylabel("sample quantiles")
-    fig.tight_layout(); fig.savefig(FIG / "fig1_qq.png", dpi=160); plt.close(fig)
-    # 2. Tail exceedance ratio bars
-    fig, ax = plt.subplots(figsize=(7, 3.6))
-    width = 0.38
+        z = ((r - r.mean()) / r.std(ddof=1))
+        (osm, osr), (slope, icpt, _) = stats.probplot(z.values, dist="norm")
+        ax.scatter(osm, osr, s=3, color=ps.INK, lw=0, zorder=3)
+        lo, hi = osm.min(), osm.max()
+        ax.plot([lo, hi], [icpt + slope * lo, icpt + slope * hi], color=ps.ACCENT, lw=0.8, zorder=2)
+        ax.axhline(0, color=ps.RULE, lw=0.5, zorder=0); ax.axvline(0, color=ps.RULE, lw=0.5, zorder=0)
+        worst = z.idxmin()
+        ax.annotate(f"{worst.day} {worst:%b %Y}\n({z.min():.1f} sd)", xy=(osm.min(), osr.min()), xytext=(-1.6, osr.min() + 0.6),
+                    fontsize=7.5, color=ps.MID, va="center", ha="left",
+                    arrowprops=dict(arrowstyle="-", color=ps.LIGHT, lw=0.6, shrinkA=2, shrinkB=3))
+        panel_title(ax, names[name]); ax.set_xlabel("normal quantile")
+    axes[0].set_ylabel("standardised daily return")
+    ymin = min(a.get_ylim()[0] for a in axes); ymax = max(a.get_ylim()[1] for a in axes)
+    for a in axes:
+        a.set_ylim(ymin, ymax)
+    fig.tight_layout(w_pad=2.0); fig.savefig(FIG / "fig1_qq.png"); plt.close(fig)
+
+    # 2. Tail exceedance ratio bars, ratio printed on each bar
+    fig, ax = plt.subplots(figsize=(4.6, 2.5))
+    width = 0.36
     for i, (name, d) in enumerate(results["distribution"].items()):
         ratios = [d["exceedances"][f"{k}sigma"]["ratio"] or 0 for k in SIGMAS]
-        ax.bar(np.arange(len(SIGMAS)) + (i - 0.5) * width, ratios, width, label=name, color=["#1c1b22", "#ff4d2e"][i])
-    ax.set_xticks(range(len(SIGMAS))); ax.set_xticklabels([f">{k}σ" for k in SIGMAS]); ax.set_yscale("log")
-    ax.axhline(1, color="grey", lw=0.8, ls="--"); ax.set_ylabel("observed / Gaussian-expected frequency (log)")
-    ax.set_title("How often large moves happen, relative to a normal distribution"); ax.legend(frameon=False)
-    fig.tight_layout(); fig.savefig(FIG / "fig2_exceedance_ratio.png", dpi=160); plt.close(fig)
+        xs = np.arange(len(SIGMAS)) + (i - 0.5) * width
+        ax.bar(xs, ratios, width * 0.92, label=names[name], color=idx_c[name], zorder=2)
+        for x, v in zip(xs, ratios):
+            ax.text(x, v * 1.25, f"{v:,.0f}" if v >= 10 else f"{v:.1f}", ha="center", va="bottom", fontsize=7, color=ps.MID)
+    ax.set_xticks(range(len(SIGMAS))); ax.set_xticklabels([f"|z| > {k}" for k in SIGMAS]); ax.set_yscale("log")
+    ax.set_ylim(0.5, 3e4)
+    ax.axhline(1, color=ps.MID, lw=0.6, ls=(0, (3, 2)), zorder=1)
+    ax.text(-0.62, 1.12, "normal distribution", fontsize=7, color=ps.MID, va="bottom")
+    ax.set_ylabel("observed ÷ expected under normal")
+    ax.legend(loc="upper left", handlelength=1.0, handleheight=0.8)
+    ax.tick_params(axis="x", length=0)
+    fig.tight_layout(); fig.savefig(FIG / "fig2_exceedance_ratio.png"); plt.close(fig)
+
     # 3. 99% VaR violations by model
-    fig, axes = plt.subplots(1, 2, figsize=(11, 3.8), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.6), sharey=True)
+    bar_c = {m: ps.LIGHT for m in MODELS}; bar_c["gaussian"] = ps.INK; bar_c["filtered_historical"] = ps.ACCENT
     for ax, name in zip(axes, returns):
         bt = results["backtests"][name]["0.99"]["models"]
         viol = [bt[m]["violations"] for m in MODELS]; exp = bt[MODELS[0]]["expected_violations"]
-        ax.bar([m.replace("_", "\n") for m in MODELS], viol, color=[COLORS[m] for m in MODELS]); ax.axhline(exp, color="grey", ls="--", lw=0.9)
-        ax.text(len(MODELS) - 0.5, exp, f" expected {exp:.0f}", va="bottom", ha="right", fontsize=8, color="grey")
-        ax.set_title(f"{name}: 99% one-day VaR violations, {bt[MODELS[0]]['n_obs']} days")
-    axes[0].set_ylabel("violations"); fig.tight_layout(); fig.savefig(FIG / "fig3_var99_violations.png", dpi=160); plt.close(fig)
-    # 4. Rolling 99% VaR vs returns for S&P 500 (illustrative)
+        ax.bar(range(len(MODELS)), viol, 0.68, color=[bar_c[m] for m in MODELS], zorder=2)
+        for k, v in enumerate(viol):
+            ax.text(k, v + 1.5, str(v), ha="center", va="bottom", fontsize=7, color=ps.MID)
+        ax.axhline(exp, color=ps.INK, ls=(0, (3, 2)), lw=0.6, zorder=3)
+        ax.text(len(MODELS) - 0.45, exp + 1.5, f"expected {exp:.0f}", va="bottom", ha="right", fontsize=7, color=ps.INK)
+        ax.set_xticks(range(len(MODELS))); ax.set_xticklabels([label[m] for m in MODELS], fontsize=7.2)
+        ax.tick_params(axis="x", length=0)
+        panel_title(ax, f"{names[name]}, {bt[MODELS[0]]['n_obs']:,} days")
+    axes[0].set_ylabel("violations of 99% VaR"); axes[0].set_ylim(0, 100)
+    fig.tight_layout(w_pad=1.5); fig.savefig(FIG / "fig3_var99_violations.png"); plt.close(fig)
+
+    # 4. S&P 500 returns against three 99% VaR paths
     r = returns["SP500"]; var = fc["SP500"][0.99]
-    fig, ax = plt.subplots(figsize=(9, 3.6))
-    ax.plot(var.index, r.loc[var.index].values, color="#c9ccd4", lw=0.5, label="daily log return")
-    ax.plot(var.index, -var["gaussian"], color=COLORS["gaussian"], lw=0.9, label="Gaussian 99% VaR (500d)")
-    ax.plot(var.index, -var["student_t"], color=COLORS["student_t"], lw=0.9, label="Student-t 99% VaR (500d)")
-    ax.plot(var.index, -var["ewma_student_t"], color=COLORS["ewma_student_t"], lw=0.7, label="EWMA-Student-t (filtered) 99% VaR")
-    ax.set_title("S&P 500: returns against one-day 99% VaR forecasts (out of sample)"); ax.legend(frameon=False, fontsize=8, ncol=2)
-    fig.tight_layout(); fig.savefig(FIG / "fig4_sp500_var_paths.png", dpi=160); plt.close(fig)
-    # 5. Rolling fitted degrees of freedom: how "fat" the tails look depends on when you look
-    fig, axes = plt.subplots(1, 2, figsize=(11, 3.4), sharey=True)
-    for ax, (col, title) in zip(axes, (("t_df", "raw returns"), ("zt_df", "EWMA-standardised returns"))):
+    fig, ax = plt.subplots(figsize=(6.3, 2.6))
+    ax.plot(var.index, r.loc[var.index].values, color="#cfcdd3", lw=0.45, label="daily log return", zorder=1)
+    ax.plot(var.index, -var["gaussian"], color=ps.INK, lw=0.9, label="Gaussian", zorder=3)
+    ax.plot(var.index, -var["student_t"], color=ps.ACCENT2, lw=0.9, label="Student-t", zorder=3)
+    ax.plot(var.index, -var["filtered_historical"], color=ps.ACCENT, lw=0.7, label="FHS", zorder=2)
+    ax.yaxis.set_major_formatter(pct); ax.set_ylabel("one-day return / −VaR")
+    ax.set_ylim(-0.14, 0.10)
+    ax.legend(loc="lower left", ncol=4, handlelength=1.4, columnspacing=1.2, borderaxespad=0.2)
+    ax.annotate("March 2020", xy=(pd.Timestamp("2020-03-16"), -0.125), xytext=(pd.Timestamp("2021-06-01"), -0.118),
+                fontsize=7.5, color=ps.MID, va="center", arrowprops=dict(arrowstyle="-", color=ps.LIGHT, lw=0.6))
+    ax.margins(x=0.01)
+    fig.tight_layout(); fig.savefig(FIG / "fig4_sp500_var_paths.png"); plt.close(fig)
+
+    # 5. Rolling fitted degrees of freedom
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.5), sharey=True)
+    for ax, (col, title) in zip(axes, (("t_df", "Raw returns"), ("zt_df", "EWMA-standardised returns"))):
         for name, f in fits.items():
-            ax.plot(f.index, f[col].clip(upper=20), lw=0.9, color={"NIFTY50": "#1c1b22", "SP500": "#ff4d2e"}[name], label=name)
-        ax.axhline(4, color="grey", lw=0.8, ls="--"); ax.set_title(f"Student-t df, 500-day window: {title}", fontsize=10)
-    axes[0].set_ylabel("df (capped at 20)"); axes[0].legend(frameon=False)
-    fig.tight_layout(); fig.savefig(FIG / "fig5_rolling_df.png", dpi=160); plt.close(fig)
+            ax.plot(f.index, f[col].clip(upper=20), lw=0.75, color=idx_c[name], label=names[name])
+        ax.axhline(4, color=ps.MID, lw=0.6, ls=(0, (3, 2)))
+        ax.text(f.index[-1], 4.4, "df = 4", fontsize=7, color=ps.MID, ha="right", va="bottom")
+        panel_title(ax, title); ax.margins(x=0.01)
+    axes[0].set_ylabel("Student-t df (capped at 20)"); axes[0].set_ylim(0, 21)
+    axes[1].legend(loc="upper right", handlelength=1.4)
+    fig.tight_layout(w_pad=1.5); fig.savefig(FIG / "fig5_rolling_df.png"); plt.close(fig)
+
+
+CACHE = HERE / "build" / "fits_cache.pkl"
 
 
 def main() -> None:
     returns = {n: load(n) for n in ("NIFTY50", "SP500")}
+    if "--plots-only" in sys.argv and CACHE.exists():
+        # re-draw the figures from the cached window fits and the saved results; no refitting
+        cached = pickle.loads(CACHE.read_bytes())
+        plots(returns, cached["fits"], cached["fc"], json.load(open(HERE / "results.json")))
+        print("redrew", len(list(FIG.glob("fig[1-9]*.png"))), "figures from cache")
+        return
     fits = {n: window_fits(r) for n, r in returns.items()}
     fc = {n: {a: var_forecasts(returns[n], fits[n], a) for a in ALPHAS} for n in returns}
+    CACHE.parent.mkdir(exist_ok=True)
+    CACHE.write_bytes(pickle.dumps({"fits": fits, "fc": fc}))
     results = {"meta": json.load(open(HERE / "data" / "SNAPSHOT.json")), "window": WINDOW, "lambda": LAMBDA, "models": list(MODELS),
                "distribution": {n: describe(r) for n, r in returns.items()},
                "rolling_t_df": {n: {k: {"median": float(f[c].median()), "p10": float(f[c].quantile(0.1)),
