@@ -231,7 +231,7 @@ Code, `results.json`, the figures and `data/SNAPSHOT.json` are at https://github
 ## Appendix A. Every configuration
 
 All 70 configurations from `results.json`. GloVe timings are the best of the attempts in Appendix B; recall is from the run itself.
-﻿
+
 **Table A1. sift-128-euclidean: every configuration.** QPS is batched over the 10,000-query test set with 8 threads, best of three; single-query latencies are one query at a time on one thread (500 queries; 100 for exact search).
 
 | Index | Configuration | Recall@10 | QPS (batched) | Batched ms/query | Single p50 (ms) | Single p99 (ms) | Build (s) | Memory (MB) |
@@ -312,12 +312,11 @@ All 70 configurations from `results.json`. GloVe timings are the best of the att
 | IVF-Flat | nlist 4096, nprobe 64 | 0.8660 | 4,466 | 0.224 | 0.87 | 1.60 | 21.1 | 591 |
 | IVF-Flat | nlist 4096, nprobe 128 | 0.9141 | 2,360 | 0.424 | 1.48 | 2.25 | 21.1 | 591 |
 
-
 ## Appendix B. The GloVe measurements across attempts
 
 **Table B1. Recall, batched throughput, single-query p99 and build time for every GloVe configuration in each attempt.** Attempt 2 was killed before the USearch index was built; attempt 3 ran under antivirus load; attempt 4 ran on a throttled machine after eleven hours of benchmarks. Recall is identical across attempts to three decimals; the reported rows take the best timing per metric.
 
-﻿| Configuration | Recall@10 | QPS: attempt 2 | 3 | 4 | Single p99 (ms): 2 | 3 | 4 | Build (s): 2 | 3 | 4 |
+| Configuration | Recall@10 | QPS: attempt 2 | 3 | 4 | Single p99 (ms): 2 | 3 | 4 | Build (s): 2 | 3 | 4 |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Flat (exact)  | 1.000 | 350 | 747 | 747 | 106.41 | 42.89 | 42.89 | 0 | 0 | 0 |
 | HNSW (FAISS) M 16, efSearch 16 | 0.564 | 44,809 | 23,150 | 44,809 | 0.41 | 0.87 | 0.41 | 226 | 247 | 226 |
@@ -354,4 +353,3 @@ All 70 configurations from `results.json`. GloVe timings are the best of the att
 | IVF-Flat nlist 4096, nprobe 32 | 0.807 | 5,521 | 7,917 | 7,917 | 2.22 | 0.88 | 0.88 | 58 | 21 | 21 |
 | IVF-Flat nlist 4096, nprobe 64 | 0.866 | 3,015 | 4,466 | 4,466 | 3.35 | 1.60 | 1.60 | 58 | 21 | 21 |
 | IVF-Flat nlist 4096, nprobe 128 | 0.914 | 1,637 | 2,360 | 2,360 | 5.23 | 2.25 | 2.25 | 58 | 21 | 21 |
-
