@@ -24,6 +24,16 @@ The responses that work share one feature: they move assessment back toward thin
 
 The common thread is that assessment is shifting from *what did you produce* to *what can you do, and how did you do it*. That shift is correct, it is overdue, and it is more work for everyone. It also happens to align assessment with what employers were already asking for, which chapter 10 returns to.
 
+## A worked case: the detector
+
+The first institutional reflex after late 2022 was to buy a detector, and what happened next is the clearest available lesson in why the reflex fails.
+
+In April 2023 the largest provider of plagiarism-checking software to universities switched on an AI-writing detector for its millions of institutional users, reporting a false-positive rate of under one per cent at the document level.[^4] One per cent sounds small. A large university runs tens of thousands of submissions through such a system each term; at one per cent, several hundred students a term would be accused of something they did not do, with no way to prove a negative, in a process where the accusation itself is the punishment. Within months, several universities turned the feature off. One of the first, a large private university in the United States, published its reasoning in August 2023: the vendor could not explain how the detector reached its conclusions, the false-positive rate could not be independently verified, and the institution judged that even the claimed rate would wrongly flag an unacceptable number of honest students.[^5]
+
+The deeper problem surfaced in a study published the same summer. Researchers ran essays by non-native English speakers, written for a standardised English test before any of these tools existed, through seven commercial AI detectors. More than half were flagged as machine-written, and the majority of essays were flagged by at least one detector; the same detectors classified essays by native-speaking American students as human-written almost every time.[^1] The detectors were keying on exactly the features of careful, simpler, more formulaic prose that second-language writers produce and that language models also produce, which meant the students most likely to be falsely accused were the ones with the least standing to contest it.
+
+The case shows why the chapter's argument is structural rather than a matter of waiting for better detectors. A detector is a classifier in an arms race with a generator that improves faster; its errors fall on the innocent, in a setting where a false accusation is a serious harm; and even a perfect detector would answer the wrong question, because the problem is not catching the student who used the tool but knowing what the student learned. The institutions that did well were the ones that stopped asking the artefact to prove learning and started asking the student.
+
 ## What the technology actually offers learners
 
 It would be a mistake to treat AI in education only as a threat to assessment. The same capability that makes the essay useless as proof makes something available that education has wanted for a very long time.
@@ -91,6 +101,8 @@ Build one thing a system cannot do for you, and document how you did it. Choose 
 [^1]: Liang, W., Yuksekgonul, M., Mao, Y., Wu, E. & Zou, J. (2023), "GPT detectors are biased against non-native English writers", *Patterns* 4(7).
 [^2]: Bloom, B. S. (1984), "The 2 Sigma Problem: The Search for Methods of Group Instruction as Effective as One-to-One Tutoring", *Educational Researcher* 13(6).
 [^3]: Kestin, G., Miller, K., Klales, A., Milbourne, T. & Ponti, G. (2025), "AI tutoring outperforms in-class active learning: an RCT introducing a novel research-based design in an authentic educational setting", *Scientific Reports* 15 — one of the first randomised comparisons in a real university course; read its scope and limitations before generalising.
+[^4]: Turnitin (2023), "AI writing detection" product announcement and FAQ, April 2023, stating a document-level false-positive rate below 1 per cent.
+[^5]: Vanderbilt University (2023), "Guidance on AI detection and why we're disabling Turnitin's AI detector", Brightspace / Center for Teaching announcement, 16 August 2023.
 
 ### Sources for this chapter
 - Bloom (1984), *Educational Researcher* 13(6) — the two-sigma problem.

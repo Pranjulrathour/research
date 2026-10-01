@@ -64,6 +64,18 @@ The institutions around agents are forming now, and they are forming around a fe
 
 These patterns are not exotic. They are the controls that any organisation applies to a person who can act on its behalf, applied to software that can. The gap in 2026 is that many agent deployments skipped them, because the people deploying had the mental model of a chatbot (what harm can a text box do?) rather than of an employee with system access. The incidents that followed, from deleted databases to leaked data to runaway spending, were predictable and will keep happening until the mental model catches up.
 
+## A worked case: two experiments on programmers
+
+The delegation equation has three variables, and the hardest to see from inside is *p*, because people are poor judges of how much a tool is helping them. Two controlled experiments on software developers, two years apart, show how wide the gap between perception and measurement can be, and why the task matters more than the tool.
+
+The first, in 2023, gave 95 developers a well-specified task (implement a small web server from a clear description) and randomly assigned half of them an AI coding assistant. The assisted group finished about 56 per cent faster.[^3] The result was widely reported and it was real: on a bounded, well-defined task with a known answer, the tools are a large accelerant.
+
+The second, in 2025, took 16 experienced open-source maintainers working on their own large, mature codebases, gave them 246 real tasks from their own issue trackers, and randomly allowed or forbade AI tools for each task. With the tools, the developers took about 19 per cent *longer* to complete tasks. Before the study they had expected to be about 24 per cent faster; after it, they still believed they had been about 20 per cent faster.[^4] The measured effect and the perceived effect had opposite signs.
+
+The two results do not contradict each other; they bracket the delegation equation. In the first experiment, *c* was small (the task had a clear specification and the output was easy to check), *F* was small (nothing was at stake) and *p* was high (the task was squarely within the tools' capability): delegation paid handsomely. In the second, the tasks sat in large codebases full of context the tools did not have, so *p* was lower than the developers assumed; checking and correcting the output (*c*) was expensive because the developers held standards the tools did not meet; and the developers delegated anyway, because the tools *felt* fast. The researchers noted that the experienced developers accepted fewer than half of the generated suggestions and spent much of their time reviewing and fixing the rest, which is exactly the cost the equation says to count and that intuition does not.
+
+The lesson for anyone deciding what to hand to an agent is the one this chapter has been building toward: the tool is the same in both studies; the task is different, and the difference decides the sign of the result. And the lesson for anyone estimating their own *p* is humbling: measure it, because the feeling of speed is not evidence of speed, and the people in the second study were experts who got it wrong by forty percentage points.
+
 ## What it means for work, and for you
 
 Agents are the mechanism through which the economics of chapter 3 reaches the workplace. Displacement happens task by task as agents become reliable enough on each; augmentation happens as people delegate the cheap-to-check parts and keep the judgment; new tasks appear in building, supervising, evaluating and repairing agents.
@@ -88,6 +100,8 @@ Run an agent on a real task with a budget and a kill switch, and write down wher
 
 [^1]: Among the public suites: SWE-bench and its verified subset (software tasks from real repositories; Jimenez et al., 2023, and subsequent leaderboards), WebArena (Zhou et al., 2023), OSWorld (Xie et al., 2024) and GAIA (Mialon et al., 2023). Read each suite's own documentation for its definition of "success" before comparing numbers.
 [^2]: Kwa, T. et al. (2025), "Measuring AI Ability to Complete Long Tasks", Model Evaluation and Threat Research (METR), March 2025, with later updates; the headline finding was a doubling time of roughly seven months in the length of tasks (measured by human completion time) that systems complete at 50 per cent reliability.
+[^3]: Peng, S., Kalliamvakou, E., Cihon, P. & Demirer, M. (2023), "The Impact of AI on Developer Productivity: Evidence from GitHub Copilot", arXiv:2302.06590.
+[^4]: Becker, J., Rush, N., Barnes, E. & Rein, D. (2025), "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity", METR, July 2025.
 
 ### Sources for this chapter
 - Jimenez, C. E. et al. (2023), "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?", *ICLR 2024*.

@@ -48,6 +48,18 @@ Building software, designing systems, specifying hardware: the production steps 
 
 There is also a new category of engineering work: building and operating the AI systems themselves. Evaluation, monitoring, guardrails, data pipelines, integration, the unglamorous reliability work that turns a model into a product. It is a new-task channel in chapter 3's sense, it is where much of the hiring is, and it rewards exactly the measurement discipline that this chapter and chapter 2 describe.
 
+## A worked case: materials discovery, 2023–2024
+
+The clearest recent illustration of every point in this chapter happened in a single field over about eighteen months.
+
+In November 2023 a team at Google DeepMind published a system called GNoME that had used graph neural networks to predict the stability of about 2.2 million candidate crystal structures, of which some 381,000 were reported as new, stable materials, an order-of-magnitude expansion of the catalogue of known stable inorganic crystals that had taken the field decades to assemble.[^2] In the same issue of the same journal, a Berkeley team described the A-Lab, an autonomous laboratory that used robotics and machine-learning planning to synthesise materials proposed by such predictions, and reported making 41 of 58 target compounds in 17 days of continuous operation.[^3] Together the two papers were presented, reasonably, as a glimpse of science at machine speed: a model proposes hundreds of thousands of candidates, a robot makes them, the loop closes without a human in the middle.
+
+Then the verification step happened, slowly, in public, by people. Within months, two experienced solid-state chemists published an analysis of a sample of the GNoME "new" materials and concluded that many were not new in any useful sense: variants of known compounds with one element swapped for a chemically similar one, structures that were ordered versions of known disordered phases, compounds containing radioactive or impractical elements, and entries whose novelty rested on the catalogue's narrow definition of "known".[^4] A separate group re-examined the A-Lab's 41 claimed syntheses and argued that for a substantial fraction the evidence did not support the claim: the automated analysis of the X-ray data had, in their reading, mistaken known phases for the intended new ones, and the "novel" compounds were in several cases materials already in the literature.[^5] The original authors responded; the exchange continued; and the field settled into a more careful position than either the first papers or the first critiques.
+
+Every mechanism in this chapter is visible in the episode. The acceleration was real: the search space genuinely was pruned by a factor the field could not have achieved by hand. The bottleneck moved, exactly as predicted, from proposing candidates to verifying them, and verification turned out to need the two scarcest inputs, expert chemists and careful measurement, in quantities that no amount of prediction speed could supply. The publication institution strained: the papers passed review at the field's most prestigious journal, and the checks that mattered came afterwards, from readers. And the reproducibility dividend paid out: the critiques were possible only because the original teams had published their predictions and data in full, which is to their credit, and the researchers whose work was most trusted at the end were the ones who had shown their checking rather than their speed.
+
+The lesson for a reader is not that the systems failed. It is that "we predicted 381,000 new materials" and "we have 381,000 new materials" are different sentences, that the distance between them is measured in human verification, and that the people who can close that distance, in any field, are the ones the decade will need most.
+
 ## What would make this chapter wrong
 
 If by 2031 automated laboratories and simulation have made the physical bottleneck much less binding, with AI-proposed candidates routinely tested at scale, then this chapter underestimated how fast the experimental side could catch up. Check the rate of AI-originated discoveries that reached clinical or industrial use.
@@ -63,6 +75,10 @@ Reproduce one published result end to end. Pick a paper in your field with publi
 ---
 
 [^1]: Jumper, J. et al. (2021), "Highly accurate protein structure prediction with AlphaFold", *Nature* 596; Varadi, M. et al. (2022), "AlphaFold Protein Structure Database", *Nucleic Acids Research* 50(D1).
+[^2]: Merchant, A. et al. (2023), "Scaling deep learning for materials discovery", *Nature* 624, 80–85.
+[^3]: Szymanski, N. J. et al. (2023), "An autonomous laboratory for the accelerated synthesis of novel materials", *Nature* 624, 86–91.
+[^4]: Cheetham, A. K. & Seshadri, R. (2024), "Artificial Intelligence Driving Materials Discovery? Perspective on the Article: Scaling Deep Learning for Materials Discovery", *Chemistry of Materials* 36(8), 3490–3495.
+[^5]: Leeman, J. et al. (2024), "Challenges in High-Throughput Inorganic Materials Prediction and Autonomous Synthesis", *PRX Energy* 3, 011002.
 
 ### Sources for this chapter
 - Jumper et al. (2021), *Nature* 596 — AlphaFold; Varadi et al. (2022) — the open database.

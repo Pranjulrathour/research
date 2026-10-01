@@ -1,10 +1,4 @@
-# Systems That Scale
-
-## The Engineering Judgment Behind Reliable, Low-Latency Software
-
-### Pranjul Rathour
-
----
+## Copyright
 
 Copyright © 2026 Pranjul Rathour. All rights reserved.
 

@@ -22,7 +22,7 @@ Professions have always trained their juniors by giving them the routine work. T
 
 The tasks that train juniors are precisely the tasks that current AI systems do best: well-specified, routine, pattern-matched against thousands of prior examples. So the first-channel pressure falls hardest on the rung of the ladder that people climb onto first. If a firm can get the document review done by a system, it hires fewer first-years. If it hires fewer first-years, it has fewer people learning to become the partners it will need in fifteen years. The firm's short-term incentive and its long-term need point in opposite directions, and firms are not good at resolving that tension in favour of the long term.
 
-The early evidence from 2023 onward is consistent with this. Several studies of hiring data in exposed occupations found entry-level postings and early-career employment falling faster than mid- and senior-level roles, while total employment in the same occupations held up or grew. The pattern is not yet conclusive and varies by country and sector, but it is the pattern the framework predicts, and anyone finishing a degree between now and 2030 should plan as if it continues.
+The early evidence from 2023 onward is consistent with this. The most careful study so far used payroll records covering millions of US workers to track employment by age and occupation from late 2022, when the current tools became widely available. For workers aged 22 to 25 in the occupations most exposed to AI (software development and customer service among them), employment fell by about 13 per cent relative to less-exposed occupations over the following two and a half years, while employment of older workers in the same occupations was stable or rising.[^1] The decline was in headcount, not wages, which is what you would expect if firms were hiring fewer juniors rather than paying them less, and it was concentrated in occupations where the technology is used to *do* tasks rather than to *assist* with them. Studies of job postings over the same period found entry-level software and analyst postings falling faster than senior ones, and reports from the large technology employers showed new-graduate hiring well below its 2019 and 2022 levels. The pattern is not yet conclusive, varies by country and sector, and could be partly a hangover from the over-hiring of 2021, but it is the pattern the framework predicts, and anyone finishing a degree between now and 2030 should plan as if it continues.
 
 How do institutions respond? Three adaptations are already visible.
 
@@ -46,6 +46,18 @@ The opportunity is that India has, in the same decade, the world's largest cohor
 
 For the graduate, the practical version is this. The service-sector entry-level job of 2026 is the most exposed job in the country, and the entry-level paradox applies to it with full force. The skills that hold up are the ones that are scarce on both sides of the value migration: understanding a business domain deeply enough to specify what should be built, designing and operating systems rather than writing code to someone else's specification, and working in the gaps between what the tools can do and what the customer actually needs. Chapter 11 returns to India's decade in full.
 
+## A worked case: one graduating class
+
+Make it concrete. Consider a class of MCA or B.Tech graduates leaving an Indian college in 2026, and follow the three scenarios through their first four years.
+
+In **slow diffusion**, the services firms hire roughly as they did, perhaps a little less, at roughly the same salaries. Most of the class joins a large firm, spends six months in training and two years on maintenance, testing and support work. The tools are present but used as assistants; the routine work is still done by people, with help. By 2030 the class looks like the class of 2018 with better tooling. The students who used those years to learn a domain and to build systems rather than write to specification are ahead, but not dramatically, and the ones who did not are employed. The risk in this scenario is that it feels safe right up to the point at which the next scenario arrives.
+
+In **uneven diffusion**, which is the scenario most consistent with the evidence so far, the large services firms cut fresher intake substantially, as several did in 2023 and 2024, and raise the bar for those they take: the campus interview now includes system design and a review of real work. The global capability centres keep hiring but for roles that used to go to people with two years' experience. The class splits. Perhaps a third clear the raised bar and start on work that is immediately non-routine; a third take longer, through smaller firms, startups or contract work, to reach the same place; a third struggle, because the rung they were trained for is gone and nobody told them in time. The students with a portfolio of verifiable work (chapter 10) are disproportionately in the first third, regardless of their college's ranking, because the raised bar is exactly the evidence they have.
+
+In **fast diffusion**, the cut in junior hiring is sharp across sectors, the GCC roles narrow too, and the first two years after graduation are hard for most of the class. The same portfolio still separates the ones who are hired, but fewer are hired. The students who do best are the ones who go toward the new-task channel directly: building and operating AI systems for Indian businesses, in Indian languages, for problems the global products do not address (chapter 11), where demand is rising fastest and competition is thinnest.
+
+Three things hold across all three. The portfolio of verifiable work is the deciding evidence in every scenario. Domain depth and systems skill are rewarded in every scenario. And the student who waits for the market to tell them which scenario is coming finds out at the campus interview, which is the most expensive possible way to learn it.
+
 ## What a decade of this looks like from inside
 
 A last point about time, because the scenarios can feel abstract.
@@ -68,7 +80,10 @@ Identify the one skill in your target role that is hardest to automate and get m
 
 ---
 
+[^1]: Brynjolfsson, E., Chandar, B. & Chen, R. (2025), "Canaries in the Coal Mine? Six Facts about the Recent Employment Effects of Artificial Intelligence", Stanford Digital Economy Lab working paper, August 2025, using ADP payroll data.
+
 ### Sources for this chapter
+- Brynjolfsson, Chandar & Chen (2025), "Canaries in the Coal Mine?" — early-career employment in exposed occupations.
 - Acemoglu, D. & Restrepo, P. (2019), "Automation and New Tasks", *Journal of Economic Perspectives* 33(2) — the task framework applied to employment.
 - Eloundou, T. et al. (2023), "GPTs are GPTs", arXiv:2303.10130; Gmyrek, P. et al. (2023), ILO Working Paper 96; Cazzaniga, M. et al. (2024), IMF SDN/2024/001 — exposure by occupation and by country income level.
 - Brynjolfsson, E., Li, D. & Raymond, L. (2023/2025), "Generative AI at Work", NBER Working Paper 31161 / *Quarterly Journal of Economics* — productivity gains concentrated among less-experienced workers in customer support, relevant to the entry-level discussion.

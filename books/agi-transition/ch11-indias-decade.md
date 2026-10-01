@@ -16,6 +16,12 @@ The second exposure is in the newer layer: the global capability centres, the in
 
 The third exposure is the one nobody counts: the millions of graduates each year, in computing and in other fields, whose first job was going to be some form of information work and for whom the entry rung is narrowing in every sector at once.
 
+### A worked case: the headcount numbers
+
+The industry's own figures make the shift visible. For two decades the three largest Indian IT-services firms added employees every year, often tens of thousands each, and their campus intake was the single largest entry point into professional work for Indian engineering graduates. In the financial year ending March 2024, all three reported a net *decline* in headcount, together shedding on the order of 60,000 employees while revenue continued to grow, and fresher hiring at the large firms fell to a fraction of its 2022 level.[^7] Revenue per employee, which had been flat for years, began to rise. Headcount recovered modestly in the following year, but campus offers did not return to their earlier scale, and in mid-2025 the largest of the three announced a reduction of around 2 per cent of its workforce, concentrated in middle and senior grades, which it attributed to skill mismatch in a changing market.[^8]
+
+Read through chapter 3's channels, the numbers say three things. Revenue growing while headcount falls is the productivity channel operating: the same output with fewer people, or more output with the same people. Fresher intake falling faster than total headcount is the entry-level paradox of chapter 4 in its purest form. And the industry's public strategy, "AI-led" services with fewer, more senior people billed for outcomes rather than hours, is the value migration this section describes, undertaken deliberately by the firms themselves. None of this means the industry is shrinking; it means the industry's relationship to the graduate pipeline has changed, and the change is visible in the firms' own accounts before it is visible in any labour statistic.
+
 ## The platform
 
 Now the other half.
@@ -86,6 +92,8 @@ Build something for an Indian language or an Indian institution. Pick a problem 
 [^4]: Unique Identification Authority of India, enrolment dashboard (2025); National Payments Corporation of India, UPI monthly statistics (2025); Reserve Bank of India and Sahamati on the Account Aggregator framework; Open Network for Digital Commerce documentation.
 [^5]: Ahuja, K. et al. (2023), "MEGA: Multilingual Evaluation of Generative AI", *EMNLP 2023*, and Petrov, A. et al. (2023), "Language Model Tokenizers Introduce Unfairness Between Languages", *NeurIPS 2023*, for the capability and tokenisation gaps; AI4Bharat (IIT Madras) publications for Indian-language benchmarks and models.
 [^6]: Ministry of Education, *UDISE+ 2023–24* for school enrolment; *All India Survey on Higher Education 2021–22* for higher-education enrolment; ASER Centre, *Annual Status of Education Report 2024* for learning outcomes.
+[^7]: Annual reports and fourth-quarter FY2024 results of Tata Consultancy Services, Infosys and Wipro (April 2024), each reporting a year-on-year net decline in employees; coverage of the combined figure and of campus-hiring trends in *The Economic Times* and *Mint*, April–May 2024.
+[^8]: Tata Consultancy Services, statement and press coverage, 27 July 2025, on a planned workforce reduction of about 2 per cent during FY2026.
 
 ### Sources for this chapter
 - NASSCOM Strategic Reviews (2024, 2025); NASSCOM–Zinnov GCC reports.

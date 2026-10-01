@@ -1,10 +1,4 @@
-# The AGI Transition
-
-## A Field Guide for the Next Decade
-
-### Pranjul Rathour
-
----
+## Copyright
 
 Copyright © 2026 Pranjul Rathour. All rights reserved.
 

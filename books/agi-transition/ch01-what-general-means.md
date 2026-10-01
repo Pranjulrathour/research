@@ -62,6 +62,22 @@ Three particular mistakes come up so often that they deserve names.
 
 When you hear a capability claim, check which of these three confusions it might be riding on. Usually at least one.
 
+## A worked case: the bar exam, re-read
+
+Take the claim this chapter opened with and run it through the four clauses.
+
+The March 2023 technical report for a leading language model stated that the system had passed a simulated version of the Uniform Bar Examination with a score around the 90th percentile of test-takers.[^2] The figure was repeated in thousands of articles, usually shortened to "AI passes the bar exam in the top 10 per cent", and it did more than any single number to shape public belief that year about how close the systems were to professional-level work.
+
+*Which tasks.* The Uniform Bar Examination has three components: a multiple-choice section, a set of essays and a set of performance tests that simulate lawyering tasks (drafting a memo from a file of documents). The system did well on the multiple-choice section, which is the component closest to a benchmark, and less well on the essays, which were scored by the researchers rather than by the official graders. "Passed the bar exam" compresses three quite different tasks into one.
+
+*At what level, compared with whom.* The 90th percentile figure was computed against test-takers at a February sitting. February cohorts are dominated by people retaking the exam after a failure, and score lower than July cohorts, which are dominated by first-time takers fresh from law school. A 2024 re-analysis in a peer-reviewed law and AI journal re-estimated the same raw score against the July population and against first-time takers specifically: around the 69th percentile overall against July test-takers, around the 48th percentile against first-time takers, and, on the essay component alone, around the 15th percentile against first-time takers.[^3] The reference population changed the headline from "top 10 per cent" to "roughly median, and weak at the writing".
+
+*With what reliability.* The reported result was a single run. The re-analysis noted that the essay scoring was not done by official graders and could not be reproduced under official conditions. There was no reliability distribution to read, because none had been measured.
+
+*Under what autonomy.* The system answered exam questions as a tool, with the questions supplied, the format fixed and nobody relying on the output. The exam is a proxy for the beginning of legal competence, administered under conditions that bear little resemblance to practice. Nothing in the result spoke to whether the system could be trusted to do legal work unsupervised, and the authors of the original report did not claim that it could.
+
+None of this makes the achievement small. A statistical model of text producing a median first-time bar score across the full breadth of the exam would have been science fiction in 2020. But "median first-time taker, weak on essays, under exam conditions, single run" and "top 10 per cent of lawyers" are different facts with different implications for law firms, law students and anyone deciding what to trust, and the translation from one to the other is the skill this chapter is about. The sentence to practise is not "AI passed the bar." It is: "A system scored around the median of first-time takers on a simulated bar exam, strongest on multiple choice, weakest on essays, in one run, as a tool." It is longer. It is also true.
+
 ## Why the word matters anyway
 
 If "AGI" is this ambiguous, why not drop it?
@@ -87,6 +103,8 @@ Learn to read an evaluation. Pick one widely reported capability claim and find 
 ---
 
 [^1]: Morris, M. R., Sohl-Dickstein, J., Fiedel, N., Warkentin, T., Dafoe, A., Faust, A., Farabet, C. & Legg, S. (2023, revised 2024). *Levels of AGI for Operationalizing Progress on the Path to AGI.* Google DeepMind. arXiv:2311.02462.
+[^2]: OpenAI (2023), *GPT-4 Technical Report*, arXiv:2303.08774, and the accompanying study by Katz, D. M., Bommarito, M. J., Gao, S. & Arredondo, P. (2024), "GPT-4 passes the bar exam", *Philosophical Transactions of the Royal Society A* 382(2270).
+[^3]: Martínez, E. (2024), "Re-evaluating GPT-4's bar exam performance", *Artificial Intelligence and Law*. The percentile estimates quoted are from this re-analysis; read it alongside the original for both sides.
 
 ### Sources for this chapter
 - Morris et al., *Levels of AGI* (2023/2024), arXiv:2311.02462 — the two-axis framework and the autonomy levels.

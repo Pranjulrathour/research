@@ -50,6 +50,16 @@ Most major systems now ship with two documents: a short *model card* that summar
 
 Independent datasets now track what the reports disclose about compute, energy and data over time, and the trend in disclosure is itself a measurement worth watching: when it falls, the field is becoming harder to evaluate from outside.
 
+## A worked case: two benchmarks, re-examined
+
+Two of the most-cited benchmarks of the early 2020s were re-examined by independent researchers in 2024, and the two re-examinations illustrate two of the four failure modes above with unusual clarity.
+
+The first was a large multiple-choice test of academic knowledge across 57 subjects, from elementary mathematics to professional law, which had become the single most-quoted number in model announcements: a system's score on it was treated, loosely, as its general knowledge. A team re-annotated a sample of 3,000 of its questions by hand and found that about 6.5 per cent contained errors: wrong answer keys, questions with no correct option or more than one, questions that were unanswerable as written. In the worst subject, virology, more than half the sampled questions had a problem.[^1] A benchmark with a 6.5 per cent error floor cannot distinguish systems within about six points of each other near the top, which by 2024 was where every leading system sat. The instrument had saturated, and part of the saturation was the instrument's own noise.
+
+The second was a widely used set of grade-school arithmetic word problems, the standard test of simple mathematical reasoning. Because it was public and old, its questions and answers were almost certainly present in the training data of every system scored on it. A team wrote a fresh set of 1,250 problems of matched difficulty and style, kept it private, and scored the same systems on both. Several families of models scored markedly lower on the fresh set, by up to about eight percentage points, which is direct evidence of contamination: they had partly memorised the public set rather than learned the skill. The strongest systems showed little gap, which is the encouraging half of the result and the reason the method matters: it separated the systems that had learned arithmetic from the ones that had learned the test.[^2]
+
+Neither study said the benchmarks were useless. Both said what this chapter says: a score is the answer to a narrow question, and the only way to know how narrow is to look at the questions and to test the system on ones it has not seen. The teams that did the looking did more for the field's understanding of capability that year than any new state-of-the-art result, and the method they used (re-annotate a sample; write a private twin) is available to anyone with a weekend and a will to check.
+
 ## Evaluation as a civic skill
 
 For most of the history of technology, the people who had to judge a tool were the people who used it, and they could judge it by using it. A spreadsheet either calculated correctly or it did not, and anyone could check.
@@ -72,7 +82,11 @@ Run one public benchmark yourself. Pick a small, well-documented one, download t
 
 ---
 
+[^1]: Gema, A. P. et al. (2024), "Are We Done with MMLU?", arXiv:2406.04127; the re-annotated subset is published as MMLU-Redux.
+[^2]: Zhang, H. et al. (2024), "A Careful Examination of Large Language Model Performance on Grade School Arithmetic", arXiv:2405.00332; the private twin set is GSM1k.
+
 ### Sources for this chapter
+- Gema et al. (2024) — MMLU-Redux; Zhang et al. (2024) — GSM1k.
 - Goodhart, C. (1975), on measures that become targets; Strathern, M. (1997), "'Improving ratings': audit in the British University system", *European Review*, for the popular formulation.
 - Mitchell, M. et al. (2019), "Model Cards for Model Reporting", *FAT\* '19* — the origin of the model-card practice.
 - OpenAI (2023), *GPT-4 Technical Report*, arXiv:2303.08774 — includes a contamination analysis, cited as an example of disclosed methodology.
