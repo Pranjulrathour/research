@@ -31,7 +31,7 @@ Each chapter states the principle, shows it with a number you can reproduce (the
 Companion code and measurements: github.com/Pranjulrathour/research
 Available on Kindle, Leanpub and Google Play: <link>
 
-**Blogger (long)**: the preface, the twelve closing questions from chapter 12, and the two benchmark figures from chapters 1 and 4.
+**Blogger (long)**: the preface, the twelve closing questions from chapter 12, and the three measured figures from chapters 1, 2 and 4 ("the tail opens before the body moves", "same work, four times the tail", "approximate search is not always faster").
 
 ## 3. Paper P1 — Fat tails and the failure of Gaussian risk models
 
