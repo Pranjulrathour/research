@@ -4,7 +4,7 @@ Copyright © 2026 Pranjul Rathour. All rights reserved.
 
 No part of this book may be reproduced in any form without written permission from the author, except for brief quotations in reviews or scholarly work.
 
-This book presents the author's analysis and opinions. It is not professional, legal, financial or career advice. Laws, statistics and capabilities described here were accurate to the best of the author's knowledge as of October 2026 and will change; the reader is urged to check primary sources, which are listed at the end of every chapter.
+This book presents the author's analysis and opinions. It is not professional, legal, financial or career advice. Laws, statistics and capabilities described here were accurate to the best of the author's knowledge as of October 2026 and will change; please check the primary sources listed at the end of every chapter before relying on them.
 
 First edition, October 2026.
 
@@ -14,13 +14,13 @@ pranjulrathour41@gmail.com · https://pranjulrathour.scult.in
 
 ---
 
-*For the students who asked me, in a dozen classrooms, the same question in different words: "What should I do now?" This is the long answer.*
+*For the students I have mentored, who kept asking me the same question in different words: what should I do now? This is my long answer.*
 
 ---
 
 ## Contents
 
-**Preface** — Who this is for and how to read it
+**Preface**
 
 **Part I — Where we are and how to tell**
 
@@ -52,36 +52,41 @@ pranjulrathour41@gmail.com · https://pranjulrathour.scult.in
 
 ## Preface
 
-### Who this is for
+I build AI systems for a living, mostly the unglamorous parts: retrieval, evaluation, the guardrails and checks that decide whether a model's answer is allowed anywhere near a user. I also spend a lot of my time with students, and for the last couple of years the conversations have had a new undertone. They are not asking me which framework to learn. They are asking whether the thing they are studying will still be worth anything by the time they graduate.
 
-This book is for people who will work through the AI transition rather than watch it: students choosing what to learn, early-career engineers and analysts choosing what to become, teachers and managers choosing how to respond, and anyone who has felt the particular vertigo of reading that their job, or their field, or their country, is about to be transformed, and found nothing useful to do with the feeling.
+I do not have a confident answer to that, and I distrust anyone who claims to. What I do have is a way of looking at the question that has stopped me panicking about it, and that has made my own decisions (what to learn, what to build, what to stop doing) noticeably better. This book is that way of looking, written down at length.
 
-It is written from India, by someone who builds AI systems for a living and has spent a good deal of time in classrooms with students who are about to enter a labour market that does not look like the one their teachers entered. It uses India as its running example because that is where the author stands and because India, with the largest young population on Earth and an economy built in part on exactly the work the tools are learning to do, is where the transition's stakes are highest. Readers elsewhere will find that the frameworks travel; the examples are the local illustration.
+### Who it is for
+
+People who will work through this transition rather than watch it from a distance. Students choosing what to study. Engineers and analysts a few years into their careers, wondering which of their skills are about to get cheap. Teachers and managers who are being asked to respond to something nobody trained them for. And anyone who has read, for the fortieth time, that their job or their field or their country is about to be transformed, and found nothing useful to do with the feeling.
+
+It is written from India and uses India as its running example. Partly that is because Kanpur is where I sit. Mostly it is because India, with the largest young population in the world and an economy built in large part on exactly the kind of work the tools are learning to do, is where the stakes of this decade are highest. Readers elsewhere will find that the frameworks travel and only the examples are local.
 
 ### What it is
 
-A field guide, in the literal sense: a book you take into unfamiliar terrain to identify what you are looking at. Each chapter gives a framework for reasoning about one aspect of the transition (capability, measurement, economics, work, learning, research, governance, trust, agents, skills, India, and the practice of updating) so that when something new happens, as it will between the time this is written and the time you read it, you have a way to place it.
+A field guide, in the old sense of the phrase: a book you carry into unfamiliar terrain so you can tell what you are looking at. Each chapter gives you one way of reasoning about one part of the transition, so that when something new happens (and plenty will have happened between my writing this and your reading it) you have somewhere to put it.
 
-The book promised itself four rules and has tried to keep them.
+I set myself four rules and have tried to keep them.
 
-*Frameworks over forecasts.* It does not predict when or whether "AGI" arrives, because the question is badly posed (chapter 1 explains why) and because forecasts in this field have a poor record. It gives ways of reasoning that hold up whichever way the evidence goes.
+The first is frameworks, not forecasts. I do not predict when "AGI" arrives, partly because the question is badly posed (chapter 1 is about why) and partly because forecasts in this field have aged badly, mine included. What I try to offer instead is reasoning that holds up whichever way the evidence turns.
 
-*Every number has a source and a year.* So that a reader in 2031 can see what was known in 2026 and judge the book accordingly. The sources are at the end of every chapter and are primary wherever possible.
+The second is that every number carries its source and its year. A reader in 2031 should be able to see exactly what was known in 2026 and judge the book on that basis.
 
-*No chapter depends on a product that could vanish.* Products and companies are named only as examples. The arguments are about mechanisms.
+The third is that no argument depends on a product that might disappear. Companies and products appear only as examples; the arguments are about mechanisms.
 
-*Every chapter says what would make it wrong.* And what evidence to check. This is not modesty. It is the method the book recommends, applied to itself, and chapter 12 explains why it matters more than any individual claim.
+The fourth is that every chapter ends by saying what would prove it wrong, and what to check. I am not doing this out of modesty. It is the habit I most want readers to take away, and it seemed dishonest to recommend it without practising it.
 
 ### What it is not
 
-It is not a technical introduction to machine learning; there are excellent ones and this book assumes none of them. It is not a book about the far future, or about whether machines can think, or about the dramatic scenarios at either tail of the distribution, which it discusses only to explain why it concentrates on the broad middle. It is not neutral: it has a view about what is durable and what is not, and it argues for that view. And it is not finished, in the sense that no book about a transition can be. The sources are there so you can continue it.
+It is not a technical introduction to machine learning, and you do not need one to read it. It is not about the far future, or about whether machines can think, or about the dramatic scenarios at either end of the range of possibilities, which I mention mainly to explain why I spend my time on the broad middle. It is not neutral. I have views about what will last and what will not, and I argue for them. And it is not finished, because a book about a transition can't be. The sources are there so you can keep going after I stop.
 
 ### How to read it
 
-In order, if you can; the chapters build. If you cannot, the chapters most readers want first are 10 (what to learn), 4 (what happens to work) and 9 (what agents change), and each is written to stand alone. Every chapter ends with a section called "What to do this year", and if you do only those twelve things over the next twelve months you will have got what the book has to offer.
+In order, if you can, because the chapters build on each other. If you are short of time, the ones most people want first are chapter 10 (what to learn), chapter 4 (what happens to work) and chapter 9 (what agents change), and each of those stands on its own. Every chapter closes with a short section called "What to do this year". If you did nothing but those twelve exercises over the next twelve months, you would have most of what this book has to give.
 
-A companion volume, *Systems That Scale*, covers the engineering half of the argument, the systems thinking that chapters 6 and 10 say is one of the three durable layers, through measurement rather than opinion. The two books are independent and were written to be read together.
+There is a companion volume, *Systems That Scale*, which takes the engineering side of the argument (the systems thinking that chapters 6 and 10 call one of the durable layers) and teaches it through measurement rather than opinion. The two books were written to be read together, but neither needs the other.
 
+Pranjul Rathour
 Kanpur, October 2026
 
 ---

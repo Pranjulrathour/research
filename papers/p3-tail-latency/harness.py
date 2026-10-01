@@ -27,7 +27,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 PORT = 8899
 IO_MS = 20
-CPU_ITERS = 20_000          # calibrated to ~3 ms on the author's machine; measured and recorded at run time
+CPU_ITERS = 7_500           # calibrated 2026-10-01 to ~3 ms on the author's machine (median of 30 calls); re-measured and recorded at run time
 CONCURRENCY = (1, 8, 32, 128, 256)
 REQUESTS_PER_CLIENT = 40
 REPEATS = 3
@@ -55,6 +55,10 @@ class _Handler(BaseHTTPRequestHandler):
 
 def serve_threaded():
     ThreadingHTTPServer.daemon_threads = True
+    # The stdlib default listen backlog is 5; at 256 simultaneous connects Windows then refuses connections outright
+    # (observed in the first run, 2026-10-01). Match the asyncio servers' backlog so all four designs are compared on
+    # their concurrency model, not on a socket default.
+    ThreadingHTTPServer.request_queue_size = 1024
     ThreadingHTTPServer(("127.0.0.1", PORT), _Handler).serve_forever()
 
 
@@ -135,31 +139,57 @@ def _wait_up(timeout=30):
 
 
 def main():
-    t0 = time.perf_counter(); cpu_work(); cpu_ms = (time.perf_counter() - t0) * 1e3
+    sys.path.insert(0, str(HERE.parent))
+    import benchenv  # quiet-machine gate and background-load record, shared with P4
+    start_env = benchenv.wait_for_quiet()
+    cpu_work()  # warm
+    samples = []
+    for _ in range(30):
+        t0 = time.perf_counter(); cpu_work(); samples.append((time.perf_counter() - t0) * 1e3)
+    cpu_ms = statistics.median(samples)
     gil = sys._is_gil_enabled() if hasattr(sys, "_is_gil_enabled") else True
     meta = {"python": platform.python_version(), "gil_enabled": gil, "platform": platform.platform(), "machine": platform.machine(),
             "processor": platform.processor(), "cpu_count": os.cpu_count(), "io_ms": IO_MS, "cpu_iters": CPU_ITERS,
             "cpu_work_measured_ms": round(cpu_ms, 2), "requests_per_client": REQUESTS_PER_CLIENT, "repeats": REPEATS,
             "concurrency": list(CONCURRENCY), "load_model": "closed loop, keep-alive, asyncio clients in a separate process",
-            "run_utc": time.strftime("%Y-%m-%dT%H:%M", time.gmtime()), "network": "loopback, same machine"}
+            "run_utc": time.strftime("%Y-%m-%dT%H:%M", time.gmtime()), "network": "loopback, same machine",
+            "background_at_start": start_env, "background_after_server": {}}
     print("cpu_work ~", round(cpu_ms, 2), "ms; GIL enabled:", gil, flush=True)
     rows = []
     for server in SERVERS:
-        proc = mp.Process(target=TARGETS[server], daemon=True)
+        # not a daemon: the process-pool server must be allowed to start its own worker processes
+        proc = mp.Process(target=TARGETS[server], daemon=False)
         proc.start()
-        assert _wait_up(), f"{server} did not start"
-        for w in WORKLOADS: asyncio.run(_load(w, 8, 10))   # warm-up every path
-        for w in WORKLOADS:
-            for c in CONCURRENCY:
-                reps = [asyncio.run(_load(w, c, REQUESTS_PER_CLIENT)) for _ in range(REPEATS)]
-                med = sorted(reps, key=lambda r: r["p99_ms"])[len(reps) // 2]
-                rows.append({"server": server, "workload": w, "concurrency": c, **med,
-                             "p99_spread_ms": [round(r["p99_ms"], 2) for r in reps]})
-                print(f"{server:13s} {w:5s} c={c:4d}  p50={med['p50_ms']:7.1f}  p95={med['p95_ms']:7.1f}  p99={med['p99_ms']:8.1f}  rps={med['throughput_rps']:7.0f}", flush=True)
-        proc.terminate(); proc.join(5)
+        try:
+            assert _wait_up(), f"{server} did not start"
+            for w in WORKLOADS: asyncio.run(_load(w, 8, 10))   # warm-up every path
+            for w in WORKLOADS:
+                for c in CONCURRENCY:
+                    reps = [asyncio.run(_load(w, c, REQUESTS_PER_CLIENT)) for _ in range(REPEATS)]
+                    med = sorted(reps, key=lambda r: r["p99_ms"])[len(reps) // 2]
+                    rows.append({"server": server, "workload": w, "concurrency": c, **med,
+                                 "p99_spread_ms": [round(r["p99_ms"], 2) for r in reps]})
+                    print(f"{server:13s} {w:5s} c={c:4d}  p50={med['p50_ms']:7.1f}  p95={med['p95_ms']:7.1f}  p99={med['p99_ms']:8.1f}  rps={med['throughput_rps']:7.0f}", flush=True)
+        finally:
+            _stop_tree(proc)
+        meta["background_after_server"][server] = benchenv.sample_load()
         json.dump({"meta": meta, "rows": rows}, open(HERE / "results.json", "w"), indent=1)
         time.sleep(1)
     plots(rows)
+
+
+def _stop_tree(proc):
+    """Terminate a server process and any worker processes it started (Windows does not reap children on parent kill)."""
+    import psutil
+    try:
+        kids = psutil.Process(proc.pid).children(recursive=True)
+    except psutil.NoSuchProcess:
+        kids = []
+    proc.terminate(); proc.join(5)
+    for k in kids:
+        try: k.kill()
+        except psutil.NoSuchProcess: pass
+    psutil.wait_procs(kids, timeout=5)
 
 
 def plots(rows):

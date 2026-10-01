@@ -19,15 +19,23 @@ from __future__ import annotations
 import json, os, platform, time, gc
 from pathlib import Path
 
+import sys
+
 import h5py
 import numpy as np
 import faiss
+import psutil
 from usearch.index import Index as UIndex
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent))
+import benchenv  # noqa: E402  (quiet-machine gate and background-load record, shared with P3)
+
 FIG = HERE / "figures"; FIG.mkdir(exist_ok=True)
 K = 10
-THREADS = os.cpu_count() or 4
+# One OpenMP thread per physical core. Using every logical CPU (12 on the author's 4P+4E laptop) made batched search
+# collapse ~10x whenever any other process took a core, because OpenMP's static schedule waits for the slowest thread.
+THREADS = psutil.cpu_count(logical=False) or 4
 faiss.omp_set_num_threads(THREADS)
 
 DATASETS = {
@@ -185,14 +193,17 @@ def plots(rows: list[dict]) -> None:
 
 
 def main() -> None:
-    import psutil
-    meta = {"machine": platform.machine(), "processor": platform.processor(), "cpu_count": os.cpu_count(), "threads_used": THREADS,
+    start_env = benchenv.wait_for_quiet()
+    meta = {"machine": platform.machine(), "processor": platform.processor(), "cpu_count": os.cpu_count(),
+            "physical_cores": psutil.cpu_count(logical=False), "threads_used": THREADS, "background_at_start": start_env,
             "ram_gb": round(psutil.virtual_memory().total / 2**30, 1), "python": platform.python_version(), "faiss": faiss.__version__,
             "usearch": __import__("usearch").__version__, "run_utc": time.strftime("%Y-%m-%dT%H:%M", time.gmtime()),
             "datasets": "ann-benchmarks.com sift-128-euclidean.hdf5, glove-100-angular.hdf5 (downloaded 2026-10-01)"}
     rows = []
+    meta["background_after_dataset"] = {}
     for ds in DATASETS:
         rows += run_dataset(ds)
+        meta["background_after_dataset"][ds] = benchenv.sample_load()
         json.dump({"meta": meta, "rows": rows}, open(HERE / "results.json", "w"), indent=1)
     plots(rows)
     print("done:", len(rows), "configurations")

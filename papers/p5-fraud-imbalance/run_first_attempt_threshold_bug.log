@@ -1,0 +1,4 @@
+time-aware split: {'train': 199364, 'val': 28481, 'test': 56962, 'train_frauds': 384, 'val_frauds': 33, 'test_frauds': 75}
+[time_aware] dummy_majority           PR-AUC 0.001+-0.000  ROC 0.500  R@P.9 0.00  savings -106195  alerts 56962
+[time_aware] logreg                   PR-AUC 0.712+-0.000  ROC 0.975  R@P.9 0.45  savings 4570  alerts 80
+[time_aware] logreg_balanced          PR-AUC 0.748+-0.000  ROC 0.983  R@P.9 0.67  savings 4959  alerts 65

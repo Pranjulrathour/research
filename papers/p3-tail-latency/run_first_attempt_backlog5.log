@@ -1,0 +1,54 @@
+cpu_work ~ 2.91 ms; GIL enabled: True
+threaded      io    c=   1  p50=   21.4  p95=   22.0  p99=    22.7  rps=     47
+threaded      io    c=   8  p50=   21.3  p95=   23.7  p99=    25.8  rps=    364
+threaded      io    c=  32  p50=   21.2  p95=   27.1  p99=    31.0  rps=   1383
+threaded      io    c= 128  p50=   47.4  p95=   60.4  p99=    70.4  rps=   2222
+threaded      io    c= 256  p50=   66.1  p95=   92.8  p99=   102.9  rps=   3394
+threaded      cpu   c=   1  p50=   10.2  p95=   11.7  p99=    12.2  rps=    100
+threaded      cpu   c=   8  p50=   63.8  p95=  161.9  p99=   199.0  rps=    102
+threaded      cpu   c=  32  p50=  260.9  p95=  821.3  p99=  1109.4  rps=     94
+threaded      cpu   c= 128  p50= 1205.2  p95= 3424.1  p99=  4718.3  rps=     84
+Traceback (most recent call last):
+  File "D:\CLAUDE\research\papers\p3-tail-latency\harness.py", line 221, in <module>
+    main()
+    ~~~~^^
+  File "D:\CLAUDE\research\papers\p3-tail-latency\harness.py", line 160, in main
+    reps = [asyncio.run(_load(w, c, REQUESTS_PER_CLIENT)) for _ in range(REPEATS)]
+            ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "D:\CLAUDE\research\papers\p3-tail-latency\harness.py", line 119, in _load
+    await asyncio.gather(*[_client(path, n, lat) for _ in range(c)])
+  File "D:\CLAUDE\research\papers\p3-tail-latency\harness.py", line 101, in _client
+    reader, writer = await asyncio.open_connection("127.0.0.1", PORT)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\streams.py", line 48, in open_connection
+    transport, _ = await loop.create_connection(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        lambda: protocol, host, port, **kwds)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 1166, in create_connection
+    raise exceptions[0]
+  File "C:\Python313\Lib\asyncio\base_events.py", line 1141, in create_connection
+    sock = await self._connect_sock(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+        exceptions, addrinfo, laddr_infos)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\base_events.py", line 1044, in _connect_sock
+    await self.sock_connect(sock, address)
+  File "C:\Python313\Lib\asyncio\proactor_events.py", line 726, in sock_connect
+    return await self._proactor.connect(sock, address)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\asyncio\windows_events.py", line 804, in _poll
+    value = callback(transferred, key, ov)
+  File "C:\Python313\Lib\asyncio\windows_events.py", line 600, in finish_connect
+    ov.getresult()
+    ~~~~~~~~~~~~^^
+ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection

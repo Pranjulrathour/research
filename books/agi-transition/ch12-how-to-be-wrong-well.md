@@ -1,110 +1,99 @@
 # Chapter 12 — How to be wrong well
 
-Every chapter in this book has ended with a section on what would make it wrong. This chapter is that section for the book as a whole, and it is also the book's actual conclusion, because the central claim of a field guide to a transition is not any particular prediction. It is that the person who comes through the next decade stronger will be the one who updates fastest and most honestly, and that updating is a skill with a method.
+Every chapter of this book has ended with a section on what would make it wrong. This one is that section for the book as a whole, and it's also the real conclusion, because a field guide to a transition doesn't stand or fall on any particular prediction. Its central claim is that the people who come out of the next decade stronger will be the ones who update fastest and most honestly, and that updating is a skill with a method.
 
-The method has three parts: knowing the base rates, keeping a record, and listing your own likely errors in advance. The chapter takes them in turn and then closes with the ten habits the rest of the book has been building toward.
+The method has three parts: know the base rates, keep a record, and list your own likely mistakes in advance. I'll take them in turn and then finish with the ten habits the rest of the book has been building towards.
 
-## Base rates: what previous general-purpose technologies did
+## Base rates from earlier general-purpose technologies
 
-The most reliable guide to how a transformative technology diffuses is how the previous ones did, and the record is consistent enough to be useful.
+The most reliable guide to how a transformative technology spreads is how the previous ones spread, and the record is consistent enough to be useful.
 
-**Electricity.** The dynamo was commercially practical by the early 1880s. Factory productivity did not visibly respond until the 1920s, roughly forty years later, because the gains came not from replacing steam engines with electric motors in the same factory layout, but from redesigning the factory around small motors at each machine, which required a generation of engineers who had grown up with the new technology and a stock of old factories to wear out.[^1] The lesson is that the technology is the fast part; the reorganisation of work around it is the slow part, and the reorganisation is where the value is.
+Electricity first. The dynamo was commercially practical by the early 1880s, yet factory productivity didn't visibly respond until the 1920s, roughly forty years later. The gains didn't come from swapping steam engines for electric motors inside the same factory layout. They came from redesigning factories around a small motor at every machine, which took a generation of engineers who had grown up with the new technology, and a stock of old factories that had to wear out first.[^1] The technology was the fast part. Reorganising work around it was the slow part, and that's where the value was.
 
-**Computing.** Business computing was widespread by the 1970s. Through the 1980s, measured productivity growth in the countries that invested most heavily in it was unimpressive, which prompted the economist Robert Solow's remark in 1987 that the computer age was visible everywhere except in the productivity statistics.[^2] The acceleration came in the second half of the 1990s, two decades after the investment began, and it came alongside large intangible investments (new processes, training, organisational redesign) that the statistics had not counted. Economists later formalised this as the *productivity J-curve*: a general-purpose technology first depresses measured productivity, because firms are investing in intangibles that do not show up as output, and then raises it, often sharply.[^3]
+Then computing. Business computing was common by the 1970s, but through the 1980s the countries investing most heavily saw unimpressive productivity growth, which is what prompted Robert Solow's 1987 remark that the computer age was visible everywhere except in the productivity statistics.[^2] The acceleration finally arrived in the second half of the 1990s, two decades after the investment began, and it came together with large intangible investments (new processes, training, organisational redesign) that the statistics hadn't been counting. Economists later formalised this as the productivity J-curve: a general-purpose technology first depresses measured productivity, because firms are investing in intangibles that don't show up as output, and then raises it, often sharply.[^3]
 
-**The internet.** Commercially open from the early 1990s; the first boom and bust by 2001; the business models that actually dominated (search advertising, platforms, cloud computing, the smartphone ecosystem) mostly emerged or matured between 2004 and 2012. The firms that led in 1999 were, with a few exceptions, not the firms that led in 2015. The lesson is that the early winners of a transition are not reliably the eventual winners, and that the most important applications are usually not the ones imagined at the start.
+Then the internet. It opened commercially in the early 1990s, had its first boom and bust by 2001, and the business models that actually came to dominate (search advertising, platforms, cloud computing, the smartphone ecosystem) mostly emerged or matured between 2004 and 2012. With a few exceptions, the companies leading in 1999 weren't the ones leading in 2015. Early winners in a transition aren't reliably the eventual winners, and the most important applications usually aren't the ones people imagined at the start.
 
-Three regularities hold across all three.
+![From commercial availability to broad economic impact, for three earlier general-purpose technologies. Dates are approximate and taken from the sources in this chapter; the last row is the open question.](figures/fig12_diffusion.png)
 
-*Diffusion takes decades, not years.* Measured from commercial availability to broad economic impact, the lag has been twenty to forty years. AI may be faster, because it diffuses through software rather than physical capital and because it is being adopted by firms that have already digitised. It is unlikely to be instantaneous, because the binding constraints (chapter 3's institutional lag, chapter 6's bottleneck movement, chapter 9's reliability gate) are the same ones that slowed the earlier technologies.
+A few regularities hold across all three. Diffusion takes decades rather than years: measured from commercial availability to broad economic impact, the lag has been twenty to forty years. AI may well be faster, because it spreads through software rather than physical capital and because it's being adopted by organisations that have already digitised. I don't expect it to be instant, though, because the binding constraints (chapter 3's institutional lag, chapter 6's moving bottleneck, chapter 9's reliability gate) are the same ones that slowed every earlier technology.
 
-*Returns are uneven.* Some sectors, firms and workers gain enormously and early; others gain late or lose. Averages conceal this. The useful question is never "will AI raise productivity?" but "whose, when, and who bears the adjustment?"
+Returns are uneven. Some sectors, firms and workers gain a great deal, and early; others gain late or lose. Averages hide this. So the useful question is never "will AI raise productivity?" but whose productivity, when, and who bears the cost of adjusting.
 
-*Institutions lag and then catch up roughly.* Education, law, professional norms and labour markets adapt slowly and imperfectly, and their adaptation, not the technology, determines who bears the cost.
+And institutions lag, then catch up, roughly. Education, law, professional norms and labour markets adapt slowly and imperfectly, and it's their adaptation, more than the technology, that decides who pays.
 
-The base rates do not say that this time is the same. They say that anyone claiming this time is different has the burden of proof, and that the proof should come in the form of measurements, not demonstrations.
-
-## A worked case: three forecasts, ten years on
-
-The method's value is easiest to see on forecasts old enough to grade. Three from the mid-2010s, each made by serious people, each widely repeated, each gradable now.
-
-**"47 per cent of US jobs are at high risk."** In 2013 two Oxford researchers estimated that about 47 per cent of US employment was in occupations at high risk of computerisation over "a decade or two".[^4] The number travelled around the world and is still quoted. Graded in 2026: US unemployment through the period was at or near historic lows, and no occupation-level collapse on anything like that scale occurred. The study was careful about what it measured (technical feasibility of automating an occupation's tasks, judged by experts) and the reporting was not: feasibility was read as displacement, occupations were read as jobs, and the time horizon dropped out of the headline. A 2016 analysis by the OECD that re-did the exercise at the level of tasks rather than occupations put the share of jobs at high risk at about 9 per cent, because most occupations contain tasks that are hard to automate alongside ones that are easy.[^5] Both numbers were defensible answers to different questions. The lesson is chapter 3's: exposure is not displacement, and a forecast that does not name its channel will be graded against the wrong one.
-
-**"Stop training radiologists."** In 2016 one of the field's most distinguished researchers said that it was "quite obvious" that deep learning would outperform radiologists within five years and that training new ones should stop.[^6] Graded in 2026: image-recognition systems did reach and exceed radiologist-level performance on many specific, well-defined detection tasks, exactly as predicted; and radiologist employment, salaries and training places *rose*, with shortages reported in several countries. The capability forecast was largely right. The labour forecast was wrong, because the job was not the task: a radiologist's work includes integrating findings across modalities, handling the unusual case, communicating with clinicians, taking responsibility for the diagnosis, and the regulatory and liability structure that decides who may sign a report. The systems became tools used by radiologists, which raised their productivity and, through chapter 3's demand channel, the volume of imaging. The forecaster later said the timeline was wrong but the direction right; the more useful correction is that "outperform at the task" and "replace in the job" are different claims, and the distance between them is institutional, not technical.
-
-**"Full self-driving next year."** From 2016 onward, a leading electric-vehicle company's chief executive predicted, roughly annually, that fully autonomous driving was about a year away.[^7] Graded in 2026: driver-assistance systems improved enormously; limited robotaxi services operated in a handful of cities under specific conditions; and general-purpose autonomy, in any weather on any road without a human responsible, had not arrived. The pattern of the forecast is itself instructive: a capability that was genuinely improving, a demonstration that genuinely worked in chosen conditions (chapter 1's "demos are not deployments"), and a reliability bar for unsupervised operation (chapter 9's arithmetic) that was far higher than the demonstrations suggested and that moved as the systems revealed new failure modes.
-
-The three cases share a shape. In each, the technical trajectory was called roughly right and the consequence was called wrong, because the consequence ran through institutions (how jobs are bundled, who holds liability, what reliability is required before autonomy is granted) that the forecaster did not model. That is the base-rate lesson of this chapter applied to the recent past, and it is why this book has spent more pages on institutions than on capabilities. It is also a demonstration of the journal: each forecast, written down with the belief it rested on and a date, would have taught its author something precise about *which* belief failed. Repeated without the record, the same error is being made about the current wave by people who remember the earlier forecasts only as "the experts were wrong", which is the least useful possible lesson.
+None of this proves that this time will be the same. What it does is put the burden of proof on anyone claiming this time is different, and the proof ought to come as measurements rather than demonstrations.
 
 ## The decision journal
 
-The second part of the method is a record. The idea is old (it is standard practice among serious investors and forecasters) and it is simple enough that almost nobody does it.
+The second part of the method is a record. The idea is old (serious investors and forecasters have done it for decades) and simple enough that almost nobody bothers.
 
-Whenever you make a decision that depends on a belief about how this transition will go (what to study, what job to take, what to build, what to stop doing), write down four things: the decision, the belief it rests on, what evidence would change the belief, and a date to check. Then, on the date, check, and write down what actually happened and whether the belief was right.
+Whenever you make a decision that depends on a belief about how this transition will go (what to study, which job to take, what to build, what to stop doing), write down four things: the decision, the belief behind it, what evidence would change that belief, and a date to check. On that date, check. Write down what actually happened and whether the belief held.
 
-Three things make the journal valuable.
+The journal earns its keep in a few ways. It separates the quality of a decision from the quality of its outcome. Good decisions sometimes turn out badly and bad ones sometimes turn out well, and only a record over many entries shows which of your beliefs are reliable.
 
-It separates the quality of a decision from the quality of its outcome. A good decision can turn out badly and a bad one well; over many entries the record shows which beliefs are reliable and which are not, which no single outcome can.
+It defeats hindsight. Memory rewrites itself to make past beliefs look more accurate than they were; a dated entry doesn't. Reading your own confident entry from two years ago and seeing how wrong it was is unpleasant, and it's the most effective calibration training I know of.
 
-It defeats hindsight. Memory rewrites itself to make past beliefs look more accurate than they were. A dated record does not. The experience of reading your own confident entry from two years ago and seeing how wrong it was is unpleasant and it is the single most effective training in calibration available.
+And it forces the question "what would change my mind?" at the moment you decide, which is when that question is most useful and least often asked. Chapter 2's measurement discipline, chapter 9's checkpoints and the "what would make this wrong" sections in this book are all versions of the same move: name the evidence before you see it.
 
-It forces the question "what would change my mind?" at the moment of deciding, which is when it is most useful and least asked. Chapter 2's measurement discipline, chapter 9's checkpoints and this book's "what would make this wrong" sections are all versions of the same move: name the evidence before you see it.
+Keep it short, a paragraph per decision and a paragraph per check. A year of it will be worth more to you than any forecast anyone publishes, because it'll be about your beliefs and your decisions, measured against your world.
 
-The journal should be short. One paragraph per decision; one paragraph per check. A year of it will be more useful than any forecast anyone publishes, because it will be about your beliefs and your decisions, calibrated against your world.
+## Three forecasts, ten years on
 
-## What this book expects to get wrong
+The value of all this is easiest to see with forecasts old enough to grade. Here are three from the mid-2010s, each made by serious people, each widely repeated, each gradable now.
 
-Here, plainly, are the places this book is most likely to be wrong, in rough order of consequence.
+In 2013 two Oxford researchers estimated that about 47 per cent of US employment was in occupations at high risk of computerisation within "a decade or two".[^4] The number travelled the world and is still quoted. Graded in 2026: US unemployment over the period sat at or near historic lows, and nothing like an occupation-level collapse on that scale happened. The study was careful about what it measured (the technical feasibility of automating an occupation's tasks, as judged by experts), but the reporting wasn't. Feasibility got read as displacement, occupations got read as jobs, and the time horizon fell out of the headline. A 2016 OECD analysis that redid the exercise at the level of tasks rather than whole occupations put the share of jobs at high risk at about 9 per cent, because most occupations mix tasks that are easy to automate with tasks that aren't.[^5] Both numbers were defensible answers to different questions. The lesson is chapter 3's: exposure isn't displacement, and a forecast that doesn't say which channel it's about will get graded against the wrong one.
 
-**The speed of capability progress.** The book assumes continued but uneven improvement, with reliability lagging raw capability and agents constrained by the arithmetic of chapter 9. If the task-horizon trend that chapter 9 described continues to double every several months through 2030, systems will complete week-long professional tasks unattended within the decade, and large parts of chapters 4, 6, 9 and 10 will have been too conservative about what gets automated and how fast. If the trend bends, as trends usually do, the book will look about right. The evidence to watch is the measured horizon on realistic tasks, not demonstrations.
+In 2016 one of the field's most distinguished researchers said people should stop training radiologists, because it was, in his words, "just completely obvious" that deep learning would outperform them within five years.[^6] Graded in 2026: image-recognition systems did reach and exceed radiologist-level performance on many specific, well-defined detection tasks, much as predicted. Meanwhile radiologist employment, pay and training places rose, with shortages reported in several countries. The capability forecast was largely right and the labour forecast was wrong, because the job isn't the task. A radiologist's work includes combining findings across different kinds of scan, handling the unusual case, talking to other clinicians, and taking responsibility for the diagnosis, inside a regulatory and liability structure that decides who's allowed to sign a report. The systems became tools that radiologists used, which raised their productivity and, through chapter 3's demand channel, the volume of imaging. The forecaster later said he'd got the timing wrong but the direction right. I think the more useful correction is that "outperforms at the task" and "replaces in the job" are different claims, and the distance between them is institutional rather than technical.
 
-**The entry-level paradox.** The book argues that the narrowing of junior roles is real and durable and that the response is to be useful above the entry rung earlier. If firms instead redesign apprenticeship successfully, or if demand effects create more junior roles than automation removes, the paradox will have been a 2023–2027 adjustment rather than a feature of the decade. Watch hiring rates and wages for the youngest cohorts in exposed occupations, by year.
+And from 2016 onward, a leading electric-car company's chief executive predicted, roughly once a year, that fully autonomous driving was about a year away.[^7] Graded in 2026: driver assistance improved enormously, limited robotaxi services ran in a handful of cities under particular conditions, and general-purpose autonomy, in any weather, on any road, with no human responsible, still hadn't arrived. The shape of that forecast is instructive. A capability that genuinely was improving, a demonstration that genuinely worked in chosen conditions (chapter 1's demos-versus-deployments point), and a reliability bar for unsupervised operation (chapter 9's arithmetic) that was much higher than the demos suggested and kept moving as the systems revealed new ways to fail.
 
-**India's trajectory.** Chapter 11 presents two halves and declines to predict which dominates. If the book is wrong about India it will most likely be wrong in the pessimistic direction: underestimating how fast the services industry adapts and how much the domestic product sector grows. The evidence is export figures, employment figures and the revenue of Indian-built AI products.
+All three share a shape. The technical trajectory was called roughly right and the consequences were called wrong, because the consequences ran through institutions (how jobs are bundled, who carries liability, how much reliability is required before autonomy is granted) that the forecasters didn't model. That's this chapter's base-rate lesson applied to the recent past, and it's why I've spent more pages in this book on institutions than on capabilities. It's also an argument for the journal. Each of those forecasts, written down with the belief behind it and a date, would have taught its author something precise about which belief failed. Without that record, people remember the earlier forecasts only as "the experts were wrong", which is the least useful lesson there is, and they repeat the same mistake about the current wave.
 
-**Governance.** Chapter 7 expects continued divergence between jurisdictions and slow enforcement. A major incident could produce fast, convergent, strict regulation; a long quiet period could produce the opposite. The book does not know which, and says so.
+## What I expect this book to get wrong
 
-**The information commons.** Chapter 8 expects the share of synthetic content to rise and the value of verified human work to rise with it. It could be wrong about the second half: the market might not reward verification as much as the argument requires, and provenance infrastructure might fail to reach the scale needed. Watch whether platforms, search engines and employers actually pay for provenance.
+Here, as plainly as I can put them, are the places I'm most likely to be wrong, roughly in order of how much it would matter.
 
-**The whole frame.** The book treats the transition as one that institutions and individuals can navigate with judgment, measurement and good habits. There are scenarios, at both tails, in which that frame is inadequate: a capability discontinuity that makes human judgment irrelevant across most of the economy, or a stall that makes the whole discussion premature. The book has argued that both tails are less likely than the broad middle and has given its reasons, in chapters 1, 3 and 9. Those reasons could be wrong.
+The speed of progress. I've assumed continued but uneven improvement, with reliability lagging raw capability and agents held back by chapter 9's arithmetic. If the task-horizon trend in chapter 9 keeps doubling every seven months or so through 2030, systems will be completing week-long professional tasks unattended within the decade, and large parts of chapters 4, 6, 9 and 10 will have been too conservative about what gets automated and how fast. If the trend bends, as trends usually do, the book will look about right. What to watch is the measured horizon on realistic tasks, not demonstrations.
 
-A reader in 2031 who finds that this list missed the thing that actually mattered should treat that as the book's most important lesson rather than its failure: the things that matter most are often the things nobody put on the list, which is why the method (base rates, a record, named errors) matters more than any list.
+The entry-level paradox. I've argued that the narrowing of junior roles is real and lasting, and that the response is to become useful above the entry rung sooner. If firms instead redesign apprenticeship successfully, or demand effects create more junior roles than automation removes, the paradox will turn out to have been a 2023–2027 adjustment rather than a feature of the decade. Watch hiring and pay for the youngest workers in exposed occupations, year by year.
+
+India. Chapter 11 sets out two halves and declines to say which wins. If I'm wrong about India, I'll most likely be wrong in the pessimistic direction, having underestimated how fast the services industry adapts and how much the domestic product sector grows. The evidence will be in export figures, employment figures and the revenue of Indian-built AI products.
+
+Governance. Chapter 7 expects jurisdictions to keep diverging and enforcement to stay slow. A major incident could produce fast, convergent, strict regulation; a long quiet period could produce the opposite. I don't know which, and I've tried to say so.
+
+The information commons. Chapter 8 expects the synthetic share of content to rise and the value of verified human work to rise with it. I could be wrong about the second half. The market might not reward verification as much as my argument needs, and provenance infrastructure might never reach the scale required. Watch whether platforms, search engines and employers actually pay for provenance.
+
+And the whole frame. This book treats the transition as something institutions and individuals can navigate with judgement, measurement and good habits. There are scenarios at both extremes where that frame fails: a jump in capability that makes human judgement irrelevant across most of the economy, or a stall that makes the whole discussion premature. I've argued, in chapters 1, 3 and 9, that both extremes are less likely than the broad middle, and I've given my reasons. They could be wrong.
+
+If you're reading this in 2031 and find that this list missed the thing that actually mattered, I'd ask you to treat that as the book's most important lesson rather than its failure. The things that matter most are often the ones nobody put on the list, which is exactly why the method (base rates, a record, named errors) matters more than any list.
 
 ## Ten habits
 
-What follows is not a summary. It is the set of habits the preceding chapters have each, in their own way, recommended, collected so that they can be checked against.
+This isn't a summary. It's the set of habits each chapter has recommended in its own way, gathered in one place so you can check yourself against them.
 
-1. **Ask which level, on which tasks, at what reliability.** Never "is it intelligent?" or "can it do my job?" (chapter 1).
+1. Ask which tasks, at what level, with what reliability, never "is it intelligent?" or "can it do my job?" (chapter 1).
+2. Read the evaluation before you believe the claim: what was measured, on what, by whom, and what was left out. Run one yourself (chapter 2).
+3. Think in tasks rather than jobs, and watch wages rather than headlines. Break your own work down and track what actually changes (chapters 3 and 4).
+4. Build proof that can't be generated: work that runs, gets checked, is accepted by others, or teaches. One piece a quarter (chapters 5 and 10).
+5. Make your work reproducible, with code, data, method and limitations, every time. It's the unit of credibility now (chapter 6).
+6. Read the primary text, whether that's the law, the paper or the specification, not the summary. It's nearly always shorter and clearer than the commentary (chapter 7).
+7. Default to verification. Sign what you publish, verify what you receive, and agree a routine for anything involving money, passwords or urgency (chapter 8).
+8. Delegate by *c*, *F* and *p*: hand over freely what's cheap to check, supervise what's costly to get wrong, and keep what you need to do yourself to stay able to judge (chapter 9).
+9. Compound rather than collect: judgement, systems, domain depth. Stop drilling what you'll never do by hand (chapter 10).
+10. Keep the journal. Write down the belief, the evidence that would change it and the date; then check, and update (this chapter).
 
-2. **Read the evaluation before the claim.** Know what was measured, on what, by whom, and what was left out. Run one yourself (chapter 2).
-
-3. **Think in tasks, not jobs, and watch wages, not headlines.** Decompose your own work; track what actually changes (chapters 3 and 4).
-
-4. **Build proof that cannot be generated.** Work that runs, is checked, is accepted by others, or teaches. One piece per quarter (chapters 5 and 10).
-
-5. **Make your work reproducible.** Code, data, method, limitations, every time. It is the unit of credibility now (chapter 6).
-
-6. **Read the primary text.** The law, the paper, the specification, not the summary. It is almost always shorter and clearer than the commentary (chapter 7).
-
-7. **Default to verification.** Sign what you publish; verify what you receive; agree protocols for anything that involves money, credentials or urgency (chapter 8).
-
-8. **Delegate by *c*, *F* and *p*.** Delegate freely what is cheap to check, supervise what is costly to fail, and keep what you must do to stay able to judge (chapter 9).
-
-9. **Compound, don't collect.** Judgment, systems, domain depth. Stop drilling what you will never do by hand (chapter 10).
-
-10. **Keep the journal.** Write down the belief, the evidence that would change it, and the date. Check. Update (this chapter).
-
-None of these habits depends on a product that could vanish, a prediction that could fail or a job that could disappear. That is the point. The decade ahead will be shaped by capabilities that nobody can forecast precisely and by institutional responses that nobody controls. What an individual controls is how they reason about evidence, how they prove what they can do, and how they update when they are wrong. Those were always the things that mattered. The transition has made them visible.
+None of these habits depends on a product that might disappear, a prediction that might fail or a job that might vanish, and that's the point. The decade ahead will be shaped by capabilities nobody can forecast precisely and by institutional responses nobody controls. What you control is how you reason about evidence, how you prove what you can do, and how you update when you turn out to be wrong. Those were always the things that mattered. The transition has just made them harder to ignore.
 
 ## What would make this chapter wrong
 
-If the next decade turns out to resemble none of the previous general-purpose technologies in its diffusion pattern, with impact arriving in years rather than decades and spread evenly rather than unevenly, then the base-rate section misled by analogy and the discontinuity scenario the book discounted was the right one.
+If the coming decade looks nothing like earlier general-purpose technologies in how it spreads, with the impact arriving in years rather than decades and spread evenly rather than unevenly, then my base rates misled by analogy, and the discontinuity I discounted was the right call.
 
-If keeping a decision journal and listing one's own errors turns out not to improve anyone's decisions, which is testable, then the method this chapter recommends is a comfort rather than a tool. The evidence from forecasting research so far says otherwise, and that evidence could be wrong.
+And if keeping a decision journal and listing your own likely errors turns out not to improve anyone's decisions (which can be tested), then the method I'm recommending is a comfort rather than a tool. The forecasting research so far says otherwise, but that research could be wrong too.
 
 ## What to do this year
 
-Start the journal today, with one entry: the most consequential decision you are making this year that depends on how this transition goes. Write the belief it rests on, the evidence that would change your mind, and a date twelve months from now. Then read chapter 1 again and check whether you still agree with it. Being wrong well is a practice, and the first entry is the hardest.
+Start the journal today with a single entry: the most consequential decision you're making this year that depends on how this transition goes. Write down the belief it rests on, the evidence that would change your mind, and a date twelve months from now. Then go back and reread chapter 1, and see whether you still agree with it. Being wrong well is a practice, and the first entry is the hardest one to write.
 
 ---
 
@@ -121,5 +110,6 @@ Start the journal today, with one entry: the most consequential decision you are
 - Solow (1987) — the productivity paradox remark.
 - Brynjolfsson, Rock & Syverson (2021), *AEJ: Macro* 13(1) — the J-curve.
 - Bresnahan, T. & Trajtenberg, M. (1995), "General purpose technologies: 'Engines of growth'?", *Journal of Econometrics* 65(1) — the GPT framework.
+- Frey & Osborne (2013); Arntz, Gregory & Zierahn (2016) — the two automation-risk estimates.
 - Tetlock, P. E. & Gardner, D. (2015), *Superforecasting* — the evidence that recording and scoring beliefs improves calibration.
 - Kwa et al. (2025), METR — the task-horizon measurement named as the number to watch.

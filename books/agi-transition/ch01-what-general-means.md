@@ -1,104 +1,102 @@
 # Chapter 1 — What "general" means, and why the word matters
 
-In the spring of 2023, a system that had been trained to predict the next word in a sentence passed a simulated bar exam, wrote working code in a dozen languages, explained jokes, and failed to count the letters in a short word. All four of those things were true at once, and all four were widely reported, and the reports almost never appeared together. People who saw the bar exam concluded that general intelligence had arrived. People who saw the letter-counting concluded the whole thing was a party trick. Both groups were reasoning from one data point about a question that needs a map.
+In the spring of 2023 a system trained to predict the next word in a sentence passed a simulated bar exam, wrote working code in a dozen programming languages, explained jokes, and fumbled the job of counting the letters in a short word. All of that was true at the same time. All of it was reported, too, though hardly ever in the same article. People who read about the bar exam decided general intelligence had arrived. People who saw the letter-counting decided the whole thing was a party trick. Both were reasoning from a single data point about a question that needs a map.
 
-This chapter is about the map. Before you can think clearly about what the next decade of artificial intelligence will do to work, learning, institutions and your own plans, you need a way to say *what a system can do* that is more precise than "it is smart" and more useful than a benchmark score. You need to be able to say which tasks, at what reliability, with how much autonomy, and compared with whom. Once you can say that, most of the loudest arguments about AI turn out to be arguments between people describing different parts of the same animal.
+This chapter is about that map. Before you can think clearly about what the next ten years of AI will do to work, to learning, to institutions and to your own plans, you need a way of describing what a system can do that is sharper than "it's smart" and more useful than a benchmark score. You need to be able to say which tasks, how well, how reliably, with how much autonomy, and compared with whom. Once you can say those things, a surprising number of the loudest arguments about AI turn out to be people describing different parts of the same elephant.
 
-## The word is doing too much work
+## A word asked to carry too much
 
-"Artificial general intelligence" is a phrase that carries at least four different meanings, and the people using it rarely say which one they mean.
+"Artificial general intelligence" carries at least four separate meanings, and people using the phrase almost never say which one they have in mind.
 
-The first meaning is **breadth**: a system that can do many kinds of task rather than one. A chess engine is narrow. A system that can draft an email, debug a program and summarise a court judgment is broader, whatever its quality on each.
+The first is breadth. A chess engine does one thing; a system that can draft an email, debug a program and summarise a court judgment does many, whatever its quality at each.
 
-The second is **human parity**: a system that performs a task as well as a typical person, or as well as an expert. This is a statement about level, not about breadth, and it is always relative to a reference population that should be named and usually is not.
+The second is parity with people: doing a task as well as a typical person, or as well as an expert. That is a claim about level rather than breadth, and it only means something once you name the people you are comparing against, which is the step most claims skip.
 
-The third is **autonomy**: a system that can carry out a long task, choose its own intermediate steps, recover from errors and finish without a person checking each move. A model that writes an excellent paragraph when asked is not autonomous. A system that is given a goal on Monday and reports results on Friday is, whether or not its paragraphs are excellent.
+The third is autonomy. Can the system take on a long task, pick its own intermediate steps, recover when something goes wrong and finish without a person checking each move? A model that writes an excellent paragraph on request is not autonomous in this sense. A system that is handed a goal on Monday and reports back on Friday is, even if its paragraphs are mediocre.
 
-The fourth meaning is **economic**: a system that can do most economically valuable work. This is the definition in several AI companies' charters, and it is the one that matters most for the subject of this book, because it is a claim about labour markets rather than about cognition. It is also the hardest to measure, since "most economically valuable work" is not a benchmark anyone can run.
+The fourth is economic: a system that can do most economically valuable work. Several AI companies write this definition into their charters, and for the subject of this book it is the one that matters most, because it is a claim about labour markets rather than about minds. It is also the hardest to test. Nobody can run "most economically valuable work" as a benchmark.
 
-When someone says a system "is" or "is not" AGI, ask which of the four they mean. Most disagreements dissolve at that point. A system can be broad and shallow, or narrow and superhuman, or capable but not autonomous. Describing it along each axis separately is the beginning of thinking clearly.
+So when someone tells you a system is, or isn't, AGI, ask them which of the four they mean. In my experience most disagreements end right there. A system can be broad and shallow, or narrow and superhuman, or very capable and still not trusted to act alone, and describing each of those separately is where clear thinking starts.
 
-## A map, not a prophecy: levels of capability
+## A map, not a prophecy
 
-In late 2023 a group of researchers at Google DeepMind published a framework that does the separation for you. Their paper, *Levels of AGI*, proposes classifying systems on two axes: **performance** (how well, compared with people) and **generality** (how broadly), with autonomy treated as a third, separate dimension that is a matter of deployment choice rather than capability alone.[^1]
+In late 2023 a group of researchers at Google DeepMind published a framework that does this separation for you.[^1] Their paper, *Levels of AGI*, classifies systems on two axes, performance (how well, compared with people) and generality (how broadly), and treats autonomy as a third dimension that depends on how a system is deployed rather than on capability alone.
 
-The performance axis runs from "emerging" (equal to or somewhat better than an unskilled person) through "competent" (at least the median skilled adult), "expert" (the 90th percentile), "virtuoso" (the 99th) to "superhuman" (better than everyone). The generality axis has two values: narrow (a clearly scoped task or set of tasks) and general (a wide range of non-physical tasks, including the ability to learn new ones). A calculator is narrow and superhuman. A 2023 chatbot was, by the authors' own assessment, general but only emerging: broad, and roughly at the level of an unskilled person across that breadth, with pockets of much higher performance.
+Performance runs in five steps: emerging (equal to or a bit better than an unskilled person), competent (at least the median skilled adult), expert (90th percentile), virtuoso (99th) and superhuman (better than every person). Generality has two values, narrow and general, where general means a wide range of non-physical tasks, including learning new ones. On this map AlphaFold and the chess engine Stockfish are narrow and superhuman, while a calculator doesn't count as AI at all. The chatbots of 2023 were, in the authors' own judgement, general but only emerging: broad, roughly at an unskilled person's level across most of that breadth, with patches of much better performance.
 
-Two features of the framework are worth more than the labels themselves.
+![The two-axis map from *Levels of AGI*, with the authors' own 2023 placements. Most of the decade's interesting systems will sit somewhere other than the corners.](figures/fig01_levels_map.png)
 
-The first is that **performance and generality are measured separately**. This is what the bar-exam-versus-letter-counting argument was missing. A system can sit high on one axis and low on the other, and most of the interesting systems of this decade will. When you read a capability claim, locate it on both axes before you react to it.
+Two things about the framework are worth more than its labels.
 
-The second is that **autonomy is a choice, not a level**. The same model can be deployed as a tool (it acts only when asked), a consultant (it proposes, a person decides), a collaborator (it and a person share the work), an expert (it does the work, a person reviews), or an agent (it acts, a person is informed). Which of these a system is allowed to be depends on reliability, on the stakes, and on who bears the consequences of a mistake. A model's level sets an upper bound on how much autonomy makes sense; it does not determine it. This matters for the rest of the book because almost every economic and institutional effect of AI runs through the autonomy that organisations actually grant, not through the raw capability that exists in a lab.
+Performance and generality are scored separately, which is exactly what the bar-exam-versus-letter-counting argument was missing. A system can be high on one axis and low on the other, and most of the systems that matter this decade will be. When you meet a capability claim, find it on both axes before you react.
 
-The framework will not survive the decade unchanged. The authors say so. The levels may compress or split; the generality axis may acquire gradations; physical tasks may need their own treatment. Use it as a map that will be redrawn, which is what every useful map is.
+Autonomy, meanwhile, is a decision somebody makes. The same model can be deployed as a tool that acts only when asked, as a consultant whose proposals a person approves, as a collaborator sharing the work, as an expert whose output a person reviews, or as an agent that acts and informs someone afterwards. Which of those it is allowed to be depends on how reliable it is, how high the stakes are and who pays for a mistake. Capability sets a ceiling on sensible autonomy; it doesn't set the level. I lean on this point throughout the book, because nearly every economic and institutional effect of AI flows through the autonomy organisations actually grant, which lags well behind what exists in a lab.
 
-## The right question
+The authors are clear that their framework will be revised, and it will. The levels may merge or split, generality may grow gradations, physical tasks may need their own treatment. Treat it as a map that will be redrawn. Every useful map is.
 
-"Is it AGI yet?" asks for a yes or a no about a system that is, at any moment, a scatter of points across a plane. It cannot be answered honestly, and the attempts to answer it produce heat rather than light.
+## Asking the question that can be answered
 
-The question that can be answered is: **which tasks, at what level, with what reliability, under what autonomy?**
+"Is it AGI yet?" wants a yes or a no about something that is, at any given moment, a scatter of points across a plane. You can't answer it honestly, and attempts to do so mostly generate heat.
 
-Each clause does work.
+The question you can answer has four parts: which tasks, at what level, with what reliability, under how much autonomy?
 
-*Which tasks.* Not "coding" but "writing a function from a clear specification in a popular language", which is a very different task from "finding the one wrong assumption in a large, old codebase". Not "medicine" but "summarising a discharge note" versus "choosing between two treatments for a patient with three conditions". The finer the task description, the more useful the capability claim, and the less it will be misread.
+Start with the tasks, and make them narrow. "Coding" tells you nothing. "Writing a function from a clear specification in a popular language" is one task; "finding the one wrong assumption buried in a large, old codebase" is a very different one. Likewise "medicine" covers both summarising a discharge note and choosing between two treatments for a patient with three conditions. The more precisely the task is described, the more a claim is worth and the harder it is to misread.
 
-*At what level.* Compared with whom? A system that drafts legal clauses as well as a second-year associate is a different fact from one that drafts them as well as a partner, and both are different from one that does it as well as a careful layperson with a template. The reference population changes what the capability is worth and to whom it is a threat.
+Then the level, which always means compared with whom. Drafting contract clauses as well as a second-year associate is one fact. Drafting them as well as a senior partner is another, and as well as a careful layperson with a template is a third. Change the reference group and you change both what the capability is worth and whose job it threatens.
 
-*With what reliability.* A system that is right 95 per cent of the time is a brilliant assistant and a catastrophic autopilot. The same number means opposite things depending on who catches the other five per cent. Reliability also has a shape: are the failures random, or clustered on particular inputs, or on inputs that look exactly like the successes? A system that fails loudly can be managed. A system that fails fluently cannot be managed by anyone who is not already an expert.
+Reliability is where people's intuitions go most wrong. A system that is right 95 per cent of the time is a brilliant assistant and a disastrous autopilot; the same number means opposite things depending on who catches the other five per cent. Reliability has a shape as well as a size. Are the failures scattered at random, bunched on particular inputs, or hidden in cases that look exactly like the successes? Loud failures can be managed. Fluent ones can only be caught by someone who already knows the answer.
 
-*Under what autonomy.* Does a person check every output, or sample them, or only hear about problems? The economic value and the risk of a system both scale with autonomy, and autonomy is granted by institutions, slowly, as reliability is demonstrated. This is why capability arrives in labs years before it arrives in your workplace, and why the gap between the two is one of the main subjects of this book.
+Finally, autonomy. Does a person check every output, or a sample, or only hear about the problems? Both the value and the risk of a system grow with its autonomy, and institutions hand out autonomy slowly, as reliability is demonstrated. That is why capabilities show up in labs years before they show up at your desk. The gap between those two moments is one of the main subjects of this book.
 
-Train yourself to translate every claim you hear into this form. "AI can now do X" becomes "a system did task X at level L with reliability R when operated as a tool by an expert who checked the output". Sometimes that translation leaves the claim intact. Often it does not.
+It is worth training yourself to translate every claim into this form. "AI can now do X" becomes "a system did task X at level L, with reliability R, while operated as a tool by an expert who checked the output." Some claims survive the translation intact. Many don't.
 
-## Three confusions that recur
+## Three confusions
 
-Three particular mistakes come up so often that they deserve names.
+Three mistakes come up so often that they deserve names.
 
-**Benchmark performance is not job performance.** A benchmark is a fixed set of questions with known answers, usually chosen because they are gradable. Jobs are open-ended, context-dependent and graded by consequences. A system that scores well on a benchmark has demonstrated something real, but the something is "can produce gradable answers to questions of this type under these conditions", not "can do the job that people who answer such questions have". The gap is widest for tasks where most of the work is figuring out what the question is. Chapter 2 is about the measurement problem in detail; for now, hold onto the distinction.
+The first is mistaking benchmark performance for job performance. A benchmark is a fixed set of questions with known answers, usually picked because they are easy to grade. Jobs are open-ended and graded by consequences. A good benchmark score shows something real, namely that the system can produce gradable answers to that kind of question under those conditions. It doesn't show the system can do the job of the people who normally answer such questions, and the gap is widest wherever most of the work is figuring out what the question actually is. Chapter 2 goes into this properly.
 
-**Fluency is not competence.** Language models produce text that reads as confident and well-organised whether or not it is correct. Human readers have spent their whole lives in an environment where fluent, well-structured prose was a reliable signal of a careful mind, and that signal has now been decoupled from the thing it used to indicate. This is not a technical footnote; it is the single largest reason that people over-trust these systems, and the reason that verification skills, discussed throughout this book, are becoming more valuable rather than less.
+The second is mistaking fluency for competence. Language models write confident, well-organised prose whether or not they are right. All of us grew up in a world where fluent, well-structured writing was a decent sign of a careful mind, and that signal has quietly come apart from the thing it used to indicate. I'd put this near the top of the list of reasons people over-trust these systems, and it is why the ability to verify, which comes up in nearly every chapter here, is getting more valuable rather than less.
 
-**Demos are not deployments.** A demonstration is a chosen task, on chosen inputs, with the operator ready to retry. A deployment is whatever users actually do, on whatever they actually bring, with nobody standing by. The distance between the two is where most of the engineering work in this field actually lives, and it is why the companies that ship reliable systems often look slower than the companies that ship impressive videos.
+The third is mistaking demos for deployments. A demo is a chosen task on chosen inputs, with the operator ready to try again. A deployment is whatever real users do with whatever they bring, with nobody standing by. Most of the engineering in this field lives in the distance between the two, which is also why the companies shipping reliable systems often look slower than the ones shipping impressive videos.
 
-When you hear a capability claim, check which of these three confusions it might be riding on. Usually at least one.
+When a capability claim crosses your feed, ask which of these it might be leaning on. Usually it's at least one.
 
-## A worked case: the bar exam, re-read
+## The bar exam, read again
 
-Take the claim this chapter opened with and run it through the four clauses.
+Let me take the claim this chapter opened with and put it through the four questions.
 
-The March 2023 technical report for a leading language model stated that the system had passed a simulated version of the Uniform Bar Examination with a score around the 90th percentile of test-takers.[^2] The figure was repeated in thousands of articles, usually shortened to "AI passes the bar exam in the top 10 per cent", and it did more than any single number to shape public belief that year about how close the systems were to professional-level work.
+The March 2023 technical report for a leading language model said the system had passed a simulated Uniform Bar Examination with a score around the 90th percentile of test-takers.[^2] That figure went everywhere, usually compressed to "AI passes the bar exam in the top 10 per cent", and it probably did more than any other number that year to shape what the public believed about how close these systems were to professional work.
 
-*Which tasks.* The Uniform Bar Examination has three components: a multiple-choice section, a set of essays and a set of performance tests that simulate lawyering tasks (drafting a memo from a file of documents). The system did well on the multiple-choice section, which is the component closest to a benchmark, and less well on the essays, which were scored by the researchers rather than by the official graders. "Passed the bar exam" compresses three quite different tasks into one.
+Which tasks? The Uniform Bar Examination has three parts: a multiple-choice section, a set of essays, and performance tests that simulate legal work, such as drafting a memo from a file of documents. The system did well on the multiple-choice section, the part most like a benchmark, and less well on the essays, which were graded by the researchers rather than by official graders. "Passed the bar" folded three quite different tasks into one.
 
-*At what level, compared with whom.* The 90th percentile figure was computed against test-takers at a February sitting. February cohorts are dominated by people retaking the exam after a failure, and score lower than July cohorts, which are dominated by first-time takers fresh from law school. A 2024 re-analysis in a peer-reviewed law and AI journal re-estimated the same raw score against the July population and against first-time takers specifically: around the 69th percentile overall against July test-takers, around the 48th percentile against first-time takers, and, on the essay component alone, around the 15th percentile against first-time takers.[^3] The reference population changed the headline from "top 10 per cent" to "roughly median, and weak at the writing".
+At what level, against whom? The 90th-percentile figure was computed against people sitting a February exam. February sittings are dominated by repeat takers who failed before, and they score lower than the July sittings taken mostly by fresh law graduates. A 2024 re-analysis in a peer-reviewed law and AI journal re-estimated the same raw score against July takers and against first-time takers specifically.[^3] It came out around the 69th percentile against July takers, around the 48th against first-timers, and around the 15th against first-timers on the essays alone. Change the comparison group and "top 10 per cent" turns into "roughly median, and weak at the writing".
 
-*With what reliability.* The reported result was a single run. The re-analysis noted that the essay scoring was not done by official graders and could not be reproduced under official conditions. There was no reliability distribution to read, because none had been measured.
+With what reliability? We don't know. It was a single run, and the re-analysis pointed out that the essays could not be re-graded under official conditions. There was no distribution to read because nobody measured one.
 
-*Under what autonomy.* The system answered exam questions as a tool, with the questions supplied, the format fixed and nobody relying on the output. The exam is a proxy for the beginning of legal competence, administered under conditions that bear little resemblance to practice. Nothing in the result spoke to whether the system could be trusted to do legal work unsupervised, and the authors of the original report did not claim that it could.
+Under what autonomy? The system answered exam questions as a tool, with the questions supplied, the format fixed and nothing riding on the output. A bar exam is a proxy for the start of legal competence, sat under conditions nothing like practice. The result said nothing about whether the system could be trusted to do legal work unsupervised, and to be fair, the original report never said it could.
 
-None of this makes the achievement small. A statistical model of text producing a median first-time bar score across the full breadth of the exam would have been science fiction in 2020. But "median first-time taker, weak on essays, under exam conditions, single run" and "top 10 per cent of lawyers" are different facts with different implications for law firms, law students and anyone deciding what to trust, and the translation from one to the other is the skill this chapter is about. The sentence to practise is not "AI passed the bar." It is: "A system scored around the median of first-time takers on a simulated bar exam, strongest on multiple choice, weakest on essays, in one run, as a tool." It is longer. It is also true.
+None of this makes the achievement small. A statistical model of text reaching a median first-time score across the full breadth of the bar exam would have sounded like science fiction in 2020. But "median first-time taker, weak on essays, exam conditions, one run" and "top 10 per cent of lawyers" are different facts, and they mean different things to law firms, law students and anyone deciding what to trust. Getting from one to the other is the skill this chapter is about. So the sentence worth practising isn't "AI passed the bar". It is something like: a system scored near the median of first-time takers on a simulated bar exam, strongest on multiple choice and weakest on essays, in a single run, used as a tool. Longer, yes. Also true.
 
-## Why the word matters anyway
+## Why the word still matters
 
-If "AGI" is this ambiguous, why not drop it?
+If "AGI" is this slippery, why not just stop using it?
 
-Because the word is a coordination device. Companies set their missions by it. Governments write policy around thresholds that invoke it. Investment, hiring, regulation and public mood all move on what people believe about how close it is. A term that moves that much money and that much policy cannot simply be abandoned; it has to be used carefully.
+Because it coordinates an enormous amount of behaviour. Companies set their missions by it, governments draft policy around thresholds that invoke it, and investment, hiring, regulation and public mood all shift with what people believe about how close it is. A word that moves that much money and policy can't simply be retired. It has to be used with care.
 
-It also matters because the thing the word gestures at, however imprecisely, is real: the direction of travel is toward systems that are broader, more reliable and more autonomous than they were, and the economic and institutional consequences of that direction do not wait for anyone to agree on a definition. You can refuse to say "AGI" and still have to decide what your college should teach, what your firm should automate and what you should learn next year. The map in this chapter is for making those decisions, not for winning arguments about the word.
+And the thing it points at, however vaguely, is real. Systems are getting broader, more reliable and more autonomous, and the consequences of that drift don't wait for anyone to settle on a definition. You can refuse to say "AGI" and you will still have to decide what your college should teach, what your company should automate and what you should learn next year. The map in this chapter is meant to help with those decisions. Winning arguments about the word is beside the point.
 
 ## What would make this chapter wrong
 
-A reader in 2031 should check the following.
+If, by 2031, a single system works at expert level across the whole breadth of non-physical tasks and is routinely given high autonomy in consequential settings, then all this careful separating of axes will look fussy, because the scatter of points will have collapsed into one corner of the map. That could happen. The framework would still describe how we got there, but its emphasis on gradations would read as dated.
 
-If a single system has reached expert-level performance across the full breadth of non-physical tasks *and* is routinely operated at high autonomy in consequential settings, then the careful separation of axes in this chapter will look like pedantry, because the points on the plane will have collapsed into a corner. That is possible. The chapter's framework still describes how we got there, but its emphasis on gradations would be dated.
+If instead generality stalled while narrow systems kept improving, then I have under-weighted how much of the decade's change came from many narrow, superhuman tools rather than a few general ones, and chapters 4 and 5 should be read with that correction in mind.
 
-Conversely, if progress on the generality axis has stalled while narrow systems have kept improving, then the chapter under-weights how much of the decade's change came from many narrow, superhuman tools rather than from general ones, and the chapters on work and learning should be read with that correction.
-
-If the levels framework itself has been superseded by a better-validated taxonomy, use that one. The argument of the chapter is that you need *a* map with separate axes; it is not an argument for this particular drawing.
+And if the levels framework has been replaced by a better-validated taxonomy, use the better one. My argument is that you need a map with separate axes. I'm not attached to this particular drawing of it.
 
 ## What to do this year
 
-Learn to read an evaluation. Pick one widely reported capability claim and find its source: the benchmark or study behind the headline. Write down, in one line each, which tasks it tested, against which reference population, with what reliability, and how the system was operated. Then write down what the headline implied about each of those. The gap you find is the skill this chapter is trying to give you, and you will use it every month for the next ten years.
+Learn to read an evaluation. Pick one widely reported capability claim and track down its source, the benchmark or study behind the headline. Write one line each on which tasks it tested, against which reference group, with what reliability, and how the system was operated. Then write down what the headline implied on each of those four points. The gap between the two lists is the skill this chapter is trying to give you, and you'll find a use for it every month for the next ten years.
 
 ---
 
@@ -107,6 +105,6 @@ Learn to read an evaluation. Pick one widely reported capability claim and find 
 [^3]: Martínez, E. (2024), "Re-evaluating GPT-4's bar exam performance", *Artificial Intelligence and Law*. The percentile estimates quoted are from this re-analysis; read it alongside the original for both sides.
 
 ### Sources for this chapter
-- Morris et al., *Levels of AGI* (2023/2024), arXiv:2311.02462 — the two-axis framework and the autonomy levels.
-- OpenAI, *OpenAI Charter* (2018) — the "highly autonomous systems that outperform humans at most economically valuable work" definition, cited here as an example of the economic meaning of the term.
-- OpenAI, *GPT-4 Technical Report* (2023), arXiv:2303.08774 — source of the simulated bar-exam result referenced in the opening.
+- Morris et al., *Levels of AGI* (2023/2024), arXiv:2311.02462 — the two-axis framework, the autonomy levels and the example placements in the figure.
+- OpenAI, *OpenAI Charter* (2018) — the "highly autonomous systems that outperform humans at most economically valuable work" definition, cited as an example of the economic meaning of the term.
+- OpenAI, *GPT-4 Technical Report* (2023), arXiv:2303.08774; Katz et al. (2024); Martínez (2024) — the bar-exam result and its re-analysis.

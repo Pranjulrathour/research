@@ -17,6 +17,11 @@ Design, fixed before running:
     unchanged to the test split.
   * Seeds fixed (0); 5 seeds for the stochastic models to report mean +- sd.
 Nothing is tuned on the test split.
+
+Revision record: (1) the OpenML copy drops `Time` (it is the dataset's row-id attribute), so data/creditcard.csv is rebuilt
+from the raw ARFF; (2) the first run's threshold search had no "flag nothing" candidate, which forced the constant-score
+dummy to flag every transaction; the candidate set now includes an infinite threshold (savings 0). Both fixed before any
+model result was examined beyond the first three log lines.
 """
 from __future__ import annotations
 import json, time
@@ -70,7 +75,9 @@ def savings(y, p, amounts, thr) -> float:
 
 
 def best_threshold(y, p, amounts) -> float:
-    cands = np.quantile(p, np.linspace(0.90, 0.9999, 400))
+    # "flag nothing" (threshold above every score, savings 0) must always be an option; without it a model with constant
+    # scores (the dummy) is forced to flag everything. Added 2026-10-01 after the first run exposed it; see docstring.
+    cands = list(np.quantile(p, np.linspace(0.90, 0.9999, 400))) + [np.inf]
     return float(max(cands, key=lambda t: savings(y, p, amounts, t)))
 
 

@@ -1,140 +1,136 @@
 # Chapter 10 — The personal skill portfolio for 2026–2036
 
-Everything in this book so far has been about the world. This chapter is about you, and it is the one most readers will have skipped ahead to, so it is written to stand alone. Where it leans on earlier chapters it says so.
+So far this book has been about the world. This chapter is about you. I suspect it's the one many readers skipped ahead to, so I've written it to stand on its own and flagged where it leans on earlier chapters.
 
-The question people actually ask is "what should I learn so that I am not replaced?" It is the wrong question, in the same way that "is it AGI yet?" was the wrong question in chapter 1, and for the same reason: it asks for a binary answer about a thing that is a distribution. Nobody is replaced; tasks are. Nobody is safe; some skills compound with the tools and some are substituted by them. The useful question is "which of my skills get *more* valuable as the tools improve, and how do I prove I have them?"
+The question people actually ask me is some version of "what should I learn so I don't get replaced?" I think it's the wrong question, for the same reason "is it AGI yet?" was the wrong question in chapter 1. It wants a yes-or-no answer about something that comes in degrees. People don't get replaced; tasks do. And nobody is safe in some absolute sense; it's just that some skills compound with the tools and others get substituted by them. The more useful question is: which of my skills become more valuable as the tools improve, and how do I prove I have them?
 
-This chapter gives a framework for that question, a one-page plan, and the uncomfortable list of what to stop doing.
+What follows is a way of answering that, a one-page plan, and a list of things to stop doing, which most people find the least comfortable part.
 
 ## The wrong frame: "AI skills"
 
-In 2024 and 2025 the labour market filled with demands for "AI skills", and courses to sell them. Most of what was sold was knowledge of specific products: how to write prompts for a particular model, how to use a particular tool, how to wire a particular API. There is nothing wrong with learning those things, and they are the wrong thing to build a career on, for three reasons.
+Through 2024 and 2025 job postings filled up with demands for "AI skills", and a whole industry of courses grew up to sell them. Most of what was being sold was knowledge of particular products: how to prompt a particular model, how to use a particular tool, how to wire up a particular API. Nothing wrong with learning those. They're just the wrong thing to build a career on.
 
-They depreciate on the product's schedule, not yours. Everything specific to a tool from 2024 is already partly obsolete; everything specific to a tool from 2026 will be partly obsolete by 2028. Chapter 3 explained why: the capability frontier moves, and the interfaces move with it.
+For one thing, they lose value on the product's schedule, not yours. Anything specific to a 2024 tool is already partly out of date, and anything specific to a 2026 tool will be by 2028. Chapter 3 explained why: the capability frontier keeps moving and the interfaces move with it.
 
-They are the skills the tools themselves make cheap. "Prompting" was a skill when models were brittle; as models got better at understanding ordinary instructions, the premium fell. The same will happen to every skill that consists of working around a system's current limitations.
+They're also exactly the skills the tools make cheap. Prompting was a real skill when models were brittle. As models got better at understanding ordinary instructions, the premium for it fell, and the same will happen to every skill that consists of working around some system's current limits.
 
-They do not differentiate you. If a skill can be learned from a two-hour course, everyone competing with you has learned it, and it carries no signal.
+And they don't set you apart. If something can be learned in a two-hour course, everyone you're competing with has taken the course, and it tells an employer nothing.
 
-The right frame is *skills that compound with AI*: things that become more valuable as the tools get better, because the tools amplify them rather than substitute for them. There are, as far as anyone can tell in 2026, three layers of these.
+The better frame is skills that compound with AI: abilities that become more valuable as the tools get better, because the tools amplify them instead of replacing them. As far as I can tell in 2026, those come in three layers.
+
+![Three layers that compound with the tools. The tools amplify whatever sits underneath them; what they can't supply is judgement, an understanding of how the whole thing fits together, and knowledge of what the field actually needs.](figures/fig10_three_layers.png)
 
 ## Three layers that compound
 
-### Layer one: judgment
+### Judgement
 
-Judgment is the set of skills that decide *what* to do and *whether it was done right*, and it includes three things that recur throughout this book.
+By judgement I mean the skills that decide what to do and whether it was done right. Three of them come up again and again in this book.
 
-**Problem framing.** Turning a vague situation into a well-posed question. What are we actually trying to achieve? What would count as success? What are the constraints nobody mentioned? The tools are superb at answering well-posed questions and poor at posing them, and a person who can frame a problem clearly multiplies the value of everything downstream. This is the oldest skill in engineering and consulting, and it is now the scarcest.
+The first is framing a problem: turning a vague situation into a well-posed question. What are we actually trying to achieve? What would count as success? What are the constraints nobody has mentioned? The tools are superb at answering well-posed questions and poor at posing them, so someone who can frame a problem clearly multiplies the value of everything that comes after. It's the oldest skill in engineering and consulting, and it's now the scarcest.
 
-**Verification.** Knowing whether an output is correct, and knowing *how you know*. Chapter 2 made the case that reading an evaluation is a civic skill; for a professional, being able to check work (yours, a colleague's, a machine's) is the skill that turns cheap output into reliable output. It depends on fundamentals: you cannot verify code without understanding what it should do, or a statistical claim without understanding what the number means, or a system design without knowing where systems break. Verification is why the fundamentals matter more in a world of fluent tools, not less.
+The second is verification, meaning knowing whether an output is right and knowing how you know. Chapter 2 argued that reading an evaluation is a civic skill. For a professional, being able to check work (your own, a colleague's, a machine's) is what turns cheap output into reliable output. It rests on fundamentals. You can't verify code without understanding what it ought to do, or a statistical claim without understanding what the number means, or a system design without knowing where systems break. This is why fundamentals matter more, not less, in a world full of fluent tools.
 
-**Taste.** The harder-to-name ability to tell good from merely acceptable: a design that will age well, an analysis that asks the right question, writing that says one thing clearly. Taste is built by exposure to excellent work and by making a great deal of work yourself and seeing what holds up. It cannot be downloaded and it is what distinguishes the person whose output people seek from the person whose output is interchangeable with a machine's.
+The third is taste, which is harder to name: the ability to tell good from merely acceptable. A design that will age well, an analysis that asks the right question, writing that says one thing clearly. You build taste by being exposed to excellent work and by making a lot of work yourself and seeing what holds up. It can't be downloaded, and it's what separates the person whose work people seek out from the person whose work is interchangeable with a machine's.
 
-### Layer two: systems
+### Systems
 
-Systems thinking is understanding how parts fit together, where the bottlenecks are, how failures propagate, and what breaks at scale. Chapter 6 argued that this is where engineering value has migrated as production gets cheaper; chapter 9 showed that the discipline of building and supervising agents is largely a systems discipline.
+Systems thinking is understanding how parts fit together, where the bottlenecks are, how failures spread and what breaks at scale. Chapter 6 argued that this is where engineering value has moved now that production is cheap, and chapter 9 showed that building and supervising agents is largely a systems discipline.
 
-For a technical reader this means the unglamorous core of computer science and engineering: how data moves, what latency and throughput mean and where they come from, how to reason about consistency and failure, how to measure before and after a change, how components hide and expose faults. It is the subject of this book's companion volume and of the second half of any good computer-science degree. The point here is strategic: a person who can hold a whole system in their head is amplified by tools that can build any individual part, because the scarce step becomes deciding what the parts should be and whether they work together.
+For a technical reader it means the unglamorous core of computer science and engineering: how data moves, what latency and throughput are and where they come from, how to reason about consistency and failure, how to measure before and after a change, how components hide and reveal their faults. It's the subject of this book's companion volume and of the second half of any good computer-science degree. The strategic point is that someone who can hold a whole system in their head gets amplified by tools that can build any single part, because the scarce step becomes deciding what the parts should be and whether they'll work together.
 
-For a non-technical reader the same layer exists in a different vocabulary: how an organisation actually works, where its information flows, who decides what, what fails when the volume triples. The person who understands the system is the one who can direct the tools at the right problem.
+For a non-technical reader the same layer exists in different words: how an organisation actually works, where its information flows, who decides what, what fails when volume triples. Whoever understands the system is the one who can point the tools at the right problem.
 
-### Layer three: domain depth
+### Domain depth
 
-The third layer is knowing a field deeply: finance, health, law, agriculture, logistics, energy, education, public administration, a scientific discipline. General-purpose tools are, by construction, shallow in every domain; the value is created where someone who understands a field well enough to know what matters directs the tools at it.
+The third layer is knowing a field properly: finance, health, law, agriculture, logistics, energy, education, public administration, a branch of science. General-purpose tools are, by their nature, shallow in every domain. Value gets created where somebody who knows a field well enough to know what matters directs the tools at it.
 
-This is the layer most undervalued by computing students, who tend to treat the domain as a detail and the technology as the point. For the next decade it is the other way round. Chapter 5 said it for students and chapter 11 says it for India: the gap between what the tools can do and what any particular field needs is where careers are, and it is filled by people who understand both sides. Pick a domain early, learn it seriously (its vocabulary, its data, its regulations, its failure modes, its people), and your technical skills become ten times more valuable because they are pointed at something.
+Computing students undervalue this layer more than any other. They tend to treat the domain as a detail and the technology as the point, and for the next decade I think it's the other way round. Chapter 5 made the point for students and chapter 11 makes it for India: the gap between what the tools can do and what a particular field needs is where the careers are, and it gets filled by people who understand both sides. Pick a domain early and learn it seriously (its vocabulary, its data, its regulations, how things go wrong in it, its people), and your technical skills become far more valuable because they're aimed at something.
 
-The three layers reinforce one another. Judgment without systems knowledge is opinion; systems knowledge without a domain is abstraction; a domain without judgment is expertise that cannot adapt. A portfolio has all three, in proportions that depend on who you are.
+The layers reinforce one another. Judgement without systems knowledge is opinion. Systems knowledge without a domain is abstraction. A domain without judgement is expertise that can't adapt. A good portfolio has all three, in proportions that depend on who you are.
 
 ## What to stop learning
 
-This is the part people dislike, and it is the part that saves the most time.
+People dislike this part, and it's the part that saves the most time.
 
-**Stop learning to do by hand what you will never do by hand.** Memorising syntax, standard algorithm implementations, boilerplate patterns, formulaic writing. You must *understand* these things, well enough to verify them (layer one). You do not need to be fast at producing them, because you will not be the one producing them. The difference between understanding and fluent production is the difference between an hour of study and a hundred hours of drill, and the hundred hours are now better spent elsewhere.
+Stop learning to do by hand the things you'll never do by hand: memorising syntax, standard algorithm implementations, boilerplate patterns, formulaic writing. You need to understand all of these well enough to verify them, which is the judgement layer. You don't need to be fast at producing them, because you won't be the one producing them. The difference between understanding something and producing it fluently is roughly the difference between an hour of study and a hundred hours of drill, and those hundred hours are now better spent elsewhere.
 
-**Stop collecting tool certifications as if they were skills.** One or two, for the tools you use daily, as evidence of competence. Beyond that they signal that you confused the tool for the work.
+Stop collecting tool certifications as if they were skills. One or two, for tools you use every day, are fine as evidence of competence. Beyond that, they mostly signal that you confused the tool with the work.
 
-**Stop optimising for the entry-level task.** Chapter 4 showed that the tasks which used to train juniors are the first automated. Preparing exhaustively to do those tasks prepares you for a rung that is narrowing. Prepare instead to be useful *above* that rung earlier than previous generations had to be, which means layers one and two from the start.
+Stop optimising for the entry-level task. Chapter 4 showed that the tasks which used to train juniors are the first to be automated, so preparing exhaustively to do them prepares you for a rung that's narrowing. Prepare instead to be useful above that rung earlier than previous generations needed to be, which means working on judgement and systems from the start.
 
-**Stop treating breadth as a goal.** Knowing a little about many frameworks, languages and tools was a reasonable strategy when each had to be learned to be used. Now the tools will learn the tool for you. Depth in a few things you can verify and a domain you understand beats a long list of things you have touched.
+And stop treating breadth as a goal in itself. Knowing a little about many frameworks, languages and tools made sense when you had to learn each one in order to use it. Now the tools will learn the tool for you. Depth in a few things you can verify, plus a domain you understand, beats a long list of things you've touched.
 
-## Proving it: the portfolio of verifiable work
+## Proving it
 
-A skill nobody can see is a skill the market cannot price. The second half of a personal strategy is proof, and chapter 5 named the form proof now takes: a portfolio of *verifiable* work, meaning work that other people have used, tested, built on, cited or checked, as opposed to work that merely exists.
+A skill nobody can see is a skill the market can't price. So the other half of a personal strategy is proof, and chapter 5 named the form proof now takes: a portfolio of verifiable work, meaning work other people have used, tested, built on, cited or checked, as opposed to work that merely exists.
 
-The distinction matters because existence is now free. A repository of generated code, a blog of generated articles, a certificate from a generated course: none of these demonstrates anything, and recruiters know it. What demonstrates something is contact with the world.
+That distinction matters because existence is now free. A repository of generated code, a blog of generated articles, a certificate from a generated course: none of these demonstrates anything, and recruiters know it. What demonstrates something is contact with the world.
 
-**Work that runs.** A system that people other than you actually use, with the problems that implies: real data, real failures, real users who complain. Even a small one.
+Some work runs: a system that people other than you actually use, with all that implies (real data, real failures, real users who complain). Even a small one counts.
 
-**Work that is checked.** An analysis with its code and data published, that someone else could reproduce (chapter 6). A result that holds up when a sceptic looks at it. A measurement rather than a claim.
+Some work gets checked: an analysis with its code and data published so someone else can reproduce it (chapter 6), a result that survives a sceptic, a measurement instead of a claim.
 
-**Work that others accepted.** A contribution to a project you do not control, reviewed by people who did not have to accept it. A talk at an event whose organisers chose you. A paper or a note that passed someone's screening.
+Some work gets accepted by others: a contribution to a project you don't control, reviewed by people who didn't have to take it; a talk at an event whose organisers chose you; a paper or note that passed somebody's screening.
 
-**Work that explains.** Writing that teaches something true to people who did not know it, under your name, in a place where they can find it. Explanation is a test of understanding that generated text fails in a way that is visible to anyone who knows the subject, and it is the fastest way to be found by the people who are looking for someone who understands.
+And some work explains: writing that teaches something true to people who didn't know it, under your name, somewhere they can find it. Explanation is a test of understanding that generated text fails in ways anyone who knows the subject can see, and it's the quickest way to be found by the people who are looking for someone who understands.
 
-One piece of verifiable work per quarter, sustained for the years of a degree or an early career, puts a person ahead of almost everyone, because almost nobody does it. The compounding is real: each piece makes the next easier, the body of work becomes a reputation, and the reputation becomes the thing that chapter 8 said rises in value when everything else is free: a signed, verified, accountable identity.
+One piece of verifiable work per quarter, kept up through a degree or the first years of a career, puts you ahead of almost everybody, because almost nobody does it. It compounds, too. Each piece makes the next easier, the body of work turns into a reputation, and that reputation becomes the thing chapter 8 said rises in value when everything else is free: a signed, checked, accountable identity.
 
 ## The one-page plan
 
-Write this on one page. Revisit it every quarter.
+Write this on a single page and revisit it every quarter.
 
-1. **Domain.** The field I am going deep in, and why. One or two sentences. If you cannot write them, that is the first task.
+1. **Domain.** The field you're going deep in, and why, in a sentence or two. If you can't write them, that's your first task.
+2. **Judgement skills this year.** Pick two of framing, verification and taste, and name the practice: what you'll do every week that builds them. If you're unsure, start with verification; it's the most learnable and pays off soonest.
+3. **Systems knowledge this year.** The specific fundamentals. For a technical reader, the two or three core-curriculum topics you understand least; for others, the two or three mechanisms of your organisation or field you can't yet explain.
+4. **What you're stopping.** Name it: the drill you'll drop, the certification you won't chase, the breadth you'll trade for depth.
+5. **This quarter's verifiable work.** One piece: what it is, who will use or check it, where it will live under your name, and the date.
+6. **How you use the tools.** A personal rule for delegation, using chapter 9's *c*, *F* and *p*: what you hand over freely, what you hand over and check, and what you do yourself because doing it is how you learn.
+7. **What would change this plan.** One or two developments that would make you revise it (a jump in capability in your domain, a change in how your target employers hire) and how you'll notice them.
 
-2. **Judgment skills I am building this year.** Pick two from framing, verification, taste, and name the practice: what you will do weekly that builds them. Verification is the one to start with if unsure; it is the most learnable and the most immediately valuable.
+It's short on purpose, because long plans don't get followed, and specific on purpose, because vague plans can't be checked. The whole argument of this book is that checkable beats plausible.
 
-3. **Systems knowledge I am building this year.** The specific fundamentals (for a technical reader: the two or three topics from the core curriculum you understand least well; for others: the two or three mechanisms of your organisation or field you cannot yet explain).
+## One plan, filled in
 
-4. **What I am stopping.** Name it. The drill you will stop, the certification you will not pursue, the breadth you will trade for depth.
+Abstract plans are easy to agree with and hard to start, so here's the page filled in for a composite student: second year of an MCA at a good Indian institute, comfortable in Python and Java, aiming at a software or quantitative role at a large firm, no particular domain yet. It's not meant to be copied. It's meant to show what "specific" looks like.
 
-5. **This quarter's verifiable work.** One piece. What it is, who will use or check it, where it will live under your name, and the date.
+**Domain.** Financial systems: payments, risk and market data. The firms I'm aiming at run on them; there's public data I can actually work with (exchange prices, central-bank statistics, open payments data); and the problems, correctness under failure, latency, measurement, are ones I find interesting. If I've lost interest in six months, I'll know, because I'll have stopped reading about it unprompted.
 
-6. **How I use the tools.** A rule for yourself about delegation (chapter 9's *c*, *F* and *p*): what you delegate freely, what you delegate and check, what you do yourself because doing it is how you learn.
+**Judgement.** Verification and framing. Every Saturday I take one claim I read that week (a benchmark result, a product launch, a "study shows") and write half a page on what it actually measured and what it didn't. Once a month I take one vague problem (a friend's startup idea, a college process everyone complains about) and write it up as a one-page problem statement with success criteria and constraints before I think about solutions.
 
-7. **What would change this plan.** One or two developments that would make you revise it (a capability jump in your domain, a change in how your target employers hire) and how you will notice them.
+**Systems.** The three fundamentals I understand least: consistency models in distributed data stores, how operating systems schedule threads and why that matters for tail latency, and the statistics of backtesting, meaning what out-of-sample really means. One textbook chapter and one hands-on measurement for each, by the end of each term.
 
-The plan is deliberately short because long plans are not followed. It is deliberately specific because vague plans cannot be checked, and the whole argument of this book is that checkable beats plausible.
+**Stopping.** Competitive-programming drill beyond the level needed to clear screening rounds, which I've reached. More cloud certifications; I have one, and it's enough. Watching tutorials for frameworks I'm not using on a real project.
 
-## A worked example: one plan, filled in
+**This quarter's work.** A small, fully reproducible empirical study: download public daily index data, test whether a simple risk model's predictions hold up out of sample, and publish the code, the data snapshot, the results and a short write-up with its limitations under my name in a public repository by 30 November. Anyone who runs the script can check it, and I'll ask two people to try and record what broke. Next quarter: a working service with a measured latency budget.
 
-Abstract plans are easy to agree with and hard to start, so here is the one-page plan filled in for a composite student: a second-year MCA student at a good Indian institute, comfortable with Python and Java, aiming at a software or quantitative role at a large firm, with no particular domain yet. Nothing about this plan is prescriptive; its purpose is to show what "specific" looks like.
+**Tools.** I delegate freely: boilerplate, first drafts of documentation, test scaffolding, syntax I'd otherwise look up. I delegate and check: analysis code (I read every line and re-derive one result by hand) and literature summaries (I read the paper before I cite it). I do myself: the problem statement, the design decision, the interpretation of any result, and anything I'm trying to learn rather than produce.
 
-**1. Domain.** Financial systems: payments, risk and market data. Reason: the firms I am aiming at run on them; the domain has public data I can work with (exchange prices, central-bank statistics, open payment-system data); and the problems (correctness under failure, latency, measurement) are the problems I find interesting. If I lose interest in six months, I will know by whether I have kept reading about it unprompted.
+**What would change it.** If by next summer the firms I'm aiming at have clearly stopped hiring for the quantitative and systems roles I'm preparing for, I'll revisit the domain. If a tool appears that makes reproducible empirical work trivial to generate, my quarterly pieces lose value and I'll move toward work with more direct contact with real users. I'll check both at the end of each term by reading the firms' actual job postings and asking two people in those roles what's changed.
 
-**2. Judgment skills this year.** Verification and framing. Weekly practice: every Saturday, take one claim I read that week (a benchmark result, a product announcement, a "study shows") and write a half-page on what it actually measured and what it did not. Monthly: take one vague problem (a friend's startup idea, a college process that annoys everyone) and write it as a one-page problem statement with success criteria and constraints before thinking about solutions.
+That's about three hundred words. Its value isn't in the particular choices (another student would choose differently). It's that every line can be checked at the end of the quarter. Either the study was published by 30 November or it wasn't; either the Saturday write-ups exist or they don't. A plan you can check is a plan you can improve, and that's the only kind worth having in a decade that will keep revising it for you.
 
-**3. Systems knowledge this year.** The three fundamentals I understand least: consistency models in distributed data stores, how operating systems schedule threads and why that matters for tail latency, and the statistics of backtesting (what out-of-sample actually means). One textbook chapter and one hands-on measurement for each, by the end of each term.
+## If you're just starting out
 
-**4. What I am stopping.** Competitive-programming drill beyond the level needed to pass screening rounds; I am at that level. Collecting cloud-vendor certifications; I have one, which is enough. Watching tutorials on frameworks I am not using for a real project.
+If you're a student or in your first job, all of the above may sound like advice for someone further along, so here's the version for you.
 
-**5. This quarter's verifiable work.** A small, fully reproducible empirical study: download public daily index data, test whether a simple risk model's predictions hold out of sample, publish the code, the data snapshot, the results and a short write-up with its limitations under my name, in a public repository, by 30 November. Who checks it: anyone who runs the script; I will ask two people to do so and record what broke. The next quarter's piece will be a working service with a measured latency budget.
+You're entering a market where the easiest tasks are being automated and the hardest still need people, and where the traditional route (do the easy tasks for a few years, learn by doing them, move up to the hard ones) is narrowing. That's a real disadvantage, and it isn't your fault.
 
-**6. How I use the tools.** Delegate freely: boilerplate, first drafts of documentation, test scaffolding, syntax I would otherwise look up. Delegate and check: analysis code (I read every line and re-derive one result by hand), literature summaries (I read the paper the summary cites before I cite it). Do myself: the problem statement, the design decision, the interpretation of any result, and anything I am trying to learn rather than produce.
+It's also an opening. The firms that cut junior hiring haven't stopped needing people who can do the harder work. They've stopped believing a degree alone proves someone can. A student who turns up with a verifiable portfolio (one system that runs, one analysis that reproduces, one contribution that was accepted, one explanation that taught somebody something) isn't competing for the narrowed entry rung. They're competing for the one above it, and there are far fewer candidates for that than there are places.
 
-**7. What would change this plan.** If, by next summer, the firms I am aiming at have visibly stopped hiring for the quantitative and systems roles I am preparing for, I revisit the domain. If a tool appears that makes reproducible empirical work trivial to generate, the value of my quarterly pieces falls and I move toward work with more direct contact with real users. I will check both at the end of each term by reading the firms' actual postings and by asking two people in the roles what has changed.
-
-The plan is about three hundred words. Its value is not in the choices (a different student would make different ones) but in the fact that every line can be checked at the end of the quarter: either the study was published by 30 November or it was not; either the Saturday write-ups exist or they do not. A plan that can be checked is a plan that can be improved, which is the only kind worth having in a decade that will revise it for you.
-
-## A note on the entry-level reader
-
-If you are a student or in your first job, the chapter above may read as advice for someone further along, so here is the version for you.
-
-You are entering a market in which the easiest tasks are being automated and the hardest ones still need people, and in which the traditional path (do the easy tasks for a few years, learn by doing them, graduate to the hard ones) is narrowing. That is a real disadvantage and it is not your fault.
-
-It is also an opening. The firms that have cut their junior hiring have not stopped needing people who can do the harder work; they have stopped believing that a degree alone proves someone can. A student who arrives with a verifiable portfolio (one system that runs, one analysis that reproduces, one contribution that was accepted, one explanation that taught somebody) is not competing with the narrowed entry rung. They are competing for the rung above it, and there are far fewer such candidates than there are places.
-
-The fundamentals, the domain, the quarterly piece of real work and the habit of verifying before trusting: these are not the safe path. They are the only path that was ever reliable, made visible by a technology that removed the alternatives.
+Fundamentals, a domain, a quarterly piece of real work and the habit of verifying before trusting aren't the safe path. They were always the only path that reliably worked, and a new technology has simply made that obvious by removing the alternatives.
 
 ## What would make this chapter wrong
 
-If by 2031 the tools have become so capable that judgment, systems thinking and domain depth are themselves substituted at scale, the three-layer framework will have described a shrinking island rather than durable ground. Check whether experienced professionals in judgment-heavy roles (senior engineers, physicians, lawyers, analysts) are seeing wage and employment declines comparable to those of entry-level roles.
+If by 2031 the tools are capable enough that judgement, systems thinking and domain depth are themselves being substituted at scale, my three layers describe a shrinking island rather than solid ground. Check whether experienced people in judgement-heavy roles (senior engineers, doctors, lawyers, analysts) are seeing falls in pay and employment comparable to entry-level roles.
 
-If the credential has reasserted itself, with employers reverting to degree and brand as the main filters because portfolios became too easy to fake, then the verifiable-work argument underestimated how quickly proof could be counterfeited. Check what the large employers' hiring processes actually weight.
+If the credential has made a comeback, with employers falling back on degree and college brand because portfolios became too easy to fake, I underestimated how quickly proof can be counterfeited. Look at what the big employers' hiring processes actually weight.
 
-If "AI skills" in the narrow, product-specific sense have turned out to carry a durable premium, then the first section was too dismissive. Check wage data for roles defined by tool proficiency rather than domain or judgment.
+And if "AI skills" in the narrow, product-specific sense have turned out to carry a lasting premium, I was too dismissive at the start of this chapter. Check pay data for roles defined by tool proficiency rather than domain or judgement.
 
 ## What to do this year
 
-Publish one piece of verifiable work per quarter, starting this quarter. Four pieces, under your name, each of which someone else can run, reproduce, check or learn from. Keep them small enough to finish. Write the one-page plan above before you start the first, and revise it after the fourth. At the end of the year you will have a portfolio that most people with twice your experience do not have, and a clear view of which of your skills the tools amplified and which they replaced, which is the only career information that matters for the decade ahead.
+Publish one piece of verifiable work a quarter, starting this quarter: four pieces, under your name, each of which someone else can run, reproduce, check or learn from. Keep them small enough to finish. Write the one-page plan before you start the first and revise it after the fourth. By the end of the year you'll have a portfolio most people with twice your experience don't have, and a clear view of which of your skills the tools amplified and which they replaced, which is the most useful career information there is for the decade ahead.
 
 ---
 
