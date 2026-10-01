@@ -25,9 +25,18 @@ Each paper folder contains the script, `results.json` (the exact numbers quoted 
 | 1 | The AGI Transition: A Field Guide for the Next Decade | `books/agi-transition/` |
 | 2 | Systems That Scale: The Engineering Judgment Behind Reliable, Low-Latency Software | `books/systems-that-scale/` |
 
+Build a book: `cd books && python make_cover.py && python build_book.py <folder>` → `books/<folder>/build/*.{html,epub,pdf}`.
+Lint a book: `python books/lint_book.py <folder>`.
+Build a paper PDF: `cd papers && python build_paper.py <paper-folder> [--two-column]`.
+
+## Publishing
+Venue-by-venue field values, identity settings and the order of operations are in `docs/SUBMISSION_CHECKLISTS.md`.
+
 ## Environment
 Python 3.13; `pip install -r requirements.txt`. Machine specs for the benchmark papers (P3, P4) are recorded in their
 `results.json` under `meta`, because absolute latency numbers depend on them; the comparisons within a paper do not.
+PDFs are produced with headless Chrome or Edge; fonts (Inter, Source Serif 4, Instrument Serif, JetBrains Mono; all OFL)
+are in `books/assets/fonts/`.
 
 ## Licence
 Code: MIT. Manuscripts: © Pranjul Rathour, all rights reserved. Data: as per each source's licence (recorded per paper).
