@@ -166,7 +166,7 @@ def build(slug: str) -> None:
 def build_epub(slug, meta, files, out, cover_png, book):
     from ebooklib import epub
     bk = epub.EpubBook()
-    bk.set_identifier(f"urn:uuid:{uuid.uuid5(uuid.NAMESPACE_URL, 'https://pranjulrathour.scult.in/books/' + slug)}")
+    bk.set_identifier(f"urn:uuid:{uuid.uuid5(uuid.NAMESPACE_URL, 'https://pranjulrathour.com/books/' + slug)}")
     bk.set_title(f"{meta['title']}: {meta['subtitle']}")
     bk.set_language(meta["lang"])
     bk.add_author(meta["author"])

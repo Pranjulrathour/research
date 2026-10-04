@@ -139,6 +139,18 @@ Primary sources and the handful of books that practitioners actually return to. 
 
 **Pranjul Rathour** is a generative-AI engineer from Kanpur, India. He builds production systems around large language models (retrieval, evaluation, agents and the reliability engineering that holds them together) and has won first prize at three hackathons for applied AI work. He has mentored more than two hundred students in India and abroad on careers in software and AI.
 
-His research, including the two benchmark studies behind this book and three further empirical papers in finance and machine learning, is published with code and data at github.com/Pranjulrathour/research. He writes at pranjulrathour.scult.in. *The AGI Transition: A Field Guide for the Next Decade*, the companion to this volume, takes the wider view of what capable AI means for work, learning and institutions.
+His research, including the two benchmark studies behind this book and three further empirical papers in finance and machine learning, is published with code and data at github.com/Pranjulrathour/research. He writes at pranjulrathour.com. *The AGI Transition: A Field Guide for the Next Decade*, the companion to this volume, takes the wider view of what capable AI means for work, learning and institutions.
 
-He can be reached at pranjulrathour41@gmail.com.
+He can be reached at pranjulrathour41@gmail.com, and he is easy to find online:
+
+- Website: [pranjulrathour.com](https://pranjulrathour.com)
+- GitHub: [github.com/Pranjulrathour](https://github.com/Pranjulrathour)
+- LinkedIn: [linkedin.com/in/pranjul-rathour](https://www.linkedin.com/in/pranjul-rathour/)
+- X: [x.com/PranjulRathourx](https://x.com/PranjulRathourx)
+- Instagram: [instagram.com/pranjulrathour.in](https://www.instagram.com/pranjulrathour.in/)
+- Threads: [threads.com/@pranjulrathour.in](https://www.threads.com/@pranjulrathour.in)
+- Bluesky: [bsky.app/profile/pranjulrathour.bsky.social](https://bsky.app/profile/pranjulrathour.bsky.social)
+- Facebook: [facebook.com/profile.php?id=1377591238763842](https://www.facebook.com/profile.php?id=1377591238763842)
+- Dev.to: [dev.to/pranjulrathour](https://dev.to/pranjulrathour)
+- Hashnode: [pranjulrathour.hashnode.dev](https://pranjulrathour.hashnode.dev)
+- Blogger: [pranjulrathourtechguru.blogspot.com](https://pranjulrathourtechguru.blogspot.com)

@@ -34,6 +34,8 @@ body {{ font-family: "Paper", "Times New Roman", serif; color: #111; line-height
 .author {{ text-align: center; font-size: 1.1em; margin: 0; }}
 .affil {{ text-align: center; font-style: italic; font-size: 0.9em; margin: 0.25em 0 0; color: #222; }}
 .email {{ text-align: center; font-size: 0.86em; margin: 0.15em 0 0; font-family: "Mono"; color: #333; }}
+.links {{ text-align: center; font-size: 0.74em; line-height: 1.5; margin: 0.35em 1.2em 0; font-family: "Mono"; color: #444; hyphens: manual; }}
+.links span {{ white-space: nowrap; }}
 .date {{ text-align: center; font-size: 0.9em; margin: 0.5em 0 1.4em; color: #333; }}
 .abstract {{ margin: 0 2.4em 1.1em; font-size: 0.93em; line-height: 1.34; }}
 .abstract h2 {{ text-align: center; font-size: 1em; margin: 0 0 0.4em; font-variant-caps: small-caps; letter-spacing: 0.04em; }}
@@ -50,7 +52,7 @@ h2 + p, h3 + p, figure + p, table + p, ul + p, ol + p, .tcap + table + p, blockq
 ul, ol {{ margin: 0.35em 0 0.5em; padding-left: 1.5em; }}
 li {{ margin: 0 0 0.18em; }}
 li p {{ text-indent: 0; }}
-code {{ font-family: "Mono"; font-size: 0.84em; }}
+code {{ font-family: "Mono"; font-size: 0.84em; hyphens: manual; overflow-wrap: anywhere; }}
 blockquote {{ margin: 0.5em 1.5em; }}
 blockquote p {{ text-indent: 0; }}
 table {{ border-collapse: collapse; width: 100%; font-size: 0.82em; line-height: 1.25; margin: 0.25em 0 0.9em; break-inside: avoid; text-align: left; hyphens: manual; }}
@@ -69,6 +71,7 @@ figcaption {{ font-size: 0.86em; line-height: 1.3; text-align: left; margin-top:
 figcaption b {{ font-weight: 700; }}
 .refs p, .refs li {{ text-indent: -1.5em; padding-left: 1.5em; text-align: left; font-size: 0.88em; margin-bottom: 0.25em; }}
 .refs ul {{ list-style: none; padding-left: 0; }}
+.noj {{ text-align: left; }}
 .footnote {{ font-size: 0.82em; border-top: 0.5px solid #999; margin-top: 1.2em; }}
 .footnote p {{ text-indent: 0; }}
 a {{ color: inherit; text-decoration: none; }}
@@ -137,6 +140,8 @@ def build(pid: str, two_column: bool) -> Path:
     head = (f'<p class="title">{title}</p><p class="author">{meta.get("author", "")}</p>'
             + (f'<p class="affil">{parts[0]}</p>' if parts else "")
             + "".join(f'<p class="email">{p}</p>' for p in parts[1:])
+            + (('<p class="links">' + " · ".join(f"<span>{s.strip()}</span>" for s in meta["links"].split("·")) + "</p>")
+               if meta.get("links") else "")
             + f'<p class="date">{meta.get("date", "")}</p>')
     runhead = meta.get("runhead") or (meta.get("author", "") + " · " + meta.get("short", meta.get("title", ""))[:70])
     columns = ("column-count: 2; column-gap: 6mm; column-fill: auto; } "

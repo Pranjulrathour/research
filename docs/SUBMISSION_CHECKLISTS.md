@@ -9,14 +9,15 @@ Identity to use everywhere (keep it byte-identical so Google and Scholar merge t
 | Name | Pranjul Rathour |
 | Affiliation | Independent researcher, Kanpur, India |
 | Email | pranjulrathour41@gmail.com |
-| Website | https://pranjulrathour.scult.in |
+| Website | https://pranjulrathour.com |
 | Code | https://github.com/Pranjulrathour/research |
+| Socials (where a venue has fields for them) | GitHub github.com/Pranjulrathour · LinkedIn linkedin.com/in/pranjul-rathour · X x.com/PranjulRathourx · Instagram instagram.com/pranjulrathour.in · Threads threads.com/@pranjulrathour.in · Bluesky bsky.app/profile/pranjulrathour.bsky.social · Facebook facebook.com/profile.php?id=1377591238763842 · Dev.to dev.to/pranjulrathour · Hashnode pranjulrathour.hashnode.dev · Blogger pranjulrathourtechguru.blogspot.com |
 | ORCID | create first at orcid.org (free, 2 minutes); then paste the same ORCID into every venue |
 
 ## 0. Order of operations (do these first, in this order)
 
 1. **ORCID** (orcid.org): register; add employment "Independent researcher"; add website and GitHub links; set record public.
-2. **Google Scholar profile** (scholar.google.com/citations): create with the Gmail; name exactly "Pranjul Rathour"; affiliation "Independent researcher"; homepage pranjulrathour.scult.in; make profile public. Papers will attach automatically after indexing (Preprints.org and SSRN are indexed; typically 1–4 weeks).
+2. **Google Scholar profile** (scholar.google.com/citations): create with the Gmail; name exactly "Pranjul Rathour"; affiliation "Independent researcher"; homepage pranjulrathour.com; make profile public. Papers will attach automatically after indexing (Preprints.org and SSRN are indexed; typically 1–4 weeks).
 3. **Push the repo** to github.com/Pranjulrathour/research (public). Every paper's "Data and code availability" points there.
 4. **Zenodo** (zenodo.org, log in with GitHub): enable the research repo under "GitHub" so each GitHub release gets a DOI automatically. Make release `v1.0-p1` after the first paper is final, and so on. Zenodo DOIs are the permanent archive of each paper's code, results and data provenance (the data themselves are not redistributed; `papers/fetch_data.py` re-downloads them and checks the recorded hashes).
 5. **ISBN** (isbn.gov.in, Raja Rammohun Roy National Agency): register as an author-publisher, apply for ISBNs for both books (eBook format). Free; 7–15 working days typical. Needed for Google Play Books; not needed for Kindle or Leanpub, so publish those first.

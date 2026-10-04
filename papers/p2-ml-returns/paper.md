@@ -2,7 +2,8 @@
 title: "Do Machine-Learning Return Predictors Beat Linear Baselines Out of Sample? A Small-Scale Walk-Forward Replication on Public Equity Data"
 short: "ML versus linear return prediction, walk-forward"
 author: "Pranjul Rathour"
-affiliation: "Independent researcher, Kanpur, India · pranjulrathour41@gmail.com · https://pranjulrathour.scult.in"
+affiliation: "Independent researcher, Kanpur, India · pranjulrathour41@gmail.com · https://pranjulrathour.com"
+links: "github.com/Pranjulrathour · linkedin.com/in/pranjul-rathour · x.com/PranjulRathourx · instagram.com/pranjulrathour.in · threads.com/@pranjulrathour.in · bsky.app/profile/pranjulrathour.bsky.social · facebook.com/profile.php?id=1377591238763842 · dev.to/pranjulrathour · pranjulrathour.hashnode.dev · pranjulrathourtechguru.blogspot.com"
 date: "October 2026"
 keywords: "return predictability, machine learning, walk-forward validation, out-of-sample R-squared, look-ahead bias, Diebold-Mariano, long-short portfolio, Dow Jones Industrial Average"
 jel: "C45, C53, G11, G17"
@@ -199,6 +200,9 @@ On 29 Dow Jones stocks with ten price-based features, the machine-learning advan
 Code, `results.json`, the figures and `data/SNAPSHOT.json` are at https://github.com/Pranjulrathour/research under `papers/p2-ml-returns/`. The code is MIT-licensed. Price data come from Yahoo Finance via `yfinance` and are not redistributed; `python fetch_data.py p2` in the `papers/` folder downloads them and checks them against the recorded hashes.
 
 ## Declarations
+
+*Author information.* Pranjul Rathour is an independent researcher in Kanpur, India. Website `https://pranjulrathour.com`; email `pranjulrathour41@gmail.com`; GitHub `github.com/Pranjulrathour`; LinkedIn `linkedin.com/in/pranjul-rathour`; X `x.com/PranjulRathourx`; Instagram `instagram.com/pranjulrathour.in`; Threads `threads.com/@pranjulrathour.in`; Bluesky `bsky.app/profile/pranjulrathour.bsky.social`; Facebook `facebook.com/profile.php?id=1377591238763842`; Dev.to `dev.to/pranjulrathour`; Hashnode `pranjulrathour.hashnode.dev`; Blogger `pranjulrathourtechguru.blogspot.com`.
+{: .noj }
 
 *Competing interests and funding.* The author has no competing interests and received no funding for this work.
 

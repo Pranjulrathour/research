@@ -16,6 +16,7 @@ Running through it are nine stories from transitions we already know the end of:
 Written from Kanpur, for the students who kept asking me "what should I do now?"
 
 Available on Kindle, Leanpub and Google Play: <link>
+More: pranjulrathour.com
 
 **Blogger (long)**: the preface, the contents, one full chapter (chapter 10, the skill portfolio) and the store links. Title: "I wrote a field guide for the next decade of AI. Here is chapter 10, free."
 
@@ -30,6 +31,7 @@ Each chapter states the principle, shows it with a number you can reproduce (the
 
 Companion code and measurements: github.com/Pranjulrathour/research
 Available on Kindle, Leanpub and Google Play: <link>
+More: pranjulrathour.com
 
 **Blogger (long)**: the preface, the twelve closing questions from chapter 12, and the three measured figures from chapters 1, 2 and 4 ("the tail opens before the body moves", "same work, four times the tail", "approximate search is not always faster").
 
@@ -148,4 +150,5 @@ Preprint: <DOI> · Code: github.com/Pranjulrathour/research/tree/main/papers/p5-
 - "preprint", "working paper", "self-published": yes. "Peer-reviewed", "published in": no.
 - Name the venue (Preprints.org / SSRN / TechRxiv / Kindle / Leanpub / Google Play) rather than implying one.
 - Link the code with every paper post; the reproducibility is the point.
+- The home domain is pranjulrathour.com; the books and papers carry it with the full list of socials, so posts need only the domain.
 - Don't name tools in posts. Each paper's Declarations carries the AI-use disclosure the venues require, so never claim in a post that the work was done without AI help.

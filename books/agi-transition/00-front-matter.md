@@ -10,7 +10,27 @@ First edition, October 2026.
 
 Published by the author. Kanpur, India.
 
-pranjulrathour41@gmail.com · https://pranjulrathour.scult.in
+pranjulrathour41@gmail.com · https://pranjulrathour.com
+
+GitHub: github.com/Pranjulrathour
+
+LinkedIn: linkedin.com/in/pranjul-rathour
+
+X: x.com/PranjulRathourx
+
+Instagram: instagram.com/pranjulrathour.in
+
+Threads: threads.com/@pranjulrathour.in
+
+Bluesky: bsky.app/profile/pranjulrathour.bsky.social
+
+Facebook: facebook.com/profile.php?id=1377591238763842
+
+Dev.to: dev.to/pranjulrathour
+
+Hashnode: pranjulrathour.hashnode.dev
+
+Blogger: pranjulrathourtechguru.blogspot.com
 
 ---
 

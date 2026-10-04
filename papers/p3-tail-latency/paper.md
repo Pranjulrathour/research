@@ -2,7 +2,8 @@
 title: "Tail Latency Under Load: An Empirical Comparison of Threaded, Event-Loop and Hybrid API Server Designs"
 short: "Tail latency of threaded, event-loop and hybrid servers"
 author: "Pranjul Rathour"
-affiliation: "Independent researcher, Kanpur, India · pranjulrathour41@gmail.com · https://pranjulrathour.scult.in"
+affiliation: "Independent researcher, Kanpur, India · pranjulrathour41@gmail.com · https://pranjulrathour.com"
+links: "github.com/Pranjulrathour · linkedin.com/in/pranjul-rathour · x.com/PranjulRathourx · instagram.com/pranjulrathour.in · threads.com/@pranjulrathour.in · bsky.app/profile/pranjulrathour.bsky.social · facebook.com/profile.php?id=1377591238763842 · dev.to/pranjulrathour · pranjulrathour.hashnode.dev · pranjulrathourtechguru.blogspot.com"
 date: "October 2026"
 keywords: "tail latency, p99, concurrency models, event loop, asyncio, thread pool, process pool, global interpreter lock, closed-loop load testing, API servers"
 ---
@@ -217,6 +218,9 @@ Four minimal servers that differ only in concurrency model were driven with the 
 The harness, `results.json` and the figures are at https://github.com/Pranjulrathour/research under `papers/p3-tail-latency/`, together with the log of the failed first run. The code is MIT-licensed. No external data are used.
 
 ## Declarations
+
+*Author information.* Pranjul Rathour is an independent researcher in Kanpur, India. Website `https://pranjulrathour.com`; email `pranjulrathour41@gmail.com`; GitHub `github.com/Pranjulrathour`; LinkedIn `linkedin.com/in/pranjul-rathour`; X `x.com/PranjulRathourx`; Instagram `instagram.com/pranjulrathour.in`; Threads `threads.com/@pranjulrathour.in`; Bluesky `bsky.app/profile/pranjulrathour.bsky.social`; Facebook `facebook.com/profile.php?id=1377591238763842`; Dev.to `dev.to/pranjulrathour`; Hashnode `pranjulrathour.hashnode.dev`; Blogger `pranjulrathourtechguru.blogspot.com`.
+{: .noj }
 
 *Competing interests and funding.* The author has no competing interests and received no funding for this work.
 

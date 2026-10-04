@@ -2,7 +2,8 @@
 title: "Card-Fraud Detection Under Extreme Class Imbalance: A Time-Aware, Cost-Sensitive Benchmark on Public Data"
 short: "Card-fraud detection under extreme class imbalance"
 author: "Pranjul Rathour"
-affiliation: "Independent researcher, Kanpur, India · pranjulrathour41@gmail.com · https://pranjulrathour.scult.in"
+affiliation: "Independent researcher, Kanpur, India · pranjulrathour41@gmail.com · https://pranjulrathour.com"
+links: "github.com/Pranjulrathour · linkedin.com/in/pranjul-rathour · x.com/PranjulRathourx · instagram.com/pranjulrathour.in · threads.com/@pranjulrathour.in · bsky.app/profile/pranjulrathour.bsky.social · facebook.com/profile.php?id=1377591238763842 · dev.to/pranjulrathour · pranjulrathour.hashnode.dev · pranjulrathourtechguru.blogspot.com"
 date: "October 2026"
 keywords: "fraud detection, class imbalance, precision-recall, cost-sensitive thresholding, temporal validation, data leakage, gradient boosting, random forest, logistic regression"
 ---
@@ -198,6 +199,9 @@ On the ULB credit-card data, a random forest with balanced class weights was the
 Code, `results.json` (every number in this paper), the figures and `data/SNAPSHOT.json` are at https://github.com/Pranjulrathour/research under `papers/p5-fraud-imbalance/`. The code is MIT-licensed. The dataset is distributed by OpenML (id 1597) and is not committed here because of its size; `python fetch_data.py p5` in the `papers/` folder downloads the ARFF, rebuilds the CSV with its `Time` column and checks both against the recorded hashes.
 
 ## Declarations
+
+*Author information.* Pranjul Rathour is an independent researcher in Kanpur, India. Website `https://pranjulrathour.com`; email `pranjulrathour41@gmail.com`; GitHub `github.com/Pranjulrathour`; LinkedIn `linkedin.com/in/pranjul-rathour`; X `x.com/PranjulRathourx`; Instagram `instagram.com/pranjulrathour.in`; Threads `threads.com/@pranjulrathour.in`; Bluesky `bsky.app/profile/pranjulrathour.bsky.social`; Facebook `facebook.com/profile.php?id=1377591238763842`; Dev.to `dev.to/pranjulrathour`; Hashnode `pranjulrathour.hashnode.dev`; Blogger `pranjulrathourtechguru.blogspot.com`.
+{: .noj }
 
 *Competing interests and funding.* The author has no competing interests and received no funding for this work.
 

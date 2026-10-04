@@ -63,4 +63,6 @@ for the books and covers, and STIX Two Text for the papers.
 Code: MIT. Manuscripts: © Pranjul Rathour, all rights reserved. Data: as per each source's licence (recorded per paper).
 
 ## Contact
-pranjulrathour41@gmail.com · https://pranjulrathour.scult.in
+pranjulrathour41@gmail.com · https://pranjulrathour.com
+
+GitHub [Pranjulrathour](https://github.com/Pranjulrathour) · LinkedIn [pranjul-rathour](https://www.linkedin.com/in/pranjul-rathour/) · X [@PranjulRathourx](https://x.com/PranjulRathourx) · Instagram [@pranjulrathour.in](https://www.instagram.com/pranjulrathour.in/) · Threads [@pranjulrathour.in](https://www.threads.com/@pranjulrathour.in) · Bluesky [@pranjulrathour.bsky.social](https://bsky.app/profile/pranjulrathour.bsky.social) · [Facebook](https://www.facebook.com/profile.php?id=1377591238763842) · Dev.to [pranjulrathour](https://dev.to/pranjulrathour) · [Hashnode](https://pranjulrathour.hashnode.dev) · [Blogger](https://pranjulrathourtechguru.blogspot.com)

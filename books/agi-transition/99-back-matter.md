@@ -118,6 +118,18 @@ Primary sources only; no commentary, no product documentation. Roughly in the or
 
 **Pranjul Rathour** is a generative-AI engineer from Kanpur, India. He builds production systems around large language models (retrieval, evaluation, agents and the reliability engineering that holds them together) and has won first prize at three hackathons for applied AI work. He has mentored more than two hundred students in India and abroad on careers in software and AI, which is where the questions this book tries to answer came from.
 
-He writes about AI, engineering and careers at pranjulrathour.scult.in and publishes the code and data behind his research at github.com/Pranjulrathour. *Systems That Scale*, the companion to this volume, covers the engineering side of the same argument.
+He writes about AI, engineering and careers at pranjulrathour.com and publishes the code and data behind his research at github.com/Pranjulrathour. *Systems That Scale*, the companion to this volume, covers the engineering side of the same argument.
 
-He can be reached at pranjulrathour41@gmail.com.
+He can be reached at pranjulrathour41@gmail.com, and he is easy to find online:
+
+- Website: [pranjulrathour.com](https://pranjulrathour.com)
+- GitHub: [github.com/Pranjulrathour](https://github.com/Pranjulrathour)
+- LinkedIn: [linkedin.com/in/pranjul-rathour](https://www.linkedin.com/in/pranjul-rathour/)
+- X: [x.com/PranjulRathourx](https://x.com/PranjulRathourx)
+- Instagram: [instagram.com/pranjulrathour.in](https://www.instagram.com/pranjulrathour.in/)
+- Threads: [threads.com/@pranjulrathour.in](https://www.threads.com/@pranjulrathour.in)
+- Bluesky: [bsky.app/profile/pranjulrathour.bsky.social](https://bsky.app/profile/pranjulrathour.bsky.social)
+- Facebook: [facebook.com/profile.php?id=1377591238763842](https://www.facebook.com/profile.php?id=1377591238763842)
+- Dev.to: [dev.to/pranjulrathour](https://dev.to/pranjulrathour)
+- Hashnode: [pranjulrathour.hashnode.dev](https://pranjulrathour.hashnode.dev)
+- Blogger: [pranjulrathourtechguru.blogspot.com](https://pranjulrathourtechguru.blogspot.com)

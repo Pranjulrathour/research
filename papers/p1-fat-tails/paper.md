@@ -2,7 +2,8 @@
 title: "Fat Tails and the Failure of Gaussian Risk Models: Out-of-Sample Value-at-Risk Evidence from NIFTY 50 and S&P 500, 2010–2026"
 short: "Fat tails and Gaussian VaR: NIFTY 50 and S&P 500"
 author: "Pranjul Rathour"
-affiliation: "Independent researcher, Kanpur, India · pranjulrathour41@gmail.com · https://pranjulrathour.scult.in"
+affiliation: "Independent researcher, Kanpur, India · pranjulrathour41@gmail.com · https://pranjulrathour.com"
+links: "github.com/Pranjulrathour · linkedin.com/in/pranjul-rathour · x.com/PranjulRathourx · instagram.com/pranjulrathour.in · threads.com/@pranjulrathour.in · bsky.app/profile/pranjulrathour.bsky.social · facebook.com/profile.php?id=1377591238763842 · dev.to/pranjulrathour · pranjulrathour.hashnode.dev · pranjulrathourtechguru.blogspot.com"
 date: "October 2026"
 keywords: "Value at Risk, fat tails, Student-t, EWMA, filtered historical simulation, Kupiec test, Christoffersen test, NIFTY 50, S&P 500"
 jel: "C58, G17, G32"
@@ -235,6 +236,9 @@ On sixteen and three-quarter years of daily NIFTY 50 and S&P 500 data, the Gauss
 All code, `results.json` with every number in this paper, the figure code and `data/SNAPSHOT.json` (download date, row counts and SHA-256 hashes of the two price files) are available at https://github.com/Pranjulrathour/research under `papers/p1-fat-tails/`. The code is MIT-licensed. The index data come from Yahoo Finance via `yfinance` and are not redistributed; `python fetch_data.py p1` in the `papers/` folder downloads them and checks them against the recorded hashes.
 
 ## Declarations
+
+*Author information.* Pranjul Rathour is an independent researcher in Kanpur, India. Website `https://pranjulrathour.com`; email `pranjulrathour41@gmail.com`; GitHub `github.com/Pranjulrathour`; LinkedIn `linkedin.com/in/pranjul-rathour`; X `x.com/PranjulRathourx`; Instagram `instagram.com/pranjulrathour.in`; Threads `threads.com/@pranjulrathour.in`; Bluesky `bsky.app/profile/pranjulrathour.bsky.social`; Facebook `facebook.com/profile.php?id=1377591238763842`; Dev.to `dev.to/pranjulrathour`; Hashnode `pranjulrathour.hashnode.dev`; Blogger `pranjulrathourtechguru.blogspot.com`.
+{: .noj }
 
 *Competing interests and funding.* The author has no competing interests and received no funding for this work.
 
